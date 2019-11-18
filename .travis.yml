@@ -1,10 +1,10 @@
 sudo: required
 language: generic
 before_script:
-  - sudo apt -qq update
-  - sudo apt -qq -y install --no-install-recommends latexmk make texlive-full
+- sudo apt -qq update
+- sudo apt -qq -y install --no-install-recommends latexmk make texlive-full
 script:
-  - make
+- make
 deploy:
   provider: releases
   api_key:
@@ -16,4 +16,4 @@ deploy:
     repo: katshun0307/bachelor_thesis
 notifications:
   slack:
-    secure: LRy58rN5w5qcsqjjgOA7U8t83h+wQHvJAuciE2Vvv+rqrZb+lPp0gWmVnSrGcsQqLjFSZmCcGKQDPmOLq1b4pFeRH72Nm/bwF6JO+prdU0E9ObxKDtt3jT7i4ChjMTqhlkDJBeGJiVTysJ3bvPujDoYuGuNATrLeUvmXKNT7WjobGYgLtQQ4PgZeA+dmEEC3AEBE+Ojzb92/Wga+KlqZYKefnXetan/k7iM2bK2lVCBDqQI4qTJHRhqEk87RqrNbBNgJ1n6B247oDfe24nZoQWW3CDhW8HGOuwPg8AMtMVRJIXXKl/VIjs9lYo/gAC/ATZluvHCoG8eIQrzQz0Mwl6VFIypf8mEaeyA1wWlGoUoF4LhHTPaLToDf0aW2DASObCKG4p0mrO78ASUMnkoSRGOtcvygJ/89bG/y/Dw01G4ooHXs4zocGLBkq4rOhYKVOmHhuYG/r/dSzbZgqAcE/14vcj/JOCaWx0SmPn6GSH0EKnigclQpUlDUaBR3DsT8bL9f2MuC98+31ZlYDcge9gU8rwOg3NpJRmFP2ZeHwoxQreCLylba7gXyV4AKgZPS5+znB+5uSkyhX/+luqGPkhI5IWbU8Ji1LCK8zfJEr+6qpYl81JR/FrQB1rf4jitf8WAaPzjg3JRGIxFM7OrI5qC4Iexm0euT8qIsisj5tMo=
+    secure: M+++ysPsqp3DmSYCiDra9m1SUp2sK8v0v2pXuPZKriDUaLxofvQQ8eL39f+Yxme9aS29gDQ/Qu75KMQ7j8s18hdjLG3Lw8dQ48RVlSyRLOykLsWToyNN8GEOAQ9FGfPh16hfDPm0QssqGUlR85et5yQkzWaTRSRDsCdeWDdhR5FOW/oiprZn/ZJdF6FBviwX0gfERMHT9wD/a87trEY1phOgER7v9bgQkjjTOqDVw0jCM71OY0jcQobNiG1Q4LjFK2IKyIKQ8pqry4+rgeDaz7w2pV/l/pEhrN3E6/ntntg+GkrdYEdQ8ROsfVBue4xwA+E1SUgT2T2hzQAgQ0bduH5VR5EhH26phiiYQUhvkicvA556tyaUZ9N9mKiv8egfGUE78aIUqSpUX93E7++rB/Pf9qwwuGo//xHpGzBeuqEmHyMqCe+r87RKW/lWz9wDEJEKXeNr3WBxPNxdXn3iWn8HmbqTaow+MNmFIAOsRvbseMjvPnRkkxWLW3au+rDX87JGA/BaeBEsp3OSPPgQjNCMammQbOeUns+C0wpdze+eqOhOzU6ahretGm7AE2mDZEDGphtS2tdn0DqnwPL/+9LoGqa8Tvc8SoWn2GAUCNXMxW1vmNZEEFBtIc+V0VcnurLwEJioIz4mnB8CKNQdMjPl1Q3PKt5ys7ZBUaw8+Tk=
