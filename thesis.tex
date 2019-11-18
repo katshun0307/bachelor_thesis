@@ -1,0 +1,31 @@
+\documentclass{kuisthesis}
+% \usepackage[dvipdfmx]{graphicx}
+\usepackage{amssymb}
+\makeatletter
+\makeatother
+\setcounter{tocdepth}{2}
+\jtitle{日本語タイトル}
+\etitle{英語タイトル}
+\jauthor{勝田 峻太朗}
+\eauthor{Shuntaro Katsuda}
+\supervisor{五十嵐淳}
+\date{2019/11/11}
+\department{工学部情報学科}
+\begin{document}
+\maketitle
+\begin{jabstract}
+  日本語でアブストラクト
+\end{jabstract}
+\begin{eabstract}
+  Abstract in English
+\end{eabstract}
+
+\section{はじめに}
+    こんにちは. 引用してみます.\cite{Lof1984}
+
+\acknowledgments
+感謝のお気持ち.
+
+\bibliographystyle{kuissort}
+\bibliography{thesis.bib}
+\end{document}

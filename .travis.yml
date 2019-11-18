@@ -1,0 +1,19 @@
+sudo: required
+language: generic
+before_script:
+  - sudo apt -qq update
+  - sudo apt -qq -y install --no-install-recommends latexmk make texlive-full
+script:
+  - make
+deploy:
+  provider: releases
+  api_key:
+    secure: T5/os8nxRfzdKJFAVkGBgPMGvCnNaCi9uUyjoGJQXFUyR3ocgsQApiQ1dGxVlvAGrgpHWOrM+yhnA6+ZoisdqMPPxK/LsorxWapneY6T3I0z1AAYL8fA1wXsGbgZTXVj2zTgIjYyYILJmzEFZZCq1vnlHE9DsRBg4JvlwkQRutN7duBKrwFhsjv7sfHrY08ifCFTx4AaL5iKZLlweADJukqjt28S1jNtrF89ZUQ9l+H5vALOMSh0JZpQ5vE1ziuSlPbFwtUzkgIOF21jBWdrIgVsS2/RjmKWVm4kh6y+Qk53jx1LVwCa2qu/xAEdC9OJ/ExfbvaA5Y6KMEtO/M70bWStsWgoR9mkMAuBrF4xOFk7Q+/DRv8UWy0dhgBSkKhS3KPW30dLPzOfJrtKuff20S4MSTv0djuhCI3WghQJXU8OUycsdm/KYmdPXN9EwEnwlHQ+BgXg0WbW3XYztE4suCwbv+rkmtpRBiCHLDYPfadnUqUUJlYxnKG4I1LPjeEX9l+kBcAoZGFf7omg60zTsz5+Hni6CWIt5y0vArg8u4yj5QnZxsh6PWRSvS95Gw22wetn8B+q4B8Onw8d3/p/YenqiZ58/w3nfDLe8WzsHunqwXIQVSiNBSK3y1+zK9+t4KaUZqo+yUn+n00u77kF7+fJlMFHU72yj5xJwghBM7g=
+  file: thesis.pdf
+  edge: true
+  on:
+    tags: true
+    repo: katshun0307/bachelor_thesis
+notifications:
+  slack:
+    secure: LRy58rN5w5qcsqjjgOA7U8t83h+wQHvJAuciE2Vvv+rqrZb+lPp0gWmVnSrGcsQqLjFSZmCcGKQDPmOLq1b4pFeRH72Nm/bwF6JO+prdU0E9ObxKDtt3jT7i4ChjMTqhlkDJBeGJiVTysJ3bvPujDoYuGuNATrLeUvmXKNT7WjobGYgLtQQ4PgZeA+dmEEC3AEBE+Ojzb92/Wga+KlqZYKefnXetan/k7iM2bK2lVCBDqQI4qTJHRhqEk87RqrNbBNgJ1n6B247oDfe24nZoQWW3CDhW8HGOuwPg8AMtMVRJIXXKl/VIjs9lYo/gAC/ATZluvHCoG8eIQrzQz0Mwl6VFIypf8mEaeyA1wWlGoUoF4LhHTPaLToDf0aW2DASObCKG4p0mrO78ASUMnkoSRGOtcvygJ/89bG/y/Dw01G4ooHXs4zocGLBkq4rOhYKVOmHhuYG/r/dSzbZgqAcE/14vcj/JOCaWx0SmPn6GSH0EKnigclQpUlDUaBR3DsT8bL9f2MuC98+31ZlYDcge9gU8rwOg3NpJRmFP2ZeHwoxQreCLylba7gXyV4AKgZPS5+znB+5uSkyhX/+luqGPkhI5IWbU8Ji1LCK8zfJEr+6qpYl81JR/FrQB1rf4jitf8WAaPzjg3JRGIxFM7OrI5qC4Iexm0euT8qIsisj5tMo=
