@@ -1,19 +1,24 @@
 sudo: required
-language: generic
+language: python
 before_script:
-- sudo apt -qq update
-- sudo apt -qq -y install --no-install-recommends latexmk make texlive-full
+  - sudo apt -qq update
+  - sudo apt -qq -y install --no-install-recommends latexmk make texlive-full
+  - sudo pip3 install -q requests
 script:
-- make
+  - make
 deploy:
-  provider: releases
-  api_key:
-    secure: T5/os8nxRfzdKJFAVkGBgPMGvCnNaCi9uUyjoGJQXFUyR3ocgsQApiQ1dGxVlvAGrgpHWOrM+yhnA6+ZoisdqMPPxK/LsorxWapneY6T3I0z1AAYL8fA1wXsGbgZTXVj2zTgIjYyYILJmzEFZZCq1vnlHE9DsRBg4JvlwkQRutN7duBKrwFhsjv7sfHrY08ifCFTx4AaL5iKZLlweADJukqjt28S1jNtrF89ZUQ9l+H5vALOMSh0JZpQ5vE1ziuSlPbFwtUzkgIOF21jBWdrIgVsS2/RjmKWVm4kh6y+Qk53jx1LVwCa2qu/xAEdC9OJ/ExfbvaA5Y6KMEtO/M70bWStsWgoR9mkMAuBrF4xOFk7Q+/DRv8UWy0dhgBSkKhS3KPW30dLPzOfJrtKuff20S4MSTv0djuhCI3WghQJXU8OUycsdm/KYmdPXN9EwEnwlHQ+BgXg0WbW3XYztE4suCwbv+rkmtpRBiCHLDYPfadnUqUUJlYxnKG4I1LPjeEX9l+kBcAoZGFf7omg60zTsz5+Hni6CWIt5y0vArg8u4yj5QnZxsh6PWRSvS95Gw22wetn8B+q4B8Onw8d3/p/YenqiZ58/w3nfDLe8WzsHunqwXIQVSiNBSK3y1+zK9+t4KaUZqo+yUn+n00u77kF7+fJlMFHU72yj5xJwghBM7g=
-  file: thesis.pdf
-  edge: true
-  on:
-    tags: true
-    repo: katshun0307/bachelor_thesis
+  - provider: releases
+    api_key:
+      secure: T5/os8nxRfzdKJFAVkGBgPMGvCnNaCi9uUyjoGJQXFUyR3ocgsQApiQ1dGxVlvAGrgpHWOrM+yhnA6+ZoisdqMPPxK/LsorxWapneY6T3I0z1AAYL8fA1wXsGbgZTXVj2zTgIjYyYILJmzEFZZCq1vnlHE9DsRBg4JvlwkQRutN7duBKrwFhsjv7sfHrY08ifCFTx4AaL5iKZLlweADJukqjt28S1jNtrF89ZUQ9l+H5vALOMSh0JZpQ5vE1ziuSlPbFwtUzkgIOF21jBWdrIgVsS2/RjmKWVm4kh6y+Qk53jx1LVwCa2qu/xAEdC9OJ/ExfbvaA5Y6KMEtO/M70bWStsWgoR9mkMAuBrF4xOFk7Q+/DRv8UWy0dhgBSkKhS3KPW30dLPzOfJrtKuff20S4MSTv0djuhCI3WghQJXU8OUycsdm/KYmdPXN9EwEnwlHQ+BgXg0WbW3XYztE4suCwbv+rkmtpRBiCHLDYPfadnUqUUJlYxnKG4I1LPjeEX9l+kBcAoZGFf7omg60zTsz5+Hni6CWIt5y0vArg8u4yj5QnZxsh6PWRSvS95Gw22wetn8B+q4B8Onw8d3/p/YenqiZ58/w3nfDLe8WzsHunqwXIQVSiNBSK3y1+zK9+t4KaUZqo+yUn+n00u77kF7+fJlMFHU72yj5xJwghBM7g=
+    file: thesis.pdf
+    edge: true
+    on:
+      tags: true
+      repo: katshun0307/bachelor_thesis
+  - provider: script
+    script: python3 slack_upload.py
+    on:
+      tags: true
 notifications:
   slack:
     secure: M+++ysPsqp3DmSYCiDra9m1SUp2sK8v0v2pXuPZKriDUaLxofvQQ8eL39f+Yxme9aS29gDQ/Qu75KMQ7j8s18hdjLG3Lw8dQ48RVlSyRLOykLsWToyNN8GEOAQ9FGfPh16hfDPm0QssqGUlR85et5yQkzWaTRSRDsCdeWDdhR5FOW/oiprZn/ZJdF6FBviwX0gfERMHT9wD/a87trEY1phOgER7v9bgQkjjTOqDVw0jCM71OY0jcQobNiG1Q4LjFK2IKyIKQ8pqry4+rgeDaz7w2pV/l/pEhrN3E6/ntntg+GkrdYEdQ8ROsfVBue4xwA+E1SUgT2T2hzQAgQ0bduH5VR5EhH26phiiYQUhvkicvA556tyaUZ9N9mKiv8egfGUE78aIUqSpUX93E7++rB/Pf9qwwuGo//xHpGzBeuqEmHyMqCe+r87RKW/lWz9wDEJEKXeNr3WBxPNxdXn3iWn8HmbqTaow+MNmFIAOsRvbseMjvPnRkkxWLW3au+rDX87JGA/BaeBEsp3OSPPgQjNCMammQbOeUns+C0wpdze+eqOhOzU6ahretGm7AE2mDZEDGphtS2tdn0DqnwPL/+9LoGqa8Tvc8SoWn2GAUCNXMxW1vmNZEEFBtIc+V0VcnurLwEJioIz4mnB8CKNQdMjPl1Q3PKt5ys7ZBUaw8+Tk=
