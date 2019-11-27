@@ -1,13 +1,14 @@
 sudo: required
-language: generic
+language: python
 python:
   - "3.6"
 before_script:
   - sudo apt -qq update
-  - sudo apt -qq -y install --no-install-recommends latexmk make texlive-full python3 python3-pip
-  - sudo pip3 install -q requests
+  - sudo apt -qq -y install --no-install-recommends latexmk make texlive-full
+  - sudo pip install -q requests
 script:
   - make
+  - python slack_upload.py
 deploy:
   - provider: releases
     api_key:
@@ -17,11 +18,6 @@ deploy:
     on:
       tags: true
       repo: katshun0307/bachelor_thesis
-  - provider: script
-    script: python3 slack_upload.py
-    on:
-      tags: true
-      all_branches: true
 notifications:
   slack:
     secure: M+++ysPsqp3DmSYCiDra9m1SUp2sK8v0v2pXuPZKriDUaLxofvQQ8eL39f+Yxme9aS29gDQ/Qu75KMQ7j8s18hdjLG3Lw8dQ48RVlSyRLOykLsWToyNN8GEOAQ9FGfPh16hfDPm0QssqGUlR85et5yQkzWaTRSRDsCdeWDdhR5FOW/oiprZn/ZJdF6FBviwX0gfERMHT9wD/a87trEY1phOgER7v9bgQkjjTOqDVw0jCM71OY0jcQobNiG1Q4LjFK2IKyIKQ8pqry4+rgeDaz7w2pV/l/pEhrN3E6/ntntg+GkrdYEdQ8ROsfVBue4xwA+E1SUgT2T2hzQAgQ0bduH5VR5EhH26phiiYQUhvkicvA556tyaUZ9N9mKiv8egfGUE78aIUqSpUX93E7++rB/Pf9qwwuGo//xHpGzBeuqEmHyMqCe+r87RKW/lWz9wDEJEKXeNr3WBxPNxdXn3iWn8HmbqTaow+MNmFIAOsRvbseMjvPnRkkxWLW3au+rDX87JGA/BaeBEsp3OSPPgQjNCMammQbOeUns+C0wpdze+eqOhOzU6ahretGm7AE2mDZEDGphtS2tdn0DqnwPL/+9LoGqa8Tvc8SoWn2GAUCNXMxW1vmNZEEFBtIc+V0VcnurLwEJioIz4mnB8CKNQdMjPl1Q3PKt5ys7ZBUaw8+Tk=
