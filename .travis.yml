@@ -1,11 +1,11 @@
 sudo: required
-language: python
+language: generic
 python:
   - "3.6"
 before_script:
   - sudo apt -qq update
-  - sudo apt -qq -y install --no-install-recommends latexmk make texlive-full
-  - sudo pip install -q requests
+  - sudo apt -qq -y install --no-install-recommends latexmk make texlive-full python3.6 python3-pip
+  - sudo pip3 install -q requests
 script:
   - make
 deploy:
@@ -18,7 +18,7 @@ deploy:
       tags: true
       repo: katshun0307/bachelor_thesis
   - provider: script
-    script: python slack_upload.py
+    script: python3 slack_upload.py
     on:
       tags: true
       all_branches: true
