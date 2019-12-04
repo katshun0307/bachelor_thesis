@@ -2,6 +2,7 @@
 % load this file after...
 %   - mydefault.sty
 %   - myproof.sty
+%   - lambdalf.sty
 
 \newcommand{\WFAEmpty}{
     \infax[\fauxsc{WFA-Empty}]{
@@ -162,8 +163,8 @@
     }
 }
 
-\newcommand{QTAVar}{
-    \infax[\fauxsc{QTA-Pi}]{
+\newcommand{\QTAVar}{
+    \infax[\fauxsc{QTA-Var}]{
         \Gamma \myalvdash{n} X \myequiv{m} X
     }
 }
@@ -226,7 +227,7 @@
     }
 }
 
-\newcommand{\QANabs1}{
+\newcommand{\QANabsOne}{
     \infrule[QA-Nabs1]{
         \Gamma, x\mysncln{n} S \myalvdash{n} s \mysp x \myequiv{m} t
         \andalso \text{s not a } \lambda
@@ -235,7 +236,7 @@
     }
 }
 
-\newcommand{\QANabs2}{
+\newcommand{\QANabsTwo}{
     \infrule[QA-Nabs2]{
         \Gamma, x\mysncln{n} S \myalvdash{n} s \myequiv{m} t \mysp x
         \andalso \text{t not a } \lambda
