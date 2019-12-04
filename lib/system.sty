@@ -1,0 +1,325 @@
+% System Rules %
+% load this file after...
+%   - mydefault.sty
+%   - myproof.sty
+
+\newcommand{\WFStar}{
+    \infax[\fauxsc{WF-Star}]{
+        \Gamma \myvdash{n} *
+    }
+}
+
+\newcommand{\WFPi}{
+    \infrule[WF-Pi]{
+        \Gamma \myvdash{n} T \DCOL *
+        \andalso \Gamma, x\mysncln{n}T \myvdash{n} K
+    }{
+        \Gamma \myvdash{n} \Pi x\COL T. K
+    }
+}
+
+\newcommand{\KVar}{
+    \infrule[K-Var]{
+        X\mydbcln{n} K \in \Gamma
+        \andalso \Gamma \myvdash{n} K
+    }{
+        \Gamma \myvdash{n} X \DCOL K
+    }
+}
+
+\newcommand{\KPi}{
+    \infrule[K-Pi]{
+        \Gamma \myvdash{n} T_1 \DCOL *
+        \andalso \Gamma, x\mysncln{n} T_1 \myvdash{n} T_2 \DCOL *
+    }{
+        \Gamma \myvdash{n} \Pi x\COL T_1. T_2 \DCOL*
+    }
+}
+
+\newcommand{\KApp}{
+    \infrule[K-App]{
+        \Gamma \myvdash{n} \Pi x\COL T. K
+        \andalso \Gamma \myvdash{n} t\COL T
+    }{
+        \Gamma \myvdash{n} S\mysp t \DCOL [x \mapsto t] K
+    }
+}
+
+\newcommand{\KConv}{
+    \infrule[K-Conv]{
+        \Gamma \myvdash{n} T \DCOL K
+        \andalso \Gamma \myvdash{n} K \myequiv{0} K'
+    }{
+        \Gamma \myvdash{n} T \DCOL K'
+    }
+}
+
+\newcommand{\KEquiv}{
+    \infrule[K-Equiv]{
+        \Gamma \myvdash{n} T \DCOL *
+    }{
+        \Gamma \myvdash{n} \mysingleeq{T}\DCOL \Pi x\COL T. \Pi y\COL T. *
+    }
+}
+
+\newcommand{\TVar}{
+    \infrule[T-Var]{
+        x\mysncln{n}T \in \Gamma
+        \andalso \Gamma \myvdash{n} T \DCOL *
+    }{
+        \Gamma \myvdash{n} x\COL T
+    }
+}
+
+\newcommand{\TAbs}{
+    \infrule[T-Abs]{
+        \Gamma \myvdash{n} S \DCOL *
+        \andalso \Gamma, x\mysncln{n} S \myvdash{n} t \COL T
+    }{
+        \Gamma \myvdash{n} \mylam{x}{S}{t} \COL \Pi x\COL S. T
+    }
+}
+
+\newcommand{\TApp}{
+    \infrule[T-App]{
+        \Gamma \myvdash{n} t_1\COL \Pi x\COL S. T
+        \andalso \Gamma \myvdash{n} t_2\COL S
+    }{
+        \Gamma \myvdash{n} t_1\mysp t_2 \COL [x \mapsto t_2] T
+    }
+}
+
+\newcommand{\TConv}{
+    \infrule[T-Conv]{
+        \Gamma \myvdash{n} t\COL T
+        \andalso \Gamma \myvdash{n} T \myequiv{0}  T'
+    }{
+        \Gamma \myvdash{n} t \COL T'
+    }
+}
+
+\newcommand{\TPrevIntro}{
+    \infrule[T-PrevIntro]{
+        \Gamma \myvdash{n-1} t\COL \bigcirc T
+    }{
+        \Gamma \myvdash{n} \myprev{t} \COL T
+    }
+}
+
+\newcommand{\TNextIntro}{
+    \infrule[T-NextIntro]{
+        \Gamma \myvdash{n+1} t \COL T
+    }{
+        \Gamma \myvdash{n} \mynext{t} \COL \bigcirc T
+    }
+}
+
+\newcommand{\TEqIntro}{
+    \infrule[T-EqIntro]{
+        \Gamma \myvdash{n} T \DCOL *
+        \andalso \Gamma \myvdash{n} t\COL T
+    }{
+        \Gamma \vdash^{(n)} \myid{t}\COL \myeq{T}{t}{t}
+    }
+}
+
+\newcommand{\TEqElim}{
+    \infrule[T-EqElim]{
+        \Gamma \myvdash{n} T \DCOL *
+        \andalso \Gamma \myvdash{n} a, b \COL T
+        \andalso \Gamma \myvdash{n} t_{eq} \COL \myeq{T}{a}{b} \\
+        \Gamma, x\mysncln{n} T, y\mysncln{n} T, z\COL\myeq{T}{x}{y} \myvdash{n} C(x, y, z) \DCOL *
+        \andalso \Gamma, x\mysncln{n} T \myvdash{n} d \COL C(x, x, id(x))
+    }{
+        \Gamma \myvdash{n} \myidpeel{t_{eq}}{x}{d} \COL C(a, b, t_{eq})
+    }
+}
+
+
+
+
+\newcommand{\QKPi}{
+    \infrule[QK-Pi]{
+        \Gamma \myalvdash{n} T_1 \myequiv{m} T_2
+        \andalso \Gamma, x\mysncln{n} T_1 \myalvdash{n} K_1 \myequiv{m} K_2
+    }{
+        \Gamma \myalvdash{n} \Pi x\COL T_1. K_1 \myequiv{m} \Pi x\COL T_2. K_2
+    }
+}
+
+\newcommand{\QKRefl}{
+    \infrule[QK-Refl]{
+        \Gamma \myalvdash{n} K
+    }{
+        \Gamma \myalvdash{n} K \myequiv{m} K
+    }
+}
+
+\newcommand{\QKSym}{
+    \infrule[QK-Sym]{
+        \Gamma \myalvdash{n} K_1 \myequiv{m} K_2
+    }{
+        \Gamma \myalvdash{n} K_2 \myequiv{m} K_1
+    }
+}
+
+
+% add QK-Trans
+% \newcommand{\QK}{
+%     \infrule[QK-Pi]{
+%         \Gamma \myalvdash{n} T_1 \myequiv{m} T_2
+%         \andalso \Gamma, x\mysncln{n} T_1 \myalvdash{n} K_1 \myequiv{m} K_2
+%     }{
+%         \Gamma \myalvdash{n} \Pi x\COL T_1. K_1 \myequiv{m} \Pi x\COL T_2. K_2
+%     }
+% }
+
+\newcommand{\QTPi}{
+    \infrule[QT-Pi]{
+        \Gamma \myalvdash{n} S_1 \myequiv{m} T_1 \DCOL *
+        \andalso \Gamma, x \mysncln{n} T_1 \myalvdash{n} S_2 \myequiv{m} T_2 \DCOL *
+    }{
+        \Gamma \myalvdash{n} \Pi x\COL S_1. S_2 \myequiv{m} \Pi x\COL T_1. T_2 \DCOL *
+    }
+}
+
+\newcommand{\QTApp}{
+    \infrule[QT-App]{
+        \Gamma \myalvdash{n} S_1 \myequiv{m} S_2 \DCOL \Pi x\COL T. K
+        \andalso \Gamma \myalvdash{n} t_1 \myequiv{m} t_2 \COL T
+    }{
+        \Gamma \myalvdash{n} S_1 t_1 \myequiv{m} S_2 t_2 \DCOL [x \mapsto t_1] K
+    }
+}
+
+\newcommand{\QTRefl}{
+    \infrule[QT-Refl]{
+        \Gamma \myalvdash{n} T\COL K
+    }{
+        \Gamma \myalvdash{n} T \myequiv{m} T \DCOL K
+    }
+}
+
+\newcommand{\QTSym}{
+    \infrule[QT-Sym]{
+        \Gamma \myalvdash{n} T \myequiv{m} S \DCOL K
+    }{
+        \Gamma \myalvdash{n} S \myequiv{m} T \DCOL K
+    }
+}
+
+\newcommand{\QTTrans}{
+    \infrule[QT-Trans]{
+        \Gamma \myalvdash{n} S \myequiv{m} U \DCOL K
+        \andalso \Gamma \myalvdash{n} U \myequiv{m} T \DCOL K
+    }{
+        \Gamma \myalvdash{n} S \myequiv{m} T \DCOL K
+    }
+}
+
+\newcommand{\QTCircIntro}{
+    \infrule[QT-CircIntro]{
+        \Gamma \myalvdash{n+1} S \myequiv{m} T \DCOL K
+    }{
+        \Gamma \myalvdash{n} \bigcirc S \myequiv{m}  \bigcirc T \DCOL K
+    }
+}
+
+\newcommand{\QAbs}{
+    \infrule[Q-Abs]{
+        \Gamma \myvdash{n} S_1 \myequiv{m} S_2 \DCOL *
+        \andalso \Gamma, x \mysncln{n} S_1 \myvdash{n} t_1 \myequiv{m} t_2 \COL T
+    }{
+        \Gamma \myvdash{n} \lambda x\COL S_1. t_1 \myequiv{m} \lambda x\COL S_2.t_2 \COL \Pi x\COL S_1.T
+    }
+}
+
+\newcommand{\QApp}{
+    \infrule[Q-App]{
+        \Gamma \myvdash{n} s_1 \myequiv{m} t_1 \COL \Pi x \COL S. T
+        \andalso \Gamma\myvdash{n} s_2 \myequiv{m} t_2\COL S
+    }{
+        \Gamma \myvdash{n}  s_1 s_2 \myequiv{m} t_1 t_2\COL T
+    }
+}
+
+\newcommand{\QBeta}{
+    \infrule[Q-Beta]{
+        \Gamma, x\mysncln{n} S \myvdash{n} t\COL T
+        \andalso \Gamma \myvdash{n} s \COL S
+        \andalso m \le 0
+    }{
+        \Gamma \myvdash{n} (\lambda x\COL S. T) s \myequiv{m} [x \mapsto s]t \COL [x \mapsto s]T
+    }
+}
+
+\newcommand{\QEta}{
+    \infrule[Q-Eta]{
+        \Gamma \myvdash{n} t\COL \Pi x\COL S. T
+        \andalso x \notin FV(t)
+        \andalso m \le 0
+    }{
+        \Gamma \myvdash{n} \lambda x\COL T. t x \myequiv{m} t\COL \Pi x\COL S. T
+    }
+}
+
+\newcommand{\QRefl}{
+    \infrule[Q-Refl]{
+        \Gamma \myvdash{n} t \COL T
+    }{
+        \Gamma \myvdash{n} t \myequiv{m} t \COL T
+    }
+}
+
+\newcommand{\QSym}{
+    \infrule[Q-Sym]{
+        \Gamma \myvdash{n} t \myequiv{m} s \COL T
+    }{
+        \Gamma \myvdash{n} s \myequiv{m} t \COL T
+    }
+}
+
+\newcommand{\QTrans}{
+    \infrule[Q-Trans]{
+        \Gamma \myvdash{n} s \myequiv{m} u \COL T
+        \andalso \Gamma \myvdash{n} u \myequiv{m} t \COL T
+    }{
+        \Gamma \myvdash{n} s \myequiv{m} t \COL T
+    }
+}
+
+\newcommand{\QNextIntro}{
+    \infrule[Q-NextIntro]{
+        \Gamma \myvdash{n+1} t_1 \myequiv{m+1} t_2
+    }{
+        \Gamma \myvdash{n} \mynext{t_1} \myequiv{m} \mynext{t_2} \COL \bigcirc T
+    }
+}
+
+\newcommand{\QPrevIntro}{
+    \infrule[Q-PrevIntro]{
+        \Gamma \myvdash{n-1} t_1 \myequiv{m-1} t_2
+    }{
+        \Gamma \myvdash{n} \myprev{t_1} \myequiv{m} \myprev{t_2}
+    }
+}
+
+\newcommand{\QCircBeta}{
+    \infrule[Q-$\bigcirc$\fauxsc{Beta}]{
+        \Gamma \myvdash{n} t \COL T
+        \andalso \Gamma \myvdash{n} T \DCOL *
+        \andalso m \le 1
+    }{
+        \Gamma \myvdash{n} \myprev{\mynext{t}} \myequiv{m} t \COL T
+    }
+}
+
+\newcommand{\QCircEta}{
+    \infrule[Q-$\bigcirc$\fauxsc{Eta}]{
+        \Gamma \myvdash{n} t \COL T
+        \andalso \Gamma \myvdash{n} T \DCOL *
+        \andalso m \le 1
+    }{
+        \Gamma \myvdash{n} \mynext{\myprev{t}} \myequiv{m} t \COL T
+    }
+}

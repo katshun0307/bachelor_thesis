@@ -1,0 +1,48 @@
+% AMS packages
+\usepackage{amsmath}
+\usepackage{amssymb}
+% extension package for amsmath
+\usepackage{mathtools}
+
+% theorem environment
+\usepackage{amsthm}
+% \usepackage[thref, thmmarks, amsmath]{ntheorem}
+
+% amsmath settings
+\newtheoremstyle{break}
+  {\topsep}% space above thm
+  {\topsep}% space below thm
+%   {\itshape}
+  {\rm}% font of body
+  {}% space to indent  
+  {\bfseries}% head font
+  {}% head punctuation
+  {\newline}% headspace
+  {\thmname{#1}\thmnumber{ #2}\thmnote{ [#3]}}% headspec
+
+\newtheoremstyle{tapl}
+  {\topsep}% space above thm
+  {\topsep}% space below thm
+%   {\itshape}
+  {\rm}% font of body
+  {}% space to indent  
+  {\bfseries}% head font
+  {:}% head punctuation
+  {.5em}% headspace
+  {\thmname{#1}\thmnumber{ #2}\thmnote{ [#3]}}% headspec
+
+\theoremstyle{tapl}
+
+\newtheorem{theorem}{Theorem}
+
+\renewcommand\qedsymbol{$\blacksquare$}
+
+% symbols for theoretical computer science
+\usepackage{stmaryrd}
+
+
+\newcommand{\tfor}{\textrm{for }}
+\newcommand{\tall}{\textrm{all }}
+\newcommand{\tif}{\textrm{if }}
+\newcommand{\tthen}{\textrm{then }}
+\newcommand{\tand}{\textrm{and }}

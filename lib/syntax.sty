@@ -1,0 +1,92 @@
+% load this file after...
+%   - mydefault.sty
+%   - myproof.sty
+
+\newcommand{\syntax}{
+    \begin{equation*}\tag{terms}
+        \begin{aligned}
+            t \Coloneqq\\
+                &x\\  
+                &\lambda x\COL T. t\\
+                &t\mysp t \\
+                &\mynext{t}\\
+                &\myprev{t}\\
+                &\myid{t}\\
+                &\myidpeel{t}{x}{t}\\
+        \end{aligned}
+    \end{equation*}
+    
+    \begin{equation*}\tag{indexed terms}
+        \begin{aligned}
+            t' \Coloneqq\\
+                & \myval{t}{d} \mysp (d \in \mathbb{N}) \\
+        \end{aligned}
+    \end{equation*}
+    
+    \begin{equation*}\tag{values}
+        \begin{aligned}
+            v \Coloneqq\\
+                &\mylam{x}{T}{t}\\
+                &\mynext{v}\\
+                &\myid{v}\\
+                &\myidpeel{v}{x}{v}\\
+            \end{aligned}
+    \end{equation*}
+    
+    \begin{equation*}\tag{indexed values}
+        \begin{aligned}
+            v' \Coloneqq\\
+                & \myval{v}{d} \mysp (d \in \mathbb{N})
+        \end{aligned}
+    \end{equation*}
+    
+    \begin{equation*}\tag{types}
+        \begin{aligned}
+            T \Coloneqq\\
+                &X\\ 
+                &\textbf{Eq}_T\\
+                &\Pi x\COL T. T\\
+                &T\mysp t\\
+                &\bigcirc T\\
+        \end{aligned}
+    \end{equation*}
+    
+    \begin{equation*}\tag{kinds}
+        \begin{aligned}
+            K \Coloneqq\\
+                &*\\ 
+                &\Pi x\COL T. K\\
+        \end{aligned}
+    \end{equation*}
+    
+    \begin{equation*}\tag{contexts}
+        \begin{aligned}
+            \Gamma \Coloneqq\\
+                &\bullet\\
+                &\Gamma, x \mysncln{n} T\\
+                &\Gamma, X\mydbcln{n} K\\
+        \end{aligned}
+    \end{equation*}
+    
+    \begin{equation*}\tag{type judgment}
+        \begin{aligned}
+            \Gamma \myvdash{n} t \COL T
+        \end{aligned}
+    \end{equation*}
+    
+    \begin{equation*}\tag{equivalence judgment}
+        \begin{aligned}
+                \Gamma \myvdash{n} t_1 \myequiv{0} t_2 
+            \end{aligned}
+        \end{equation*}
+    
+    
+    \subsection{Notes}
+    
+    \begin{itemize}
+        \item There exists $\myeq{T}{t_1}{t_2}$ for each T of proper types.
+        \item $n$ represents a stage of current judgment, and $n \ge 0$.
+        \item $m$ represents the number of nesting with $\myprev{t}$ and $\mynext{t}$, relative to the terms we want to compare. $m \in \mathbb{Z}$
+        \item $n \ge m$ at all times.
+    \end{itemize}
+}

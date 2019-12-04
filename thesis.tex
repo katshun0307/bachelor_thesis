@@ -1,16 +1,26 @@
 \documentclass{kuisthesis}
 % \usepackage[dvipdfmx]{graphicx}
 \usepackage{amssymb}
+
+% doesn't work with kuisthesis
+\usepackage{lib/mydefault}
+\usepackage{lib/mymath}
+\usepackage{lib/myproof}
+\usepackage{lib/lambdalf}
+
+\usepackage{lib/syntax}
+\usepackage{lib/system}
+
 \makeatletter
 \makeatother
 \setcounter{tocdepth}{2}
-\jtitle{日本語タイトル}
-\etitle{英語タイトル}
+\jtitle{同値型を備えた多段階依存型ラムダ計算の体系}
+\etitle{A Multistage dependent Lambda Calculus with Equality Types}
 \jauthor{勝田 峻太朗}
 \eauthor{Shuntaro Katsuda}
-\supervisor{五十嵐淳}
+\supervisor{五十嵐 淳 教授}
 \date{2019/11/11}
-\department{工学部情報学科}
+\department{工学部情報学科計算機科学コース}
 \begin{document}
 \maketitle
 \begin{jabstract}
@@ -22,6 +32,8 @@
 
 \section{はじめに}
     こんにちは. 引用してみます.\cite{Lof1984}
+
+    \TApp
 
 \acknowledgments
 感謝のお気持ち.
