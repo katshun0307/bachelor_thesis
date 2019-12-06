@@ -3,6 +3,7 @@
 \usepackage{amssymb}
 
 % doesn't work with kuisthesis
+\usepackage{lib/bcprules}
 \usepackage{lib/mydefault}
 \usepackage{lib/mymath}
 \usepackage{lib/myproof}
@@ -11,6 +12,7 @@
 \usepackage{lib/syntax}
 \usepackage{lib/system}
 \usepackage{lib/alsystem}
+\usepackage{lib/evalsystem}
 
 \makeatletter
 \makeatother
@@ -25,20 +27,22 @@
 \begin{document}
 \maketitle
 \begin{jabstract}
-  日本語でアブストラクト
+  \input{sections/jabstract.tex}
 \end{jabstract}
 \begin{eabstract}
-  Abstract in English
+  \input{sections/eabstract.tex}
 \end{eabstract}
 
 \section{はじめに}
-    こんにちは. 引用してみます.\cite{Lof1984}
+  \input{sections/introduction.tex}
 
-    \TApp
+\section{同値型を備えた多段階ラムダ計算}
+  \input{sections/type_system.tex}
 
 \acknowledgments
-感謝のお気持ち.
+  \input{sections/acknowledgments.tex}
 
 \bibliographystyle{kuissort}
+% \bibliographystyle{kuisunsrt}
 \bibliography{thesis.bib}
 \end{document}
