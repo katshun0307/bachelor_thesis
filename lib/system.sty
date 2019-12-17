@@ -130,9 +130,9 @@
         \andalso \Gamma \myvdash{n} a, b \COL T
         \andalso \Gamma \myvdash{n} t_{eq} \COL \myeq{T}{a}{b} \\
         \Gamma, x\mysncln{n} T, y\mysncln{n} T, z\COL\myeq{T}{x}{y} \myvdash{n} C(x, y, z) \DCOL *
-        \andalso \Gamma, x\mysncln{n} T \myvdash{n} d \COL C(x, x, id(x))
+        \andalso \Gamma, x\mysncln{n} T \myvdash{n} t \COL C(x, x, id(x))
     }{
-        \Gamma \myvdash{n} \myidpeel{t_{eq}}{x}{d} \COL C(a, b, t_{eq})
+        \Gamma \myvdash{n} \myidpeel{t_{eq}}{x}{t} \COL C(a, b, t_{eq})
     }
 }
 
@@ -163,15 +163,14 @@
 }
 
 
-% add QK-Trans
-% \newcommand{\QK}{
-%     \infrule[QK-Pi]{
-%         \Gamma \myalvdash{n} T_1 \myequiv{m} T_2
-%         \andalso \Gamma, x\mysncln{n} T_1 \myalvdash{n} K_1 \myequiv{m} K_2
-%     }{
-%         \Gamma \myalvdash{n} \Pi x\COL T_1. K_1 \myequiv{m} \Pi x\COL T_2. K_2
-%     }
-% }
+\newcommand{\QKTrans}{
+    \infrule[QK-Trans]{
+        \Gamma \myalvdash{n} K_1 \myequiv{n} K_2
+        \andalso \Gamma \myalvdash{n} K_2 \myequiv{n} K_3
+    }{
+        \Gamma \myalvdash{n} K_1 \myequiv{n} K_3
+    }
+}
 
 \newcommand{\QTPi}{
     \infrule[QT-Pi]{

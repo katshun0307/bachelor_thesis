@@ -11,16 +11,16 @@
 }
 
 \newcommand{\EVar}{
-    \infrule[E-Var]{
-        (x, t) \in \Gamma
-    }{
-        \myval{x}{d} \rightarrow \myval{t}{d}
-    }
+    % \infrule[E-Var]{
+    %     (x, t) \in \Gamma
+    % }{
+    %     \myval{x}{d} \rightarrow \myval{t}{d}
+    % }
 }
 
 \newcommand{\EAppAbs}{
     \infax[\fauxsc{E-AppAbs}]{
-        \myval{(\mylam{x}{T}{t})\mysp v}{d} \rightarrow \myval{[x \mapsto v] t}{d}
+        \myval{(\mylam{x}{T}{t})\mysp v}{d} \barrow \myval{[x \mapsto v] t}{d}
         \andalso (d \le 0)
     }
 }
@@ -50,20 +50,28 @@
 }
 
 \newcommand{\EStageBeta}{
-    \infrule[E-StageBeta]{
-        \myval{t}{d} \rightarrow \myval{t'}{d}
-        \andalso d \le 1
-        }{
-            \myval{\myprev{\mynext{t}}}{d} \rightarrow \myval{t'}{d}
+    % \infrule[E-StageBeta]{
+    %     \myval{t}{d} \rightarrow \myval{t'}{d}
+    %     \andalso d \le 1
+    %     }{
+    %         \myval{\myprev{\mynext{t}}}{d} \rightarrow \myval{t'}{d}
+    % }
+    \infax[\fauxsc{E-StageBeta}]{
+        \myval{\myprev{\mynext{t}}}{d} \starrow \myval{t'}{d}
+        \andalso (d \le 0)
     }
 }
 
 \newcommand{\EStageEta}{
-    \infrule[E-StageEta]{
-        \myval{t}{d} \rightarrow \myval{t'}{d} 
-        \andalso d \le 1
-    }{
-        \myval{\mynext{\myprev{t}}}{d} \rightarrow \myval{t'}{d}
+    % \infrule[E-StageEta]{
+    %     \myval{t}{d} \rightarrow \myval{t'}{d} 
+    %     \andalso d \le 1
+    % }{
+    %     \myval{\mynext{\myprev{t}}}{d} \rightarrow \myval{t'}{d}
+    % }
+    \infax[\fauxsc{E-StageEta}]{
+        \myval{\mynext{\myprev{t}}}{d} \starrow \myval{t'}{d}
+        \andalso (d \le 1)
     }
 }
 
@@ -85,27 +93,33 @@
     }
 }
 
-\newcommand{\EId}{
-    \infrule[E-Id]{
-        \myval{t}{d} \rightarrow \myval{t'}{d}
-    }{
-        \myval{\myid{t}}{d} \rightarrow \myval{\myid{t}}{d}
+\newcommand{\EEq}{
+    \infax[\fauxsc{E-Equal}]{
+        \myval{\myidpeel{\myid{a}}{x}{t}}{d} \eqarrow \myval{[x \mapsto a] t}{d}
+        \andalso (d = 0)
     }
+}
+
+\newcommand{\EId}{
+    % \infrule[E-Id]{
+    %     \myval{t}{d} \rightarrow \myval{t'}{d}
+    % }{
+    %     \myval{\myid{t}}{d} \rightarrow \myval{\myid{t}}{d}
+    % }
 }
 
 \newcommand{\EIdpeelOne}{
-    \infrule[E-Idpeel1]{
-        \myval{t_1}{d} \rightarrow \myval{t_1'}{d}
-    }{
-        \myval{\myidpeel{t_1}{x}{t_2}}{d} \rightarrow \myval{\myidpeel{t_1'}{x}{t_2}}{d}
-    }
+    % \infrule[E-Idpeel1]{
+    %     \myval{t_1}{d} \rightarrow \myval{t_1'}{d}
+    % }{
+    %     \myval{\myidpeel{t_1}{x}{t_2}}{d} \rightarrow \myval{\myidpeel{t_1'}{x}{t_2}}{d}
+    % }
 }
 
 \newcommand{\EIdpeelTwo}{
-    \infrule[E-Idpeel2]{
-        \myval{t_2}{d} \rightarrow \myval{t_2'}{d}
-    }{
-        \myval{\myidpeel{v_1}{x}{t_2}}{d} \rightarrow \myval{\myidpeel{v_1}{x}{t_2'}}{d}
-    }
+    % \infrule[E-Idpeel2]{
+    %     \myval{t_2}{d} \rightarrow \myval{t_2'}{d}
+    % }{
+    %     \myval{\myidpeel{v_1}{x}{t_2}}{d} \rightarrow \myval{\myidpeel{v_1}{x}{t_2'}}{d}
+    % }
 }
-

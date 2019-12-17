@@ -247,36 +247,54 @@
 
 \newcommand{\QANextIntro}{
     \infrule[QA-NextIntro]{
-        \Gamma \myvdash{n+1} t_1 \myequiv{m+1} t_2
+        \Gamma \myalvdash{n+1} t_1 \myequiv{m+1} t_2
     }{
-        \Gamma \myvdash{n} \mynext{t_1} \myequiv{m} \mynext{t_2} \COL \bigcirc T
+        \Gamma \myalvdash{n} \mynext{t_1} \myequiv{m} \mynext{t_2} \COL \bigcirc T
     }
 }
 
 \newcommand{\QAPrevIntro}{
     \infrule[QA-PrevIntro]{
-        \Gamma \myvdash{n-1} t_1 \myequiv{m-1} t_2
+        \Gamma \myalvdash{n-1} t_1 \myequiv{m-1} t_2
     }{
-        \Gamma \myvdash{n} \myprev{t_1} \myequiv{m} \myprev{t_2}
+        \Gamma \myalvdash{n} \myprev{t_1} \myequiv{m} \myprev{t_2}
     }
 }
 
 \newcommand{\QACircBeta}{
     \infrule[QA-$\bigcirc$\fauxsc{Beta}]{
-        \Gamma \myvdash{n} t \COL T
-        \andalso \Gamma \myvdash{n} T \DCOL *
+        \Gamma \myalvdash{n} t \COL T
+        \andalso \Gamma \myalvdash{n} T \DCOL *
         \andalso m \le 1
     }{
-        \Gamma \myvdash{n} \myprev{\mynext{t}} \myequiv{m} t \COL T
+        \Gamma \myalvdash{n} \myprev{\mynext{t}} \myequiv{m} t \COL T
     }
 }
 
 \newcommand{\QACircEta}{
     \infrule[QA-$\bigcirc$\fauxsc{Eta}]{
-        \Gamma \myvdash{n} t \COL T
-        \andalso \Gamma \myvdash{n} T \DCOL *
+        \Gamma \myalvdash{n} t \COL T
+        \andalso \Gamma \myalvdash{n} T \DCOL *
         \andalso m \le 1
     }{
-        \Gamma \myvdash{n} \mynext{\myprev{t}} \myequiv{m} t \COL T
+        \Gamma \myalvdash{n} \mynext{\myprev{t}} \myequiv{m} t \COL T
+    }
+}
+
+
+% ================================================================================================== %
+
+
+\newcommand{\WHAppOne}{
+    \infrule[WH-App1]{
+        t_1 \rightarrow_{wh} t_1'
+    }{
+        t_1 t_2 \rightarrow_{wh} t_1' t_2
+    }
+}
+
+\newcommand{\WHAppAbs}{
+    \infax[WH-AppAbs]{
+        (\mylam{x}{T_1}{t_2})t_1 \rightarrow_{wh} [x \mapsto t_2] t_1
     }
 }

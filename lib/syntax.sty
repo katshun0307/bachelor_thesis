@@ -2,7 +2,7 @@
 %   - mydefault.sty
 %   - myproof.sty
 
-\newcommand{\syntax}{
+\newcommand{\Terms}{
     \begin{equation*}\tag{terms}
         \begin{aligned}
             t \Coloneqq\\
@@ -15,14 +15,18 @@
                 &\myidpeel{t}{x}{t}\\
         \end{aligned}
     \end{equation*}
-    
+}
+
+\newcommand{\IndexedTerms}{
     \begin{equation*}\tag{indexed terms}
         \begin{aligned}
             t' \Coloneqq\\
                 & \myval{t}{d} \mysp (d \in \mathbb{N}) \\
         \end{aligned}
     \end{equation*}
-    
+}
+
+\newcommand{\Values}{
     \begin{equation*}\tag{values}
         \begin{aligned}
             v \Coloneqq\\
@@ -32,14 +36,18 @@
                 &\myidpeel{v}{x}{v}\\
             \end{aligned}
     \end{equation*}
-    
+}
+
+\newcommand{\IndexedValues}{
     \begin{equation*}\tag{indexed values}
         \begin{aligned}
             v' \Coloneqq\\
                 & \myval{v}{d} \mysp (d \in \mathbb{N})
         \end{aligned}
     \end{equation*}
-    
+}
+
+\newcommand{\Types}{
     \begin{equation*}\tag{types}
         \begin{aligned}
             T \Coloneqq\\
@@ -50,7 +58,9 @@
                 &\bigcirc T\\
         \end{aligned}
     \end{equation*}
-    
+}
+
+\newcommand{\Kinds}{
     \begin{equation*}\tag{kinds}
         \begin{aligned}
             K \Coloneqq\\
@@ -58,7 +68,9 @@
                 &\Pi x\COL T. K\\
         \end{aligned}
     \end{equation*}
-    
+}
+
+\newcommand{\Contexts}{
     \begin{equation*}\tag{contexts}
         \begin{aligned}
             \Gamma \Coloneqq\\
@@ -67,20 +79,73 @@
                 &\Gamma, X\mydbcln{n} K\\
         \end{aligned}
     \end{equation*}
-    
-    \begin{equation*}\tag{type judgment}
+}
+
+\newcommand{\WFContext}{
+    \begin{equation*}\tag{Well-formed Context}
+        \begin{aligned}
+            \vdash \Gamma
+        \end{aligned}
+    \end{equation*}
+}
+
+\newcommand{\WFKind}{
+    \begin{equation*}\tag{Well-formed Kind}
+        \begin{aligned}
+            \Gamma \myvdash{n} K
+        \end{aligned}
+    \end{equation*}
+}
+
+\newcommand{\WFType}{
+    \begin{equation*}\tag{Well-formed Type}
+        \begin{aligned}
+            \Gamma \myvdash{n} T
+        \end{aligned}
+    \end{equation*}
+}
+
+\newcommand{\KindJudgment}{
+    \begin{equation*}\tag{Kind Judgment}
+        \begin{aligned}
+            \Gamma \myvdash{n} t \DCOL K
+        \end{aligned}
+    \end{equation*}
+}
+
+\newcommand{\TypeJudgment}{
+    \begin{equation*}\tag{Type Judgment}
         \begin{aligned}
             \Gamma \myvdash{n} t \COL T
         \end{aligned}
     \end{equation*}
-    
-    \begin{equation*}\tag{equivalence judgment}
+}
+
+\newcommand{\KindEquivalenceJudgment}{
+    \begin{equation*}\tag{Kind Equivalence Judgment}
+        \begin{aligned}
+                \Gamma \myvdash{n} K_1 \myequiv{0} K_2 
+            \end{aligned}
+        \end{equation*}
+}
+
+\newcommand{\TypeEquivalenceJudgment}{
+    \begin{equation*}\tag{Type Equivalence Judgment}
+        \begin{aligned}
+                \Gamma \myvdash{n} T_1 \myequiv{0} T_2 
+            \end{aligned}
+        \end{equation*}
+}
+
+\newcommand{\TermEquivalenceJudgment}{
+    \begin{equation*}\tag{Term Equivalence Judgment}
         \begin{aligned}
                 \Gamma \myvdash{n} t_1 \myequiv{0} t_2 
             \end{aligned}
         \end{equation*}
-    
-    
+}
+
+\newcommand{\Notes}{
     \subsection{Notes}
     
     \begin{itemize}
