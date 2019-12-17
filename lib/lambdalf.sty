@@ -1,3 +1,11 @@
+% system names
+\newcommand{\lamcirc}{\ensuremath{\textrm{\lambda}\bigcirc\text{ }}}
+\newcommand{\lamlfcirc}{\ensuremath{\lambda\textrm{LF}\bigcirc\text{ }}}
+\newcommand{\lamlf}{\ensuremath{\lambda \textrm{LF }}}
+\newcommand{\lamlfeta}{\ensuremath{\lambda \textrm{LF} \eta \text{ }}}
+\newcommand{\unilamlfcirc}{λLF◯}
+
+% terms and derivations
 \newcommand{\TB}{{\mathop{\blacktriangleright}}}
 \newcommand{\AV}{\vdash\!\!\!\raisebox{0.4ex}{\scalebox{0.7}{$\TB$}}}
 \newcommand{\AVS}{\AV_\Sigma}
@@ -16,10 +24,25 @@
 \newcommand{\mywhnf}[1]{\text{whnf}(#1)}
 \newcommand{\mywheq}[1]{\equiv^{wh}_{#1}}
 \newcommand{\mysp}{\text{ }}
-
 \newcommand{\mylam}[3]{\lambda #1\scalebox{0.7}[1.0]{:} #2. \mysp #3}
 \newcommand{\mystlam}[4]{\lambda #1\scalebox{0.7}[1.0]{:}^{(#2)} #3. \mysp #4}
 \newcommand{\myval}[2]{\llbracket #1 \rrbracket_{#2}}
+
+\newcommand{\rarrow}{\ensuremath{\rightarrow}}
+\newcommand{\wharrow}{\ensuremath{\rightarrow_{wh}}}
+\newcommand{\starrow}{\ensuremath{\rightarrow_{\circ}}}
+\newcommand{\barrow}{\ensuremath{\rightarrow_{\beta}}}
+\newcommand{\eqarrow}{\ensuremath{\rightarrow_{\textrm{Eq}}}}
+\newcommand{\lfarrow}{\ensuremath{\rightarrow_{\textrm{LF}}}}
+\newcommand{\lfearrow}{\ensuremath{\rightarrow_{\textrm{LF}\eta}}}
+
+% Other symbols for proofs
+\newcommand{\mylfvdash}{\vdash_{\lambda \textrm{LF}}}
+\newcommand{\mylfetavdash}{\vdash_{\lambda \textrm{LF} \eta}}
+\newcommand{\strans}[1]{\ensuremath{#1^{\sharp}}}
+\newcommand{\ftrans}[1]{\ensuremath{\flat(#1)}}
+\newcommand{\Unit}{\textrm{Unit}}
+\newcommand{\unit}{\textrm{unit}}
 
 % aux
 \newcommand{\VEC}{\textrm{Vector }}
