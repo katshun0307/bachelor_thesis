@@ -6,7 +6,11 @@
 
 % theorem environment
 \usepackage{amsthm}
-% \usepackage[thref, thmmarks, amsmath]{ntheorem}
+\usepackage{mdframed}
+
+% reference for theorems etc...
+% \Cref{name_of_label}
+\usepackage{cleveref}
 
 % amsmath settings
 \newtheoremstyle{break}
@@ -28,18 +32,31 @@
   {}% space to indent  
   {\bfseries}% head font
   {:}% head punctuation
-  {.5em}% headspace
-  {\thmname{#1}\thmnumber{ #2}\thmnote{ [#3]}}% headspec
+  % {.5em}% headspace
+  {\newline}% headspace
+  {\thmname{\fauxsc{#1}}\thmnumber{ #2}\thmnote{ [\fauxsc{#3}]}}% headspec
 
 \theoremstyle{tapl}
 
-\newtheorem{theorem}{Theorem}
+% \newtheorem{theorem}{Theorem}
+\newmdtheoremenv{definition}{Definition}
+\newmdtheoremenv{theorem}{Theorem}
+\newmdtheoremenv{lemma}{Lemma}
+\newmdtheoremenv{corollary}{Corollary}
+\newmdtheoremenv{jdefinition}{定義}
+\newmdtheoremenv{jtheorem}{定理}
+\newmdtheoremenv{jlemma}{補題}
+\newmdtheoremenv{jcorollary}{系}
 
 \renewcommand\qedsymbol{$\blacksquare$}
+% \renewenvironment{proof}{{\bfseries Proof:}}{}
+\renewenvironment{proof}{{\textbf{\textit{\\Proof:}}}}{}
+% \newenvironment{solution}{
+%   \begin{proof}[\textbf{Proof}]}
+%   {\end{proof}}
 
 % symbols for theoretical computer science
 \usepackage{stmaryrd}
-
 
 \newcommand{\tfor}{\textrm{for }}
 \newcommand{\tall}{\textrm{all }}
