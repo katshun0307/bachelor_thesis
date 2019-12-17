@@ -5,6 +5,9 @@
 # ignore handout
 handout/
 
+# ignore seminar slides
+seminar_*/
+
 # include latex preambles
 !lib
 
