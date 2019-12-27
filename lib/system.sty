@@ -39,7 +39,7 @@
 
 \newcommand{\KApp}{
     \infrule[K-App]{
-        \Gamma \myvdash{n} \Pi x\COL T. K
+        \Gamma \myvdash{n} S \DCOL \Pi x\COL T. K
         \andalso \Gamma \myvdash{n} t\COL T
     }{
         \Gamma \myvdash{n} S\mysp t \DCOL [x \mapsto t] K
@@ -139,87 +139,87 @@
 
 \newcommand{\QKPi}{
     \infrule[QK-Pi]{
-        \Gamma \myalvdash{n} T_1 \myequiv{m} T_2
-        \andalso \Gamma, x\mysncln{n} T_1 \myalvdash{n} K_1 \myequiv{m} K_2
+        \Gamma \myvdash{n} T_1 \myequiv{m} T_2
+        \andalso \Gamma, x\mysncln{n} T_1 \myvdash{n} K_1 \myequiv{m} K_2
     }{
-        \Gamma \myalvdash{n} \Pi x\COL T_1. K_1 \myequiv{m} \Pi x\COL T_2. K_2
+        \Gamma \myvdash{n} \Pi x\COL T_1. K_1 \myequiv{m} \Pi x\COL T_2. K_2
     }
 }
 
 \newcommand{\QKRefl}{
     \infrule[QK-Refl]{
-        \Gamma \myalvdash{n} K
+        \Gamma \myvdash{n} K
     }{
-        \Gamma \myalvdash{n} K \myequiv{m} K
+        \Gamma \myvdash{n} K \myequiv{m} K
     }
 }
 
 \newcommand{\QKSym}{
     \infrule[QK-Sym]{
-        \Gamma \myalvdash{n} K_1 \myequiv{m} K_2
+        \Gamma \myvdash{n} K_1 \myequiv{m} K_2
     }{
-        \Gamma \myalvdash{n} K_2 \myequiv{m} K_1
+        \Gamma \myvdash{n} K_2 \myequiv{m} K_1
     }
 }
 
 
 \newcommand{\QKTrans}{
     \infrule[QK-Trans]{
-        \Gamma \myalvdash{n} K_1 \myequiv{n} K_2
-        \andalso \Gamma \myalvdash{n} K_2 \myequiv{n} K_3
+        \Gamma \myvdash{n} K_1 \myequiv{n} K_2
+        \andalso \Gamma \myvdash{n} K_2 \myequiv{n} K_3
     }{
-        \Gamma \myalvdash{n} K_1 \myequiv{n} K_3
+        \Gamma \myvdash{n} K_1 \myequiv{n} K_3
     }
 }
 
 \newcommand{\QTPi}{
     \infrule[QT-Pi]{
-        \Gamma \myalvdash{n} S_1 \myequiv{m} T_1 \DCOL *
-        \andalso \Gamma, x \mysncln{n} T_1 \myalvdash{n} S_2 \myequiv{m} T_2 \DCOL *
+        \Gamma \myvdash{n} S_1 \myequiv{m} T_1 \DCOL *
+        \andalso \Gamma, x \mysncln{n} T_1 \myvdash{n} S_2 \myequiv{m} T_2 \DCOL *
     }{
-        \Gamma \myalvdash{n} \Pi x\COL S_1. S_2 \myequiv{m} \Pi x\COL T_1. T_2 \DCOL *
+        \Gamma \myvdash{n} \Pi x\COL S_1. S_2 \myequiv{m} \Pi x\COL T_1. T_2 \DCOL *
     }
 }
 
 \newcommand{\QTApp}{
     \infrule[QT-App]{
-        \Gamma \myalvdash{n} S_1 \myequiv{m} S_2 \DCOL \Pi x\COL T. K
-        \andalso \Gamma \myalvdash{n} t_1 \myequiv{m} t_2 \COL T
+        \Gamma \myvdash{n} S_1 \myequiv{m} S_2 \DCOL \Pi x\COL T. K
+        \andalso \Gamma \myvdash{n} t_1 \myequiv{m} t_2 \COL T
     }{
-        \Gamma \myalvdash{n} S_1 t_1 \myequiv{m} S_2 t_2 \DCOL [x \mapsto t_1] K
+        \Gamma \myvdash{n} S_1 t_1 \myequiv{m} S_2 t_2 \DCOL [x \mapsto t_1] K
     }
 }
 
 \newcommand{\QTRefl}{
     \infrule[QT-Refl]{
-        \Gamma \myalvdash{n} T\COL K
+        \Gamma \myvdash{n} T\COL K
     }{
-        \Gamma \myalvdash{n} T \myequiv{m} T \DCOL K
+        \Gamma \myvdash{n} T \myequiv{m} T \DCOL K
     }
 }
 
 \newcommand{\QTSym}{
     \infrule[QT-Sym]{
-        \Gamma \myalvdash{n} T \myequiv{m} S \DCOL K
+        \Gamma \myvdash{n} T \myequiv{m} S \DCOL K
     }{
-        \Gamma \myalvdash{n} S \myequiv{m} T \DCOL K
+        \Gamma \myvdash{n} S \myequiv{m} T \DCOL K
     }
 }
 
 \newcommand{\QTTrans}{
     \infrule[QT-Trans]{
-        \Gamma \myalvdash{n} S \myequiv{m} U \DCOL K
-        \andalso \Gamma \myalvdash{n} U \myequiv{m} T \DCOL K
+        \Gamma \myvdash{n} S \myequiv{m} U \DCOL K
+        \andalso \Gamma \myvdash{n} U \myequiv{m} T \DCOL K
     }{
-        \Gamma \myalvdash{n} S \myequiv{m} T \DCOL K
+        \Gamma \myvdash{n} S \myequiv{m} T \DCOL K
     }
 }
 
 \newcommand{\QTCircIntro}{
     \infrule[QT-CircIntro]{
-        \Gamma \myalvdash{n+1} S \myequiv{m} T \DCOL K
+        \Gamma \myvdash{n+1} S \myequiv{m} T \DCOL K
     }{
-        \Gamma \myalvdash{n} \bigcirc S \myequiv{m}  \bigcirc T \DCOL K
+        \Gamma \myvdash{n} \bigcirc S \myequiv{m}  \bigcirc T \DCOL K
     }
 }
 
@@ -247,18 +247,18 @@
         \andalso \Gamma \myvdash{n} s \COL S
         \andalso m \le 0
     }{
-        \Gamma \myvdash{n} (\lambda x\COL S. T) s \myequiv{m} [x \mapsto s]t \COL [x \mapsto s]T
+        \Gamma \myvdash{n} (\lambda x\COL S. t) s \myequiv{m} [x \mapsto s]t \COL [x \mapsto s]T
     }
 }
 
 \newcommand{\QEta}{
-    \infrule[Q-Eta]{
-        \Gamma \myvdash{n} t\COL \Pi x\COL S. T
-        \andalso x \notin FV(t)
-        \andalso m \le 0
-    }{
-        \Gamma \myvdash{n} \lambda x\COL T. t x \myequiv{m} t\COL \Pi x\COL S. T
-    }
+    % \infrule[Q-Eta]{
+    %     \Gamma \myvdash{n} t\COL \Pi x\COL S. T
+    %     \andalso x \notin FV(t)
+    %     \andalso m \le 0
+    % }{
+    %     \Gamma \myvdash{n} \lambda x\COL T. t x \myequiv{m} t\COL \Pi x\COL S. T
+    % }
 }
 
 \newcommand{\QRefl}{
