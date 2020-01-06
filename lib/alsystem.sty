@@ -195,90 +195,100 @@
     }
 }
 
-\newcommand{\QAWh}{
-    \infrule[QA-Wh]{
-        \Gamma \myalvdash{n} \mywhnf{s} \mywheq{m} \mywhnf{t}
-        \andalso m \le 0
+% =================== %
+
+\newcommand{\QAAnf}{
+    \infrule[QA-Anf]{
+        \Gamma \myalvdash{n} \anf{m}{s} \equiv_{\alpha} \anf{m}{t}
     }{
         \Gamma \myalvdash{n} s \myequiv{m} t
     }
 }
 
+\newcommand{\QAWh}{
+    % \infrule[QA-Wh]{
+    %     \Gamma \myalvdash{n} \mywhnf{s} \mywheq{m} \mywhnf{t}
+    %     \andalso m \le 0
+    % }{
+    %     \Gamma \myalvdash{n} s \myequiv{m} t
+    % }
+}
+
 \newcommand{\QAVar}{
-    \infax[\fauxsc{QA-Var}]{
-        \Gamma \myalvdash{m} x \mywheq{n} x
-    }
+    % \infax[\fauxsc{QA-Var}]{
+    %     \Gamma \myalvdash{m} x \mywheq{n} x
+    % }
 }
 
 \newcommand{\QAAbs}{
-    \infrule[QA-Abs]{
-        \Gamma, x\COL S \myalvdash{n} t_1 \myequiv{m} t_2
-    }{
-        \Gamma \myalvdash{n} \mylam{x}{S}{t_1} \mywheq{m} \mylam{x}{S}{t_2}
-    }
+    % \infrule[QA-Abs]{
+    %     \Gamma, x\COL S \myalvdash{n} t_1 \myequiv{m} t_2
+    % }{
+    %     \Gamma \myalvdash{n} \mylam{x}{S}{t_1} \mywheq{m} \mylam{x}{S}{t_2}
+    % }
 }
 
 \newcommand{\QAApp}{
-    \infrule[QA-App]{
-        \Gamma \myalvdash{n} s_1 \mywheq{m} t_1 \COL \Pi x \COL S. T
-        \andalso \Gamma\myalvdash{n} s_2 \mywheq{m} t_2\COL S
-    }{
-        \Gamma \myalvdash{n}  s_1 s_2 \mywheq{m} t_1 t_2\COL T
-    }
+    % \infrule[QA-App]{
+    %     \Gamma \myalvdash{n} s_1 \mywheq{m} t_1 \COL \Pi x \COL S. T
+    %     \andalso \Gamma\myalvdash{n} s_2 \mywheq{m} t_2\COL S
+    % }{
+    %     \Gamma \myalvdash{n}  s_1 s_2 \mywheq{m} t_1 t_2\COL T
+    % }
 }
 
 \newcommand{\QANabsOne}{
-    \infrule[QA-Nabs1]{
-        \Gamma, x\mysncln{n} S \myalvdash{n} s \mysp x \myequiv{m} t
-        \andalso \text{s not a } \lambda
-    }{
-        \Gamma \myalvdash{n} s \mywheq{m} \mylam{x}{S}{t}
-    }
+    % \infrule[QA-Nabs1]{
+    %     \Gamma, x\mysncln{n} S \myalvdash{n} s \mysp x \myequiv{m} t
+    %     \andalso \text{s not a } \lambda
+    % }{
+    %     \Gamma \myalvdash{n} s \mywheq{m} \mylam{x}{S}{t}
+    % }
 }
 
 \newcommand{\QANabsTwo}{
-    \infrule[QA-Nabs2]{
-        \Gamma, x\mysncln{n} S \myalvdash{n} s \myequiv{m} t \mysp x
-        \andalso \text{t not a } \lambda
-    }{
-        \Gamma \myalvdash{n} \mylam{x}{S}{s} \mywheq{m} t
-    }
+    % \infrule[QA-Nabs2]{
+    %     \Gamma, x\mysncln{n} S \myalvdash{n} s \myequiv{m} t \mysp x
+    %     \andalso \text{t not a } \lambda
+    % }{
+    %     \Gamma \myalvdash{n} \mylam{x}{S}{s} \mywheq{m} t
+    % }
 }
 
 \newcommand{\QANextIntro}{
-    \infrule[QA-NextIntro]{
-        \Gamma \myalvdash{n+1} t_1 \myequiv{m+1} t_2
-    }{
-        \Gamma \myalvdash{n} \mynext{t_1} \myequiv{m} \mynext{t_2} \COL \bigcirc T
-    }
+    % \infrule[QA-NextIntro]{
+    %     \Gamma \myalvdash{n+1} t_1 \myequiv{m+1} t_2
+    % }{
+    %     \Gamma \myalvdash{n} \mynext{t_1} \myequiv{m} \mynext{t_2} \COL \bigcirc T
+    % }
 }
 
 \newcommand{\QAPrevIntro}{
-    \infrule[QA-PrevIntro]{
-        \Gamma \myalvdash{n-1} t_1 \myequiv{m-1} t_2
-    }{
-        \Gamma \myalvdash{n} \myprev{t_1} \myequiv{m} \myprev{t_2}
-    }
+    % \infrule[QA-PrevIntro]{
+    %     \Gamma \myalvdash{n-1} t_1 \myequiv{m-1} t_2
+    % }{
+    %     \Gamma \myalvdash{n} \myprev{t_1} \myequiv{m} \myprev{t_2}
+    % }
 }
 
 \newcommand{\QACircBeta}{
-    \infrule[QA-$\bigcirc$\fauxsc{Beta}]{
-        \Gamma \myalvdash{n} t \COL T
-        \andalso \Gamma \myalvdash{n} T \DCOL *
-        \andalso m \le 1
-    }{
-        \Gamma \myalvdash{n} \myprev{\mynext{t}} \myequiv{m} t \COL T
-    }
+    % \infrule[QA-$\bigcirc$\fauxsc{Beta}]{
+    %     \Gamma \myalvdash{n} t \COL T
+    %     \andalso \Gamma \myalvdash{n} T \DCOL *
+    %     \andalso m \le 1
+    % }{
+    %     \Gamma \myalvdash{n} \myprev{\mynext{t}} \myequiv{m} t \COL T
+    % }
 }
 
 \newcommand{\QACircEta}{
-    \infrule[QA-$\bigcirc$\fauxsc{Eta}]{
-        \Gamma \myalvdash{n} t \COL T
-        \andalso \Gamma \myalvdash{n} T \DCOL *
-        \andalso m \le 1
-    }{
-        \Gamma \myalvdash{n} \mynext{\myprev{t}} \myequiv{m} t \COL T
-    }
+    % \infrule[QA-$\bigcirc$\fauxsc{Eta}]{
+    %     \Gamma \myalvdash{n} t \COL T
+    %     \andalso \Gamma \myalvdash{n} T \DCOL *
+    %     \andalso m \le 1
+    % }{
+    %     \Gamma \myalvdash{n} \mynext{\myprev{t}} \myequiv{m} t \COL T
+    % }
 }
 
 
