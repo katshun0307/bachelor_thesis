@@ -24,7 +24,8 @@
 \newcommand{\mywhnf}[1]{\text{whnf}(#1)}
 \newcommand{\mywheq}[1]{\equiv^{wh}_{#1}}
 \newcommand{\mysp}{\text{ }}
-\newcommand{\mylam}[3]{\lambda #1\scalebox{0.7}[1.0]{:} #2. \mysp #3}
+% \newcommand{\mylam}[3]{\lambda #1\scalebox{0.7}[1.0]{:} #2. \mysp #3}
+\newcommand{\mylam}[3]{\lambda #1{:} #2{.}#3}
 \newcommand{\mystlam}[4]{\lambda #1\scalebox{0.7}[1.0]{:}^{(#2)} #3. \mysp #4}
 \newcommand{\myval}[2]{#1}
 \newcommand{\anf}[2]{\ensuremath{\textrm{ANF}_{#1}(#2)}}
@@ -58,5 +59,6 @@
 \newcommand{\INT}{\textrm{Int}}
 \newcommand{\COL}{{:}}
 \newcommand{\DCOL}{{::}}
+\newcommand{\pipe}{\ensuremath{\mid}}
 
 \newcommand{\mbeta}{\ensuremath{\beta}}
