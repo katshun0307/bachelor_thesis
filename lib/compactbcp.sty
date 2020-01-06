@@ -1,0 +1,23 @@
+% space-saved bcprules by Mr. Ina and Mr. Miyazaki
+\makeatletter
+\let\ifnorulelabel\iffalse
+\bcprulessavespacetrue % save space
+\let\@originalinfrule\infrule
+\def\infrule{\@ifnextchar[{\fix@infruley}{\fix@infrulex}}
+\def\fix@infrulex#1#2{\@originalinfrule{#1}{#2}}
+\def\fix@infruley[#1]#2#3{\@originalinfrule{#2}{#3}\ifnorulelabel\else{\;\textsc{(#1)}}\fi}
+\let\@originalinfax\infax
+\def\infax{\@ifnextchar[{\fix@infaxy}{\fix@infaxx}}
+\def\fix@infaxx#1{\@originalinfax{#1}}
+\def\fix@infaxy[#1]#2{\@originalinfax{#2}\ifnorulelabel\else{\;\textsc{(#1)}}\fi}
+\newcommand{\norulelabel}[1]{
+  \let\if@norulelabel\ifnorulelabel
+  \let\ifnorulelabel\iftrue
+  #1
+  \let\ifnorulelabel\if@norulelabel
+}
+\newcommand{\pplnorulelabel}[1]{\ifppl\norulelabel{#1}\else{#1}\fi}
+\makeatother
+
+\newcommand{\alignvspace}{\vspace{-12pt}}
+\newcommand{\bcpvspace}{\vspace{10pt}}
