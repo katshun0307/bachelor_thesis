@@ -28,7 +28,7 @@
   {\topsep}% space above thm
   {\topsep}% space below thm
 %   {\itshape}
-  {\rm}% font of body
+  {\rm \footnotesize}% font of body
   {}% space to indent  
   {\bfseries}% head font
   {:}% head punctuation
@@ -39,6 +39,7 @@
 \theoremstyle{tapl}
 
 % \newtheorem{theorem}{Theorem}
+
 \newmdtheoremenv{definition}{Definition}
 \newmdtheoremenv{theorem}{Theorem}
 \newmdtheoremenv{lemma}{Lemma}
@@ -58,8 +59,13 @@
 % symbols for theoretical computer science
 \usepackage{stmaryrd}
 
-\newcommand{\tfor}{\textrm{for }}
-\newcommand{\tall}{\textrm{all }}
-\newcommand{\tif}{\textrm{if }}
-\newcommand{\tthen}{\textrm{then }}
-\newcommand{\tand}{\textrm{and }}
+% \newcommand{\tfor}{\textrm{for }}
+% \newcommand{\tall}{\textrm{all }}
+% \newcommand{\tif}{\textrm{if }}
+% \newcommand{\tthen}{\textrm{then }}
+% \newcommand{\tand}{\textrm{and }}
+
+% define induction cases env 
+\usepackage{enumitem}
+\newlist{inditem}{itemize}{2}
+\setlist[inditem, 1]{align=left,leftmargin=\parindent,label=\textbf{Case:}}
