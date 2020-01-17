@@ -21,7 +21,7 @@
 \newcommand{\EAppAbs}{
     \infax[\fauxsc{E-Beta}]{
         \myval{(\mylam{x}{T}{s})\mysp t}{d} \barrow_{i} \myval{[x \mapsto t] s}{d}
-        \andalso (i \le 0)
+        \andalso (i = 0)
     }
 }
 
@@ -71,7 +71,7 @@
     % }
     \infax[\fauxsc{E-StageEta}]{
         \myval{\mynext{\myprev{t}}}{d} \stearrow_{i} \myval{t}{d}
-        \andalso (i \le 0)
+        \andalso (i = 0)
     }
 }
 
@@ -87,7 +87,7 @@
 \newcommand{\EPrev}{
     \infrule[E-Prev]{
         \myval{t}{d-1} \iarrow{i-1} \myval{t'}{d-1}
-        \andalso i \le 1    
+        \andalso i \le 1
     }{
         \myval{\myprev{t}}{d} \iarrow{i} \myval{\myprev{t'}}{d}
     }
@@ -95,7 +95,7 @@
 
 \newcommand{\EEq}{
     \infax[\fauxsc{E-Equal}]{
-        \myval{\myidpeel{\myid{a}}{x}{t}}{d} \eqarrow \myval{[x \mapsto a] t}{d}
+        \myval{\myidpeel{\myid{a}}{x}{t}}{d} \eqarrow_{i} \myval{[x \mapsto a] t}{d}
         \andalso (i = 0)
     }
 }

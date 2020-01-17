@@ -1,8 +1,4 @@
 % System Rules %
-% load this file after...
-%   - mydefault.sty
-%   - myproof.sty
-%   - lambdalf.sty
 
 \newcommand{\WFStar}{
     \infax[\fauxsc{WF-Star}]{
@@ -60,6 +56,14 @@
         \Gamma \myvdash{n} T \DCOL *
     }{
         \Gamma \myvdash{n} \mysingleeq{T}\DCOL \Pi x\COL T. \Pi y\COL T. *
+    }
+}
+
+\newcommand{\KCirc}{
+    \infrule[K-Circ]{
+        \Gamma \myvdash{n} T \DCOL *
+    }{
+        \Gamma \myvdash{n} \bigcirc T \DCOL *
     }
 }
 
@@ -165,10 +169,10 @@
 
 \newcommand{\QKTrans}{
     \infrule[QK-Trans]{
-        \Gamma \myvdash{n} K_1 \myequiv{n} K_2
-        \andalso \Gamma \myvdash{n} K_2 \myequiv{n} K_3
+        \Gamma \myvdash{n} K_1 \myequiv{m} K_2
+        \andalso \Gamma \myvdash{n} K_2 \myequiv{m} K_3
     }{
-        \Gamma \myvdash{n} K_1 \myequiv{n} K_3
+        \Gamma \myvdash{n} K_1 \myequiv{m} K_3
     }
 }
 
@@ -237,7 +241,7 @@
         \Gamma \myvdash{n} s_1 \myequiv{m} t_1 \COL \Pi x \COL S. T
         \andalso \Gamma\myvdash{n} s_2 \myequiv{m} t_2\COL S
     }{
-        \Gamma \myvdash{n}  s_1 s_2 \myequiv{m} t_1 t_2\COL T
+        \Gamma \myvdash{n}  s_1 s_2 \myequiv{m} t_1 t_2\COL [x \mapsto t_2] T
     }
 }
 
