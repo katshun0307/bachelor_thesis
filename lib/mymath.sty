@@ -11,6 +11,11 @@
 % reference for theorems etc...
 % \Cref{name_of_label}
 \usepackage{cleveref}
+\crefname{figure}{図}{図}
+\crefname{theorem}{定理}{定理}
+\crefname{lemma}{補題}{補題}
+\crefname{corollary}{系}{系}
+\crefname{equation}{式}{式}
 
 % amsmath settings
 \newtheoremstyle{break}
@@ -40,18 +45,21 @@
 
 % \newtheorem{theorem}{Theorem}
 
-\newmdtheoremenv{definition}{Definition}
-\newmdtheoremenv{theorem}{Theorem}
-\newmdtheoremenv{lemma}{Lemma}
-\newmdtheoremenv{corollary}{Corollary}
-\newmdtheoremenv{jdefinition}{定義}
-\newmdtheoremenv{jtheorem}{定理}
-\newmdtheoremenv{jlemma}{補題}
-\newmdtheoremenv{jcorollary}{系}
+% \mdfdefinestyle{thesistheme}[skipabove=10pt,skipbelow=10pt]
+
+\newmdtheoremenv[skipabove=10pt,skipbelow=20pt,leftline=false,rightline=false]{definition}{Definition}
+\newmdtheoremenv[skipabove=10pt,skipbelow=20pt,leftline=false,rightline=false]{theorem}{Theorem}
+\newmdtheoremenv[skipabove=10pt,skipbelow=20pt,leftline=false,rightline=false]{lemma}{Lemma}
+\newmdtheoremenv[skipabove=10pt,skipbelow=20pt,leftline=false,rightline=false]{corollary}{Corollary}
+\newmdtheoremenv[skipabove=10pt,skipbelow=20pt,leftline=false,rightline=false]{jdefinition}{定義}
+\newmdtheoremenv[skipabove=10pt,skipbelow=20pt,leftline=false,rightline=false]{jtheorem}{定理}
+\newmdtheoremenv[skipabove=10pt,skipbelow=20pt,leftline=false,rightline=false]{jlemma}{補題}
+\newmdtheoremenv[skipabove=10pt,skipbelow=20pt,leftline=false,rightline=false]{jcorollary}{系}
 
 \renewcommand\qedsymbol{$\blacksquare$}
 % \renewenvironment{proof}{{\bfseries Proof:}}{}
-\renewenvironment{proof}{{\textbf{\textit{\\Proof:}}}}{}
+% \renewenvironment{proof}{{\textbf{\textit{\\Proof:}}}}{}
+\renewenvironment{proof}{{\textbf{\\証明:}}}{}
 % \newenvironment{solution}{
 %   \begin{proof}[\textbf{Proof}]}
 %   {\end{proof}}
@@ -68,4 +76,18 @@
 % define induction cases env 
 \usepackage{enumitem}
 \newlist{inditem}{itemize}{2}
+% \setlist[inditem, 1]{align=left,leftmargin=\parindent, label=default}
 \setlist[inditem, 1]{align=left,leftmargin=\parindent,label=\textbf{Case:}}
+
+% always move caption to bottom 
+\usepackage{floatrow}
+
+% figure env
+\newenvironment{fig}[1]
+{\begin{figure}[htbp]
+\caption{#1}
+\begin{mdframed}[leftline=false,rightline=false]
+\centering}{
+\end{mdframed}
+\end{figure}
+}
