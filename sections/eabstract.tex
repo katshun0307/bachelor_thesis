@@ -1,1 +1,70 @@
-Abstract in English
+
+% == background == %
+% multi-stage calculus
+\emph{Multi-stage Computation} introduces an idea of stages to computation, which enables 
+manipulation of program code as values.
+Davies introduced \lamcirc, which included terms of \textrm{next}, which enables handling a term 
+as a code, and \textrm{prev}, which reduces terms inside code to normal terms.
+One of the key features of this system is the embedding of terms, which embeds
+code value inside other code values by applying \textrm{prev} to the code values to embed.
+It is the strength of this system that enables generation and evaluation of code at will. 
+
+% what the type system guarantees
+In Davies's \lamcirc, there exists type $\bigcirc T$ for an arbitrary type $T$.
+Type $\bigcirc T$ shows that a term with this type will have type $T$ when it is applied to \textrm{prev},
+thus guaranteeing that no error will occur during generation and evaluation of code at run-time.
+
+% == target == %
+This research aims at extending the type system of \lamcirc to be as strong as possible,
+namely introducing dependent types and equality types into the system.
+
+% dependent types
+\emph{Dependent types} refer to a type that contains program terms. 
+By using dependent types, one can detect potential runtime errors that cannot be detected with usual type systems,
+for example detecting matrix multiplication with incompatible dimensions 
+by using dependent types with dimension information for matrices.
+
+% equality types
+One example of the application of dependent types are \emph{equality types}, introduced by Martin-Löf.
+An equality type contains 2 terms of the same type, representing that the 2 terms are equivalent.
+Typing rules for equality types have a general form, enabling us to easily extend the system
+for almost any system which includes dependent types.
+
+% research method
+In this research, we extend \lamcirc by Davies by adding dependent types and equality types,
+referring to \lamlf by Harper et al. for dependent types. 
+Kawata has already proposed \lammd, which extends \lamcirc with CSP and \lamlf.
+Therefore, the system proposed in research can be understood as the extension of \lamcirc without CSP
+with equality types.
+
+% reduction rules and stages
+The reductions in this system include \mbeta-reduction, reduction on stages, and reduction on equality types.
+However, we do not want to perform reductions inside code, except for reductions on stages.
+Yuse and Igarashi have enabled performing appropriate reductions on terms by extending reductions with
+index numbers, representing how deep the current term is nested under \textrm{next} and \textrm{prev}.
+We have taken a similar approach in this research.
+
+% equality between codes
+Also, when comparing equivalence between code, 
+we do not want to judge equivalence based on normal equivalence rules such as \mbeta-reduction,
+because only stage reduction is allowed inside code. Instead, we want to judge equivalence based on
+the corresponding equivalence rules allowed.
+For enabling this kind of definition, we expanded the definition of equivalence by adding an index number, 
+just as we did in defining reduction.
+By limiting the available equivalence rules with this index, 
+we make it possible to perform reduction as intended.
+
+% what we have proved
+Furthermore, to prove the safety of our proposed system, 
+we prove preservation, stating that a type of a term will not change on 1-step reduction,
+and also progress, stating that either a well-typed term is a value, or there exists a step of reduction.   
+We also prove strong normalization, stating that a well-typed term will not have an infinite sequence of reduction steps,
+and confluence of terms under reduction, which shows that there can be multiple reduction paths that yield the same result.
+Finally, we introduce algorithmic typing to type terms decidably,
+and prove that algorithmic typing is sound and complete with regards to the normal typing rules.
+
+% Future Work
+In this research, we have not been able to state what kind of logical system corresponds to 
+the type system we have introduced. We know that lambda calculus with dependent types corresponds to
+the intuitionistic propositional logic, but it is left for future work of how the logic will extend with
+multi-stage computation and equality types.
