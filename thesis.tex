@@ -2,24 +2,26 @@
 % \usepackage[dvipdfmx]{graphicx}
 \usepackage{amssymb}
 
-% doesn't work with kuisthesis
 \usepackage{lib/bcprules}
 \usepackage{lib/mydefault}
 \usepackage{lib/mymath}
 \usepackage{lib/myproof}
 \usepackage{lib/lambdalf}
+\usepackage{lib/compactbcp}
 
 \usepackage{lib/syntax}
 \usepackage{lib/system}
 \usepackage{lib/alsystem}
 \usepackage{lib/evalsystem}
 
+\usepackage{todo}
+
 \makeatletter
 \makeatother
 \setcounter{tocdepth}{2}
 % \jtitle{依存型と同値型を備えた多段階計算体系の提案}
-\jtitle{依存型を備えた多段階計算の同値型に関する型システムの拡張}
-\etitle{Todo: English Title}
+\jtitle{依存型を備えた多段階計算の同値型による型システムの拡張}
+\etitle{Expansion of the Multi-stage dependent calculus with Equality types}
 \jauthor{勝田 峻太朗}
 \eauthor{Shuntaro Katsuda}
 \supervisor{五十嵐 淳 教授}
@@ -34,11 +36,21 @@
   \input{sections/eabstract.tex}
 \end{eabstract}
 
-\section{はじめに}
+\tableofcontents
+
+\section{序論}
+  あああ \cite{Davies1996a}
   \input{sections/introduction.tex}
 
-\section{同値型を備えた多段階ラムダ計算}
+\section{同値型を備えた多段階依存型ラムダ計算}
   \input{sections/type_system.tex}
+
+\section{提案した体系の性質}
+  \input{sections/property.tex}
+% 
+\section{アルゴリズム的型付け及び証明}
+  \input{sections/algorithmic.tex}
+  % \input{sections/proofs.tex}
 
 \acknowledgments
   \input{sections/acknowledgments.tex}
