@@ -1,0 +1,235 @@
+
+この章では, 提案した体系の安全性を示すため,  はじめに代入補題を示したあと, 
+それを用いて保存と進行を示す. その後, 簡約規則の強正規化性と合流性を示す.
+
+\subsubsection{体系の安全性}
+
+はじめに, \Cref{Substitution} で, 代入補題を示す.
+
+\begin{jlemma}[代入補題]\label{Substitution}
+    $\Gamma, x\mysncln{n_1} S \myvdash{n_2} t \COL T$ かつ $\Gamma \myvdash{n_1} s \COL S$ であるとき, 
+    $\Gamma \myvdash{n_2} [x \mapsto s] t \COL [x \mapsto s] T$ が成立する.
+    \begin{proof}
+        $\Gamma, x \mysncln{n_1} S \myvdash{n_2} t \COL T$ の導出に関する構造帰納法による.
+        \begin{inditem}
+            \item{\fauxsc{T-Var}}(t = y)
+            \begin{enumerate}
+                \item{y = x}\\
+                Suppose $\Gamma, x \mysncln{n_1} \myvdash{n_2} x \COL T$ and $\Gamma \myvdash{n_1} s \COL S$.
+                Because there cannot exist a binding with same variables in a context, 
+                $\Gamma$ does not contain a binding to $x$, and we know that $n_1 = n_2$.
+                Also, $[x \mapsto s] S = S$ because $S$ does not contain a free variable x.
+                Thus, it is sufficient to prove $\Gamma \myvdash{n_1} s \COL S$, which we already know.
+                \item{$y \neq x$}\\
+                Suppose $\Gamma, x \mysncln{n_1} S \myvdash{n_2} y \COL T$ and $\Gamma \myvdash{n_1} s \COL S$.
+                By \fauxsc{T-Var}, we know that $(y \mysncln{n_2} T) \in \Gamma$. 
+                Thus, $\Gamma \myvdash{n_2} y \COL T$. $T$ does not contain free variable $x$, so $[x \mapsto s] T = T$.
+                We have the desired conclusion.
+            \end{enumerate}
+            \item{\fauxsc{T-Abs}} ($t = \mylam{y}{S'}{t'}, \quad T = \Pi y \COL S'. T'$)\\ 
+            \begin{prooftree}
+                \AxiomC{$\Gamma, x \mysncln{n_1} S, y \mysncln{n_2} S' \myvdash{n_2} t' \COL T'$}
+                \myplabel{T-Abs}
+                \UnaryInfC{$\Gamma, x \mysncln{n_1} S \myvdash{n_2} \mylam{y}{S'}{t'} \COL \Pi y \COL S'. T'$}
+            \end{prooftree}
+            By the induction hypothesis, 
+            if $\Gamma, y \mysncln{n_2} S' \myvdash{n_1} s \COL S$ then $\Gamma, y \mysncln{n_2} S' \myvdash{n_2} [x \mapsto s] t' \COL T'$
+            \\We want to prove, 
+            if $\Gamma, x \mysncln{n_1} S \myvdash{n_2} \mylam{y}{S'}{t'} \COL \Pi y \COL S'. T'$ 
+            and $\Gamma \myvdash{n_1} s \COL S$, then $\Gamma \myvdash{n_2} \mylam{y}{S'}{[x \mapsto s] t'} \COL \Pi y \COL S'. [x \mapsto s] T'$.
+            \\If we have $\Gamma \myvdash{n_2} s \COL S$, then $\Gamma, y \mysncln{n_2} S' \myvdash{n_1} s \COL S$ by weakening.
+            Thus \(\Gamma, y \mysncln{n_2} S' \myvdash{n_2} [x \mapsto s] t' \COL [x \mapsto s] T'\) using the induction hypothesis.
+            \\By using \fauxsc{T-Abs}, we have the following proof yielding the desired conclusion.
+            \begin{prooftree}
+                \AxiomC{$\Gamma \myvdash{n_2} S' \DCOL *$}
+                \AxiomC{$\Gamma, y \mysncln{n_2} S' \myvdash{n_2} [x \mapsto s] t' \COL [x \mapsto s] T'$}
+                \myplabel{T-Abs}
+                \BinaryInfC{$\Gamma \myvdash{n_2} \mylam{y}{S'}{[x \mapsto s] t'} \COL \Pi x \COL S'. [x \mapsto s] T'$}
+            \end{prooftree}
+            \item{\fauxsc{T-App}} ($t = t_1 \mysp t_2, \quad T = T', \quad \Gamma; x \mysncln{n_1} S \myvdash{n_2} t_1 \mysp t_2 \COL T'$)\\
+            By the induction hypothesis, if $\Gamma \myvdash{n_1} s \COL S$, we have $\Gamma \myvdash{n_2} [x \mapsto s] t_1 \COL \Pi y \COL S' . T'$ and 
+            $\Gamma \myvdash{n_2} [x \mapsto s] t_2 \COL S'$.
+            \\By \fauxsc{T-App}, we have the following proof yielding the desired conclusion. 
+            \begin{prooftree}
+                \AxiomC{$\Gamma \myvdash{n_2} [x \mapsto s] t_1 \COL \Pi y \COL S' . T'$}
+                \AxiomC{$\Gamma \myvdash{n_2} [x \mapsto s] t_2 \COL S'$}
+                \myplabel{T-App}
+                \BinaryInfC{$\Gamma \myvdash{n_2} [x \mapsto s] (t_1 \mysp t_2) \COL [x \mapsto s]T'$}
+            \end{prooftree}
+            \item{\fauxsc{T-PrevIntro}} ($t = \myprev{t_1}, \quad \Gamma; x \mysncln{n_1} S \myvdash{n_2} \myprev{t_1} \COL T$)\\
+            We have $\Gamma \myvdash{n_2 - 1} t_1 \COL \bigcirc T$.
+            By the induction hypothesis, if $\Gamma \myvdash{n_1} s \COL S$, 
+            then $\Gamma \myvdash{n_2 - 1} [x \mapsto s] t_1 \COL [x \mapsto s] \bigcirc T$.
+            We get $\Gamma \myvdash{n_2} \myprev{[x \mapsto s] t_1} \COL [x \mapsto s] T$ by applying this judgement to \fauxsc{T-PrevIntro}.
+            \item{\fauxsc{T-NextIntro}}\\
+            Similar.
+        \end{inditem}
+        % T-Conv
+        % T-EqIntro
+        % T-EqElim
+        残りの場合は単純な帰納法の仮定の適用で示される.
+    \end{proof}
+\end{jlemma}
+
+代入補題を用いて, 体系の型付けされた項は, 1ステップの評価によって
+型が変わることがない保存を \Cref{Preservation} に示す.
+
+\begin{jtheorem}[保存]\label{Preservation}
+    任意の $i  \in \mathbb{N}, n \in \mathbb{Z}$ に対して,
+    $\Gamma \myvdash{n} t \COL T$ and $\myval{t}{d} \iarrow{i} \myval{t'}{d}$ であるならば, 
+    $\Gamma \myvdash{n} t'\COL T$ が成立する.
+\begin{proof}
+    \textbf{By induction on the derivation of $\Gamma \myvdash{n} t\COL T$.}
+    \begin{itemize}
+        \item{\fauxsc{T-Var}} (t = x)\\
+        There is no t' such that $\myval{x}{d} \iarrow{i} \myval{t'}{d}$. Immediate.
+        \item{\fauxsc{T-Abs}} (t = $\mylam{x}{S}{t}$)\\
+        There is no t' s.t. $\myval{\mylam{x}{S}{t}}{d} \iarrow{i} t'$. Immediate.
+        \item{\fauxsc{T-App}} (t = $t_1 \mysp t_2$)\\
+        By the induction hypothesis, we have 
+        \begin{equation*}\tag{IH1}
+            (\Gamma \myvdash{n} t_1\COL \Pi x\COL S.T \land \myval{t_1}{d} \iarrow{i} \myval{t_1'}{d}) \Rightarrow \Gamma \myvdash{n} t_1'\COL \Pi x\COL S.T
+        \end{equation*}
+        \begin{equation*}\tag{IH2}
+            (\Gamma \myvdash{n} t_2\COL S \land \myval{t_2}{d} \iarrow{i} \myval{t_2'}{d}) \Rightarrow \Gamma \myvdash{n} t_2'\COL S
+        \end{equation*}
+        \begin{enumerate}
+            \item{\fauxsc{E-App1}}\\
+            \begin{equation*}
+                \myval{t_1 t_2}{d} \iarrow{i} \myval{t_1' t_2}{d}
+            \end{equation*}
+            The type derivation of $t_1' t_2$ can be written as follows using \textrm{IH1}.
+            \begin{prooftree}
+                \AxiomC{$\Gamma \myvdash{n} t_1'\COL \Pi x\COL S.T$}
+                \AxiomC{$\Gamma \myvdash{n} t_2 \COL S$}
+                \myplabel{T-App}
+                \BinaryInfC{$\Gamma \myvdash{n} t_1' t_2 \COL T$}
+            \end{prooftree}
+            \item{\fauxsc{E-App2}}\\
+            \begin{equation*}
+                \myval{t_1 t_2}{d} \iarrow{i} \myval{t_1 t_2'}{d}
+            \end{equation*}
+            The type derivation of $v_1 t_2'$ can be written as follows using \textrm{IH2}.
+            \begin{prooftree}
+                \AxiomC{$\Gamma \myvdash{n} t_1\COL \Pi x\COL S.T$}
+                \AxiomC{$\Gamma \myvdash{n} t_2' \COL S$}
+                \myplabel{T-App}
+                \BinaryInfC{$\Gamma \myvdash{n} t_1 t_2' \COL T$}
+            \end{prooftree}
+            \item{\fauxsc{E-Beta}} ($t_1 = \mylam{x}{S}{s_1}, \mysp t_2 = s_2, \mysp (\mylam{x}{S}{s_1}) s_2 \iarrow{i} [x \mapsto s_2] s_1$)\\
+            We have $\Gamma, x \mysncln{n} S \myvdash{n} s_1 \COL T'$ and $\Gamma \myvdash{n} s_2 \COL S$ from the type derivation of
+            $\Gamma \myvdash{n} (\mylam{x}{S}{s_1}) s_2$.
+            By using the substitution lemma (\Cref{Substitution}), we have $\Gamma \myvdash{n} [x \mapsto s_2] s_1 \COL [x \mapsto s_2] T'$, 
+            which is the desired conclusion.
+        \end{enumerate}
+        \item{\fauxsc{T-Conv}}\\
+        Immediate. 
+        \item{\fauxsc{T-PrevIntro}} (t =$\myprev{s}$) \\
+        By the induction hypothesis, 
+            If $\Gamma \myvdash{n-1} s \COL \bigcirc T$ and  $\myval{t}{d} \iarrow{i} \myval{t'}{d}$ then $\Gamma \myvdash{n-1} s'\COL T$
+        \begin{enumerate}
+            \item {$\myprev{s} \iarrow{i} \myprev{s'}$}\\
+            Type preservation holds by the following type derivation.
+            \begin{prooftree}
+                \AxiomC{$\Gamma \myvdash{n-1} s' \COL T$}
+                \myplabel{T-PrevIntro}
+                \UnaryInfC{$\Gamma \myvdash{n} \myprev{s'}\COL T$}
+            \end{prooftree}
+            \item{$\myprev{\mynext{s}} \iarrow{i} s$}\\
+            We get $\Gamma \myvdash{n} s \COL T$ from the type derivation of $\Gamma \myvdash{n} \myprev{\mynext{s}} \COL T$.
+        \end{enumerate}
+        \item{\fauxsc{T-NextIntro}} ($t = \mynext{s}$)\\
+        \begin{enumerate}
+            \item{$\mynext{s} \iarrow{i} \mynext{s'}$}\\
+            Similar to the previous case.
+            \item{$s = \myprev{u}, \mynext{\myprev{u}} \iarrow{i} u, T = \bigcirc T'$}\\
+            We have the following derivation for $\Gamma \myvdash{n} t \COL T$.
+            \begin{prooftree}
+                \AxiomC{$\Gamma \myvdash{n} u \COL \bigcirc T'$}
+                \myplabel{T-PrevIntro}
+                \UnaryInfC{$\Gamma \myvdash{n + 1} \myprev{u} \COL T'$}
+                \myplabel{T-NextIntro}
+                \UnaryInfC{$\Gamma \myvdash{n} \mynext{\myprev{u}} \COL \bigcirc T'$}
+            \end{prooftree}
+            Thus, we have $\Gamma \myvdash{n} u \COL \bigcirc T'$.
+        \end{enumerate}
+        % By the induction hypothesis, 
+        %     If $\Gamma \myvdash{n+1} t\COL T$  and $\myval{t}{d} \iarrow{i} \myval{t'}{d}$ then $\Gamma \myvdash{n} t'\COL T$
+        % \begin{enumerate}
+        %     \item{$\mynext{t} \nrightarrow_{i}$}\\
+        %     Immediate.
+        %     \item{$\mynext{t} \iarrow{i} \mynext{t'}$}\\
+        %     Type preservation holds by the following type derivation.
+        %     \begin{prooftree}
+        %         \AxiomC{$\Gamma \myvdash{n+1} t' \COL T$}
+        %         \myplabel{T-NextIntro}
+        %         \UnaryInfC{$\Gamma \myvdash{n} \mynext{t'} \COL \bigcirc T$}
+        %     \end{prooftree}
+        % \end{enumerate}
+    \end{itemize}
+\end{proof}
+\end{jtheorem}
+
+\begin{jtheorem}[進行]\label{Progress}
+    $\bullet \myvdash{n} t\COL T$ であるとする. 任意の $d \in \mathbb{N}$ に対して, 
+    $\myval{t}{0}$ は値であるか, $\myval{t}{d} \iarrow{i} \myval{t'}{d}$ であるような $t'$ が存在する.
+    \begin{proof}
+        \textbf{$\bullet \myvdash{n} t\COL T$ の導出に関する構造帰納法による.}
+        \begin{itemize}
+            \item{\fauxsc{T-Var}}\\
+            This case is not possible because the environment is empty.
+            \item{\fauxsc{T-Abs}}\\
+            Immediate.
+            \item{\fauxsc{T-App}}\\
+            By the induction hypothesis,
+            \begin{itemize}
+                \item{\textrm{IH1}} $\myval{t_1}{d}$ is either a value or there exists $\myval{t_1}{d}$ s.t. $\myval{t_1}{d} \iarrow{i} \myval{t_1'}{d}$
+                \item{\textrm{IH2}} $\myval{t_2}{d}$ is either a value or there exists $\myval{t_2}{d}$ s.t. $\myval{t_2}{d} \iarrow{i} \myval{t_2'}{d}$
+            \end{itemize}
+            \begin{enumerate}
+                \item{If $\myval{t_1}{d}$ and $\myval{t_2}{d}$ is a value}\\
+                Because $\myval{t_1}{d}$ is a value, $\myval{t_1}{d}$ will always have a form of $\lambda$-abstraction.
+                By \fauxsc{E-Abs}, we have $\myval{\mylam{x}{T}{t_{11}} t_2}{d} \iarrow{i} \myval{[x \mapsto t_2] t_{11}}{d}$
+                \item{If $\myval{t_1}{d}$ is a value and $\myval{t_2}{d}$ is not}\\
+                We can still apply \fauxsc{E-Abs}.
+                \item{If $\myval{t_1}{d}$ is not a value and $\myval{t_2}{d}$ is}\\
+                By the induction hypothesis, there exists a $\myval{t_1'}{d}$ s.t. 
+                $\myval{t_1}{d} \iarrow{i} \myval{t_1'}{d}$.
+                By \fauxsc{E-App}, we get $\myval{t_1 t2}{d} \iarrow{i} \myval{t_1' t_2}{d}$
+                \item{If $\myval{t_1}{d}$ and $\myval{t_2}{d}$ is not a value}\\
+                Similar to 3. Use \fauxsc{E-App2}.
+            \end{enumerate}
+            \item{\fauxsc{T-Conv}}\\
+            Immediate from the induction hypothesis.
+            \item{\fauxsc{T-PrevIntro}}\\
+            By the induction hypothesis, there exists a $\myval{t_1}{d-1}$ s.t. 
+            $\myval{t}{d-1} \iarrow{i} \myval{t'}{d-1}$ or $\myval{t}{d-1}$ is a value.
+            \begin{enumerate}
+                \item{$\myval{t}{d-1} \iarrow{i} \myval{t'}{d-1}$}\\
+                By \fauxsc{E-Prev}, we have $\myval{\myprev{t}}{d} \iarrow{i} \myval{\myprev{t'}}{d}$.
+                \item{$\myval{t}{d}$ is a value}\\
+                Because $\Gamma \myvdash{n} t\COL \bigcirc T$ by the derivation of type,
+                $t$ must be the form of $\mynext{t_1}$.
+                By \fauxsc{E-StagedBeta}, we get $\myval{\myprev{\mynext{t_1}}}{d} \iarrow{i} \myval{t_1}{d}$.
+            \end{enumerate}
+            \item{\fauxsc{T-NextIntro}}\\
+            By the induction hypothesis, either $\myval{t}{d+1}$ is a value or there exists a $\myval{t'}{d+1}$ 
+            s.t. $\myval{t}{d+1} \iarrow{i} \myval{t'}{d+1}$. 
+            \begin{enumerate}
+                \item{$\myval{t}{d} \iarrow{i} \myval{t'}{d}$}\\
+                By \fauxsc{E-Next}, $\myval{\mynext{t}}{d} \iarrow{i} \myval{\mynext{t'}}{d}$.
+                \item{$\myval{t}{d}$ is a value}\\
+                $\myval{\mynext{t}}{d}$ is a value.
+            \end{enumerate}
+        \end{itemize}
+    \end{proof}
+\end{jtheorem}
+
+また, 項の正規形は一意に定まることを示すため, 強正規化性と合流性を示す.
+
+まず, 強正規化性を示すために, \lamlf の強正規化性を仮定し, \lamlfcirc から \lamlf 
+へ, 簡約と型付けを保存するような変換を定義する. そして背理法によって, \lamlfcirc が
+強正規化性を持たないなら, \lamlf が強正規化性を持たないことを示す.
+
+合流性は, 簡約関係の推移閉包となるような 並行簡約 を定義し, 並行簡約 
+において, ダイアモンド性が満たされていることを示し, 証明する.
