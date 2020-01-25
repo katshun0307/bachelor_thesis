@@ -8,6 +8,9 @@ thesis: thesis.tex $(libs)
 handout: FORCE
 	(cd handout; make)
 
+cover: FORCE
+	(cd cover; make)
+
 clean:
 	$(RM) *.aux *.log *.dvi *.bcf *.fls *.snm *.bbl *.blg *.out *.nav *.xml *.vrb *.toc
 
