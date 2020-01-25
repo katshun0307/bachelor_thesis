@@ -1,0 +1,40 @@
+\documentclass{tarticle}[10pt]
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% 卒論の背表紙を成する(複数人数対応) ver 1.1
+%
+%       2001/2/12  written by Takashi SUMIYOSHI
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{document}
+\kanjiskip=.3zw plus 3pt minus 3pt
+\xkanjiskip=.3zw plus 3pt minus 3pt
+\pagestyle{empty}
+% 枠の余白の大きさ
+\setlength{\fboxsep}{3mm}
+% 平成何年度か
+\def\thisyear{元}
+
+\setlength{\textheight}{\paperheight}   % ひとまず紙面を本文領域に
+\setlength{\topmargin}{-23mm}      % 上の余白を20mm(=1inch-5.4mm)に
+\addtolength{\topmargin}{-\headheight}  %
+\addtolength{\topmargin}{-\headsep}     % ヘッダの分だけ本文領域を移動させる
+\addtolength{\textheight}{-10mm} 
+
+%\setlength{\textwidth}{280mm}
+\setlength{\textwidth}{\paperwidth}
+
+% makebackcover
+\def\makebackcover#1#2{\framebox[\textheight]{{\huge {\bf
+#1}\hfill {\bf #2} \hspace{0.4cm} 令和 \rensuji*{\thisyear} 年度 }}}
+
+\makebackcover
+% {\normalsize \bf 依存型を備えた多段階計算の同値型に関する拡張}
+{\Large \bf 依存型を備えた多段階計算の同値型に関する拡張}
+{\Large 勝田 峻太朗}
+
+%\makebackcover
+%{卒論の背表紙を作成する Template File(複数人数対応)}
+%{住吉 貴志}
+
+\end{document}
