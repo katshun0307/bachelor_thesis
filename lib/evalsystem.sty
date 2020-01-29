@@ -20,14 +20,15 @@
 
 \newcommand{\EAppAbs}{
     \infax[\fauxsc{E-Beta}]{
-        \myval{(\mylam{x}{T}{s})\mysp t}{d} \barrow_{i} \myval{[x \mapsto t] s}{d}
-        \andalso (i = 0)
+        \myval{(\mylam{x}{T}{s})\mysp t}{d} \barrow_{i} \myval{[x \mapsto t] s}
+        \quad (i = 0)
     }
 }
 
 \newcommand{\EAbs}{
     \infrule[E-Abs]{
         \myval{t}{d} \iarrow{i} \myval{t'}{d}
+        \andalso i > 0
     }{
         \myval{\mylam{x}{T}{t}}{d} \iarrow{i} \myval{\mylam{x}{T}{t'}}{d} 
     }
@@ -71,7 +72,7 @@
     % }
     \infax[\fauxsc{E-StageEta}]{
         \myval{\mynext{\myprev{t}}}{d} \stearrow_{i} \myval{t}{d}
-        \andalso (i = 0)
+        \andalso (i \le 0)
     }
 }
 
@@ -101,25 +102,9 @@
 }
 
 \newcommand{\EId}{
-    % \infrule[E-Id]{
-    %     \myval{t}{d} \iarrow{i} \myval{t'}{d}
-    % }{
-    %     \myval{\myid{t}}{d} \iarrow{i} \myval{\myid{t}}{d}
-    % }
-}
-
-\newcommand{\EIdpeelOne}{
-    % \infrule[E-Idpeel1]{
-    %     \myval{t_1}{d} \iarrow{i} \myval{t_1'}{d}
-    % }{
-    %     \myval{\myidpeel{t_1}{x}{t_2}}{d} \iarrow{i} \myval{\myidpeel{t_1'}{x}{t_2}}{d}
-    % }
-}
-
-\newcommand{\EIdpeelTwo}{
-    % \infrule[E-Idpeel2]{
-    %     \myval{t_2}{d} \iarrow{i} \myval{t_2'}{d}
-    % }{
-    %     \myval{\myidpeel{v_1}{x}{t_2}}{d} \iarrow{i} \myval{\myidpeel{v_1}{x}{t_2'}}{d}
-    % }
+    \infrule[E-Id]{
+        t \iarrow{i} t'
+    }{
+        \myid{t} \iarrow{i} \myid{t'}
+    }
 }

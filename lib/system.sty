@@ -1,5 +1,7 @@
 % System Rules %
 
+% well-formedness
+
 \newcommand{\WFStar}{
     \infax[\fauxsc{WF-Star}]{
         \Gamma \myvdash{n} *
@@ -14,6 +16,33 @@
         \Gamma \myvdash{n} \Pi x\COL T. K
     }
 }
+
+% ~~~
+
+\newcommand{\WFEmpty}{
+    \infax[\fauxsc{WF-Empty}]{
+        \Gamma \myvdash{n} \emptyset
+    }
+}
+
+\newcommand{\WFTm}{
+    \infrule[WF-Tm]{
+        \vdash \Gamma
+        \andalso \Gamma \myvdash{n} T \DCOL *
+    }{
+        \vdash \Gamma, x \mysncln{n} T
+    }
+}
+
+\newcommand{\WFTy}{
+    \infrule[WF-Ty]{
+        \vdash \Gamma
+        \andalso \Gamma \myvdash{n} K
+    }{
+        \vdash \Gamma, X \mysncln{n} K
+    }
+}
+% ====
 
 \newcommand{\KVar}{
     \infrule[K-Var]{
@@ -132,8 +161,8 @@
     \infrule[T-EqElim]{
         \Gamma \myvdash{n} T \DCOL *
         \andalso \Gamma \myvdash{n} a, b \COL T
-        \andalso \Gamma \myvdash{n} t_{eq} \COL \myeq{T}{a}{b} \\
-        \Gamma, x\mysncln{n} T, y\mysncln{n} T, z\COL\myeq{T}{x}{y} \myvdash{n} C(x, y, z) \DCOL *
+        \andalso \Gamma \myvdash{n} t_{eq} \COL \myeq{T}{a}{b}\\
+        \Gamma, x\mysncln{n} T, y\mysncln{n} T, z\COL\myeq{T}{x}{y} \myvdash{n} C(x, y, z) \DCOL *\\
         \andalso \Gamma, x\mysncln{n} T \myvdash{n} t \COL C(x, x, id(x))
     }{
         \Gamma \myvdash{n} \myidpeel{t_{eq}}{x}{t} \COL C(a, b, t_{eq})
@@ -196,7 +225,7 @@
 
 \newcommand{\QTRefl}{
     \infrule[QT-Refl]{
-        \Gamma \myvdash{n} T\COL K
+        \Gamma \myvdash{n} T \DCOL K
     }{
         \Gamma \myvdash{n} T \myequiv{m} T \DCOL K
     }

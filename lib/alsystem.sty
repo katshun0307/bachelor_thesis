@@ -6,7 +6,7 @@
 
 \newcommand{\WFAEmpty}{
     \infax[\fauxsc{WFA-Empty}]{
-        \Gamma \myalvdash{n} \emptyset
+        \AV \bullet
     }
 }
 
@@ -137,7 +137,7 @@
         \Gamma \myalvdash{n} T \DCOL *
         \andalso \Gamma \myalvdash{n} a, b \COL T
         \andalso \Gamma \myalvdash{n} t_{eq} \COL \myeq{T}{a}{b} \\
-        \Gamma, x\mysncln{n} T, y\mysncln{n} T, z\COL\myeq{T}{x}{y} \myalvdash{n} C(x, y, z) \DCOL *
+        \Gamma, x\mysncln{n} T, y\mysncln{n} T, z\COL\myeq{T}{x}{y} \myalvdash{n} C(x, y, z) \DCOL *\\
         \andalso \Gamma, x\mysncln{n} T \myalvdash{n} d \COL C(x, x, id(x))
     }{
         \Gamma \myalvdash{n} \myidpeel{t_{eq}}{x}{d} \COL C(a, b, t_{eq})
