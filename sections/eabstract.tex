@@ -1,46 +1,47 @@
 
 % == background == %
 % multi-stage calculus
-\emph{Multi-stage Computation} introduces an idea of stages to computation, which enables 
+\emph{Multi-stage Computation} introduces the idea of stages to computation, which enables 
 manipulation of program code as values.
 Davies introduced \lamcirc, which included an operator \tnext,
 which takes a term and generates a value that represents code for the term,
-and an operator \tprev, which takes a code value and converts it to terms.
+and an operator \tprev, which takes a code value and converts it to a term.
 One of the key features of this system is embedding; one can embed a code in an another code by
 applying \tprev{} to the code values we want to embed.
-By using these features, \lamcirc can model computation that invokes run-time code generation and evaluation 
+By using these features, \lamcirc{} can model computation that performs run-time code generation and evaluation.
 
 % what the type system guarantees
 \lamcirc designates a type $\bigcirc T$ for a type $T$.
-A value has type $\bigcirc T$ if it is code that produces a value of type $T$ when it is given to \tprev. 
+A term has type $\bigcirc T$ if it is code that produces a value of type $T$ when it is given to \tprev. 
 This type system guarantees that no error occurs during generation and evaluation of code at run-time.
 
 % == target == %
-We aim at extending \lamcirc so that it can verify more properties.
+We aim to extend \lamcirc so that it can verify more properties.
 To this end, we introduce dependent types and equality types to \lamcirc.
 
 % dependent types
 % \emph{Dependent types} are types that contains terms. 
-\emph{Dependent types} are types that includes terms. 
+\emph{Dependent types} are types that include terms. 
 By using dependent types, one can detect potential runtime errors that cannot be detected by usual type systems.
-For example, one can design a dependent type system that guarantees the consistency in matrix multiplication.
+For example, one can design a dependent type system that guarantees the dimensional consistency in matrix multiplication.
 
 % equality types
-Martin-Löf introduced equality types. An equality type is an instance of dependent types that includes two terms,
-asserting these terms are equal.
-Typing rules for equality types are as generic as it can be introduced to any type system
-with one introduction rule and one elimination rule if it is equipped with dependent types.
+An equality type, introduced by Martin-Löf, is one example of the application of dependent types.
+An equality type is an instance of dependent types that includes two terms,
+and asserts that these terms are equal.
+Typing rules for equality types are generic as they can be introduced to any type system
+with dependent types via a single introduction rule and single elimination rule.
 
 % research method
-In this thesis, we extend \lamcirc with dependent types á la \lamlf by Harper et al. and equality types.
-Kawata has already proposed \lammd, which extends \lamcirc with CSP and \lamlf;
-our type system can be understood as the extension of \lamcirc without CSP
+In this thesis, we extend \lamcirc{} with dependent types à la \lamlf{} by Harper \etal and equality types.
+Kawata \etal has already proposed \lammd{} which extends \lamcirc{} with CSP and \lamlf;
+our type system can be understood as the extension of \lamcirc{} without CSP
 and with equality types.
 
 % reduction rules and stages
-The reductions in our system include \mbeta-reduction, reduction on stages, and reduction on equality typed values.
-However, we would not like to perform reductions inside code, except for reductions on stages.
-Yuse and Igarashi have proposed a method to limit appropriate reductions on terms. They extend reductions relation with
+The reductions in our system include \mbeta-reduction, reduction on stage operators, and reduction on equality-typed values.
+However, we would like to not perform reductions inside code, except for reductions on stages.
+Yuse and Igarashi have proposed a method to limit applicable reductions on terms. They extend reductions relation with
 index numbers, that represents how deep the current term is nested under \tnext{} and \tprev.
 We also follow their method.
 
@@ -49,7 +50,7 @@ Also, when comparing equivalence between code,
 we do not want to judge equivalence based on normal equivalence rules such as \mbeta-reduction,
 because only stage reduction is allowed inside code. Instead, we want to judge equivalence based on
 the corresponding equivalence rules allowed.
-For enabling this kind of definition, we expanded the definition of equivalence by adding an index number, 
+For enabling this kind of formulation, we expanded the definition of equivalence by adding an index number, 
 just as we did in defining reduction.
 By limiting the available equivalence rules with this index, 
 we make it possible to perform reduction as intended.
@@ -65,6 +66,6 @@ and prove that algorithmic typing is sound and complete with regards to the norm
 
 % Future Work
 In this research, we have not been able to state what kind of logical system corresponds to 
-the type system we have introduced. We know that lambda calculus with dependent types corresponds to
+the present type system. It is known that lambda calculus with dependent types corresponds to
 the intuitionistic propositional logic, but it is left for future work of how the logic will extend with
 multi-stage computation and equality types.

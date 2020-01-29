@@ -1,17 +1,283 @@
 
-
+% previous section: ./property.tex
 
 % 章の構成
 この章では, 
-アルゴリズム的型付けを導入した後, \Todo{continue}
+アルゴリズム的型付けを導入した後, この型付け規則が通常の型付け規則に対して健全かつ完全であること, 
+即ち, アルゴリズム的型付けで導出できる判断は通常の型付け規則でも導出可能であることと, 
+通常の型付け規則で導出可能である判断は, アルゴリズム的型付けで導出可能であることを示す.
 
 \subsection{アルゴリズム的型付け規則}
 
-\subsection{アルゴリズム的型付け規則の正しさ}
+アルゴリズム的型付け規則とは, 環境と項/型が与えられたときに,
+適用できる型付け/カインド付け規則が一意, あるいは有限個に定まり,
+有限時間で, ふさわしい型/カインド(のうち一つ) を導出できるような体系のことを言う.
 
-ここで, 上で定義したアルゴリズム的型付けが, 通常の型付け規則に関して健全かつ完全で有ることを証明した.
+\Cref{fig_al_f,fig_al_k,fig_al_t,fig_al_qk,fig_al_qt,fig_al_q} は, 提案するアルゴリズム的型付け規則である.
+\Cref{fig_al_q} における \textrm{ANF} は, \Cref{subsection_al_proof_before} で定義する.
+
+\FB
+\begin{fig}{アルゴリズム的適格性規則}
+    \centering
+    \footnotesize
+    % \WFAEmpty \bcpnl
+    % \WFATm \quad
+    % \WFATy \bcpnl
+    \WFAStar \quad
+    \WFAPi
+    \label{fig_al_f}
+\end{fig}
+
+\begin{fig}{アルゴリズム的カインド付け}
+    \centering
+    \footnotesize
+    \KAVar \quad
+    \KAPi \bcpnl
+    \KAApp \bcpnl
+    \KAEquiv
+    \label{fig_al_k}
+\end{fig}
+    
+\begin{fig}{アルゴリズム的型付け}
+    \centering
+    \footnotesize
+    \TAVar\quad
+    \TAAbs
+    \bcpvspace\\
+    \TAApp \bcpvspace\\
+    \TAPrevIntro \quad
+    \TANextIntro
+    \bcpvspace \\
+    \TAEqIntro \bcpvspace\\
+    \TAEqElim
+    \label{fig_al_t}
+\end{fig}
+
+\begin{fig}{アルゴリズム的カインド同値規則}
+    \centering
+    \footnotesize
+    \QKAStar \bcpnl
+    \QKAPi
+    \label{fig_al_qk}
+\end{fig}
+
+\begin{fig}{アルゴリズム的型同値規則}
+    \centering
+    \footnotesize
+    \QTAVar \quad
+    \QTAPi \bcpnl
+    \QTAApp \bcpnl
+    \QTACircIntro
+    \label{fig_al_qt}
+\end{fig}
+
+\begin{fig}{アルゴリズム的項同値規則}
+    \centering
+    \footnotesize
+    \QAAnf
+    \label{fig_al_q}
+\end{fig}
+\FB
+
+\subsection{アルゴリズム的型付け規則の証明の準備}\label{subsection_al_proof_before}
+
+アルゴリズム的型付けの正しさを示すために, 
+上で定義したアルゴリズム的型付けが, 通常の型付け規則に関して健全かつ完全で有ることを証明する.
+
+はじめに, アルゴリズム的簡約を定義する. アルゴリズム的簡約とは,
+\Cref{FigAlgorithmicReduction} で示される簡約を, 全てのレヴェルの項(\Cref{DefLevelTerms}参照)に対して行い, 
+take the congruence on terms (訳???)したものである.
+
+\begin{fig}{アルゴリズム的簡約規則}
+    \centering
+    \infax[\fauxsc{EA-Beta}]{
+        (\mylam{x}{T}{s})t \barrow_{m} [x \mapsto t]s 
+        \andalso m \le 0
+    } \bcpnl
+    \infax[\fauxsc{EA-StagedBeta}]{
+        \myprev{\mynext{t}} \stbarrow_{m} t
+        \andalso m \le 0
+    } \bcpnl
+    \infax[\fauxsc{EA-StagedEta}]{
+        \mynext{\myprev{t}} \stearrow_{m} t
+        \andalso m \le 1
+    } \bcpnl
+    \infax[\fauxsc{EA-Equal}]{
+        \myidpeel{\myid{a}}{x}{t} \eqarrow_{m} [x \mapsto a] t
+        \andalso m = 0
+    }
+    \label{FigAlgorithmicReduction}
+\end{fig}
+\FB
+
+このアルゴリズム的簡約に対して, アルゴリズム的正規形を定義する.
+
+\FB
+\begin{definition}[Algorithmic Normal Form]\label{DefANF}
+    We define the \emph{algorithmic normal form} of $t$ as the normal form by algorithmic reduction 
+    at all levels of terms (as defined in \Cref{DefLevelTerms}) with index $m$ {(\alarrow{m})},
+    denoted by \anf{m}{t}.
+\end{definition}
+\FB
+
+このアルゴリズム的正規形の一意性は, \Cref{AlgorithmicANFUniqueness} で示される.
+
+\begin{theorem}[Uniqueness of Algorithmic Normal Form]\label{AlgorithmicANFUniqueness}
+    For any well-typed term, the algorithmic normal form of any index $m$ is unique.
+    \begin{proof}
+        Follows from \Cref{AlgorithmicSN} and \Cref{AlgorithmicConfluence}.
+    \end{proof}
+\end{theorem}
+
+\FB
+
+\subsection{アルゴリズム的型付け規則の正しさ}\label{subsection_al_proof}
 
 % 健全性
+はじめに, アルゴリズム的型付け規則の健全性を示していく.
+
+\begin{theorem}[Soundness of Algorithmic Equivalence]\label{SoundAQ}
+    For all $n \in \mathbb{N}, m \in \mathbb{Z}$,
+    \begin{itemize}
+        \item   If ${\Gamma \myalvdash{n} T_1 \myequiv{m} T_2}$, 
+                then ${\Gamma \myvdash{n} T_1 \myequiv{m} T_2}$.
+        \item   If ${\Gamma \myalvdash{n} K_1 \myequiv{m} K_2}$, 
+                then ${\Gamma \myvdash{n} K_1 \myequiv{m} K_2}$.
+        \item   If ${\Gamma \myalvdash{n} s \myequiv{m} t \COL T}$ 
+                then ${\Gamma \myvdash{n} s \myequiv{m} t \COL T}$
+    \end{itemize}
+    \begin{proof}
+        \textbf{By induction on the derivation rules.}
+        \begin{itemize}
+            \item{\fauxsc{QA-Anf}}\\
+            From \fauxsc{QA-Anf}, we have ${\anf{m}{s} \equiv_{\alpha} \anf{m}{t}}$.
+            Thus, we have ${\Gamma \myvdash{n} \anf{m}{s} \myequiv{m} \anf{m}{t}}$.
+            Also, we have ${\Gamma \myvdash{n} s \myequiv{m} \anf{m}{s}}$, ${\Gamma \myvdash{n} t \myequiv{m} \anf{m}{t}}$
+            from \Cref{AlgorithmicANFEquivalence}.
+            Finally, we have ${\Gamma \myvdash{n} s \myequiv{m} t}$.
+        \end{itemize}
+        Other cases are proven by straightforward induction.
+    \end{proof} 
+\end{theorem}
+
+\begin{theorem}[Soundness of Algorithmic Kinding and Typing]\label{SoundAKT}
+    for all ${n \in \mathbb{N}}$,
+    \begin{itemize}
+        \item If ${\Gamma \myalvdash{n} K}$, then ${\Gamma \myvdash{n} K}$. 
+        \item If ${\Gamma \myalvdash{n} T \DCOL K}$, then ${\Gamma \myvdash{n} T \COL K}$. 
+        \item If ${\Gamma \myalvdash{n} t \COL T}$ then ${\Gamma \myvdash{n} t : T}$.
+    \end{itemize}
+    \begin{proof}
+    \textbf{By induction on the derivation on the derivation rules.}
+        \begin{itemize}
+            \item{\fauxsc{KA-App}}\\
+            By the induction hypothesis, and \Cref{SoundAQ}
+            \begin{prooftree}
+                \AxiomC{$\Gamma \myvdash{n} t \COL T_2$}
+                \AxiomC{$\Gamma \myvdash{n} T_1 \myequiv{0} T_2$}
+                \myplabel{T-Conv}
+                \BinaryInfC{$\Gamma \myvdash{n} t \COL T_1$}
+                \AxiomC{$\Gamma \myvdash{n} S \DCOL \Pi x \COL T_1. K$}
+                \myplabel{K-App}
+                \BinaryInfC{$\Gamma \myvdash{n} S \mysp t \DCOL [x \mapsto t] K$}
+            \end{prooftree}
+            \item{\fauxsc{TA-App}}\\
+            Desired conclusion obtained by the following derivation.
+            \begin{prooftree}
+                \AxiomC{$\Gamma \myvdash{n} S_1 \myequiv{n} S_2$}
+                \AxiomC{$\Gamma \myvdash{n} t_2 \COL S_2$}
+                \myplabel{T-Conv}
+                \BinaryInfC{$\Gamma \myvdash{n} t_2 \COL S_1$}
+                \AxiomC{$\Gamma \myvdash{n} t_1 \COL \Pi x \COL S_1. T$}
+                \myplabel{T-App}
+                \BinaryInfC{$\Gamma \myvdash{n} t_1 \mysp t_2 \COL [x \mapsto t_2] T$}
+            \end{prooftree}
+        \end{itemize}
+        % KA-Pi, KA-Var, KA-Equiv
+        Other cases are straightforward.
+    \end{proof}
+\end{theorem}
+
+\begin{corollary}[Soundness of the Alogrithmic System]
+    The algorithmic system is sound in respect to the normal inference rules.
+    All judgments made by the algorithmic system can also be made with the normal inference rules.
+    \begin{proof}
+        By \Cref{SoundAQ,SoundAKT}
+    \end{proof}
+\end{corollary}
+
 
 % 完全性
+次に, 完全性を示す.
 
+\begin{theorem}[Completeness of the Algorithmic System]\label{AlgorithmicComp}
+    For all $n \in \mathbb{N}, m \in \mathbb{Z}$, where $K, K'$ are kinds, $S, T$ are types and $s, t$ are terms, 
+    \begin{itemize}
+        \item If $\Gamma \myvdash{n} K$ then $\Gamma \myalvdash{n} K$.
+        \item If $\Gamma \myvdash{n} T \DCOL K$ then there is $K'$ such that 
+        $\Gamma \myalvdash{n} K$, $\Gamma \myvdash{n} K \myequiv{m} K'$ and $\Gamma \myalvdash{n} T \DCOL K$.
+        \item If $\Gamma \myvdash{n} t \COL T$ then there exists $T'$ such that
+        $\Gamma \myalvdash{n} T'$, $\Gamma \myalvdash{n} T \myequiv{m} T'$ and $\Gamma \myalvdash{n} t \COL T'$.
+        \item If $\Gamma \myvdash{n} K \myequiv{m} K'$ then $\Gamma \myalvdash{n} K \myequiv{m} K'$.
+        \item If $\Gamma \myvdash{n} S \myequiv{m} T$ then $\Gamma \myalvdash{n} S \myequiv{m} T$.
+        \item If $\Gamma \myvdash{n} s \myequiv{m} t$ then $\Gamma \myalvdash{n} s \myequiv{m} t$.
+    \end{itemize}
+    \begin{proof}
+        \begin{itemize}
+            % kinding
+            \item{\fauxsc{K-App}} ($\Gamma \myvdash{n} S t \DCOL [x \mapsto t] K$)\\
+            By applying the induction hypothesis on ${\Gamma \myvdash{n} S \DCOL \Pi x \COL T_1. K}$,
+            we know there is $J$ such that ${\Gamma \myalvdash{n} J \myequiv{m} \Pi x \COL T_1 . K} \cdots (1)$ and
+            ${\Gamma \myalvdash{n} S \DCOL J \cdots (2)}$.
+            The derivation of (1) must be \fauxsc{QKA-Pi}, from which we know that $J \equiv \Pi x \COL T_1. K'$, 
+            ${\Gamma \myalvdash{n} T_1 \myequiv{m} T_2 \cdots (3)}$ and ${\Gamma x \mysncln{n} T_1 \myalvdash{n} K_1 \myequiv{m} K_2 \cdots (4)}$.
+            Also, by applying the induction hypothesis on ${\Gamma \myvdash{n} T_1 \DCOL K_1}$, 
+            we get ${\Gamma \myalvdash{n} T_1 \DCOL K_1} \cdots (5)$.
+             Finally by using \fauxsc{QK-App} and (3), (4), (5), 
+             we get ${\Gamma \myalvdash{n} S t \DCOL [x \mapsto t] K_1}$.
+            \item{\fauxsc{K-Conv}}($\Gamma \myvdash{n} T \DCOL K'$ from $\Gamma \myvdash{n} T \DCOL K$ 
+            and $\Gamma \myvdash{n} K \myequiv{0} K'$)\\
+            By the induction hypothesis, there exists $J$ such that 
+            ${\Gamma \myalvdash{n} T \DCOL J}$ and ${\Gamma \myalvdash{n} K \myequiv{m} J}$. Also, 
+            ${\Gamma \myalvdash{n} K \myequiv{m} K'}$. By transitivity of algorithmic equivalence (\Cref{AlTrans}),
+            we have $\Gamma \myalvdash{n} K' \myequiv{n} J$.
+            % typing
+            \item{\fauxsc{T-App}}($\Gamma \myvdash{n} t_1 t_2 \COL [x \mapsto t_2] T_1$)\\
+            By the induction hypothesis, there exists $U$ such that when ${U \equiv \Pi x \COL S_2. T_2}$,
+            ${\Gamma \myalvdash{n} \Pi x \COL S_1. T_1 \myequiv{m} U \cdots (1)}$ and ${\Gamma \myalvdash{n} U}$.
+            The derivation of (1) must be from \fauxsc{QTA-Pi}, from which we know that 
+            ${\Gamma \myalvdash{n} S_1 \myequiv{m} S_2} \cdots (2)$ and ${\Gamma, x \mysncln{n} S_1 \myalvdash{n} T_1 \myequiv{m} T_2 \cdots (3)}$.
+            \\Also, be applying the induction hypothesis to $\Gamma \myvdash{n} t_2 \COL S_1$, there exists $S_3$ such that
+            ${\Gamma \myalvdash{n} S_1 \myequiv{m} S_3}$ and ${\Gamma \myalvdash{n} t_2 \COL S_3}$.
+            Finally we can use $\Gamma \myalvdash{n} S_2 \myequiv{m} S_3$ to use \fauxsc{QTA-App}.
+            \item{\fauxsc{T-Conv}}($\Gamma \myvdash{n} t \COL T'$)\\
+            By the induction hypothesis, there exists $U$ such that $\Gamma \myalvdash{n} t \COL U$.
+            Also, we have $\Gamma \myalvdash{n} T \myequiv{m} T'$.
+            By \Cref{AlTrans}, we have $\Gamma \myalvdash{n} U \myequiv{m} T'$.
+            % kind equivalence
+            \item{\fauxsc{QK-Pi}}\\
+            By straightforward induction.
+            \item{\fauxsc{QK-Refl}}\\
+            Follows from \Cref{AlRefl}
+            \item{\fauxsc{QK-Sym}}\\
+            Follows from \Cref{AlSym}
+            \item{\fauxsc{QK-Trans}}\\
+            Follows from \Cref{AlTrans}
+            % term equivalence
+            \item{\fauxsc{Q-Abs}} ($\Gamma \myvdash{n} \mylam{x}{S_1}{t_1} \myequiv{m} \mylam{x}{S_2}{t_2}$)\\
+            By the induction hypothesis, $\Gamma \myvdash{n} S_1 \myequiv{m} S_2, \mysp \Gamma, x \mysncln{n} S_1 \myvdash{n} t_1 \myequiv{m} t_2$,
+            from which we have $\anf{m}{t_1}\myequiv{m} \anf{m}{t_2}$ by using \Cref{AlgorithmicANFEquivalence}.
+            Thus, $\anf{m}{\mylam{x}{S_1}{t_1}} \alphaequiv \anf{m}{\mylam{x}{S_2}{t_2}}$
+            \item{\fauxsc{Q-App}} ($\Gamma \myvdash{n} s_1 s_2 \myequiv{m} t_1 t_2$)\\
+            Straightforward, using \Cref{AlgorithmicANFEquivalence}.
+            \item{\fauxsc{Q-Beta}} ($\Gamma \myvdash{n} (\mylam{x}{S}{t}) s \myequiv{m} [x \mapsto s] t \COL [x \mapsto s] T$)\\
+            Use \Cref{AlgorithmicTermEquivalence} because $(\mylam{x}{S}{t}) s \rarrow [x \mapsto s] t$.
+            \item{\fauxsc{Q-Refl}}\\
+            Follows from \Cref{AlRefl}
+            \item{\fauxsc{Q-Sym}}\\
+            Follows from \Cref{AlSym}
+            \item{\fauxsc{Q-Trans}}\\
+            Follows from \Cref{AlTrans}
+        \end{itemize}
+    \end{proof}
+\end{theorem}

@@ -16,22 +16,27 @@
 
 \usepackage{todo}
 
+\usepackage{comment}
+
 \makeatletter
 \makeatother
 \setcounter{tocdepth}{2}
-% \jtitle{依存型と同値型を備えた多段階計算体系の提案}
-\jtitle{依存型を備えた多段階計算の同値型による型システムの拡張}
+\jtitle{依存型を備えた多段階計算の同値型による拡張}
 \etitle{Extension of the Multi-stage dependent calculus with Equality types}
 \jauthor{勝田 峻太朗}
 \eauthor{Shuntaro Katsuda}
 \supervisor{五十嵐 淳 教授}
 \date{2020/02/07}
 \department{工学部情報学科計算機科学コース}
+
 \begin{document}
+
 \maketitle
+
 \begin{jabstract}
   \input{sections/jabstract.tex}
 \end{jabstract}
+
 \begin{eabstract}
   \input{sections/eabstract.tex}
 \end{eabstract}
@@ -39,7 +44,7 @@
 \tableofcontents
 
 \section{序論}
-  あああ \cite{Davies1996a}
+% あああ \cite{Davies1996a}
   \input{sections/introduction.tex}
 
 \section{同値型を備えた多段階依存型ラムダ計算}
@@ -48,14 +53,22 @@
 \section{提案した体系の性質}
   \input{sections/property.tex}
 % 
-\section{アルゴリズム的型付け及び証明}
+\section{アルゴリズム的型付け}
   \input{sections/algorithmic.tex}
-  % \input{sections/proofs.tex}
+
+\section{今後の課題}
+  \input{sections/future_work.tex}
 
 \acknowledgments
   \input{sections/acknowledgments.tex}
 
+\appendix
+\section{体系の性質に関する補題}
+  \input{./sections/appendix_property.tex}
+
+\section{アルゴリズム的型付けに関する補題}
+  \input{sections/appendix_algorithmic.tex}
+
 \bibliographystyle{kuissort}
-% \bibliographystyle{kuisunsrt}
 \bibliography{thesis.bib}
 \end{document}

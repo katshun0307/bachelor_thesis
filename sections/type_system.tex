@@ -1,5 +1,347 @@
 
-% \begin{figure}
-%     \TApp
-%     \caption{型付け規則}
-% \end{figure}
+% previous section: ./introduction.tex
+
+% 章の構成
+この章では, 依存型を備えた体系 \lamlf について,
+多段階計算の体系である \lamcirc を拡張し, さらに同値型に関する規則を追加する.
+また, 体系の同値性を,コード間の同値に注意しながら定義する. 
+はじめに \Cref{subsec_syntax} で, 言語の文法と可能な判断を示し, 
+型システムを説明する. さらに項の簡約規則を導入し, 
+同値性の評価規則を追加する.
+
+\subsection{\lamlfcirc の文法}\label{subsec_syntax}
+
+\begin{fig}{体系の文法}
+    \centering
+    \begin{align*}
+      \textrm{項} && t & ::=
+      x \pipe \mylam{x}{T}{t} \pipe
+      t \mysp t \pipe \mynext{t} \pipe \myprev{t} \pipe
+      \myid{t} \pipe \myidpeel{t}{x}{t} \\
+      \textrm{型} && T & ::=
+       X \pipe \textrm{Eq}_{T} \pipe
+       \Pi x \COL T.T \pipe T\mysp t \pipe {\bigcirc}T\\
+       \textrm{カインド} && K & ::=
+       * \pipe \Pi x \COL T. K\\
+       \textrm{値} && v^{i} & ::=\\
+       && &\pipe \mylam{x}{T}{t} &(i \le 0)\\
+       && &\pipe \mylam{x}{T}{v_{i}} &(i > 0)\\
+       && &\pipe v^{i} \mysp v^{i} &(i > 0)\\
+       && &\pipe \mynext{v^{i+1}}\\
+       && &\pipe \myprev{v^{i-1}} &(i > 1)\\
+       && &\pipe \myid{v^{i}}\\
+       && &\pipe \myidpeel{v^{i}}{x}{t} &(i > 0)\\
+      \textrm{環境} && \Gamma & ::=
+      \bullet \pipe \Gamma, x \mysncln{n} T
+      \pipe \Gamma, X\mydbcln{n} K \quad (n \in \mathbb{N})
+    \end{align*}
+    \label{fig_syntax}
+\end{fig}
+
+\begin{fig}{判断}
+  \centering
+  \begin{align*}
+    \textrm{適格な環境} && &\vdash \Gamma\\
+    \textrm{適格なカインド} && \Gamma &\myvdash{n} K\\
+    \textrm{カインド判断} && \Gamma &\myvdash{n} T \DCOL K\\
+    \textrm{型判断} && \Gamma &\myvdash{n} t \COL T\\
+    \textrm{カインド同値判断} && \Gamma &\myvdash{n} K_1 \myequiv{m} K_2\\
+    \textrm{型同値判断} && \Gamma &\myvdash{n} T_1 \myequiv{m} T_2\\
+    \textrm{項同値判断} && \Gamma &\myvdash{n} t_1 \myequiv{m} t_2
+  \end{align*}
+  \label{fig_judgements}
+\end{fig}
+
+\Cref{fig_syntax} は, \lamlfcirc の文法規則を示している.
+
+項は, 変数, ラムダ抽象, ラムダ適用, 多段階計算に関する \mynext{t} と \myprev{t}
+及び 同値型に関する \myid{t} と \myidpeel{t}{x}{t} がある.
+
+型には, 依存型における型族$X$と, 同値型$\textrm{Eq}_{T}$,
+型抽象$\Pi x \COL T. T$, 内部に項を持つ依存型 $T t$,
+及び, 多段階計算のプログラムコードを表す$\bigcirc T$がある.
+また, 型抽象$\Pi x \COL T_1. T_2$ の $T_2$ の内部に $x$ が束縛変数として出現しない場合は, 
+単純型付きラムダ計算における関数型と同じように, 束縛変数の $x$ を省いて $T_1 \rarrow T_2$ と表記することがある.
+
+環境は, 項変数に対するあるステージでの型の束縛及び,型に対するカインドの束縛の集合である.
+
+\subsection{型システム}\label{subsec_typesystem}
+
+\begin{fig}{適格性規則}
+  \centering
+  \footnotesize
+  \WFStar \bcpnl
+  \WFPi \bcpnl
+  % \WFEmpty \bcpnl
+  % \WFTm \quad
+  % \WFTy
+\end{fig}
+
+\begin{fig}{カインド付け規則}
+  \centering
+  \footnotesize
+  \KVar \quad
+  \KPi \bcpnl
+  \KApp \quad
+  \KConv \bcpnl
+  \KEquiv \quad
+  \KCirc
+  \label{fig_kinding}
+\end{fig}
+
+\begin{fig}{型付け規則}
+  \centering
+  \footnotesize
+  \TVar
+  \TAbs \bcpnl
+  \TApp
+  \TConv \bcpnl
+  \TPrevIntro
+  \TNextIntro \bcpnl
+  \TEqIntro \bcpnl
+  \TEqElim
+  \label{fig_typing}
+\end{fig}
+
+% == 型付け規則について ==
+\Cref{fig_typing}は, 型付け規則を示しており, 
+多段階計算に関する規則である\fauxsc{T-PrevIntro} と, \fauxsc{T-NextIntro}を備えている.
+また, \fauxsc{T-Conv} は, 依存型を含む体系に特徴的な規則であり,
+内部に同値な項を持つ依存型同士であれば, 型を付け替えても良いことを示している.
+
+% == カインド化規則について ==
+\Cref{fig_kinding}は, 型に対するカインド付け規則 を示している. 
+\fauxsc{K-Conv}もまた, 依存型に特徴的な規則であり, 
+2つの等しいカインドがあった場合, カインドを付け替えることができることを表している.
+これは, 間接的に, \fauxsc{T-Conv} と合わせて, カインド内部の型内部の項を,
+等しい別の項と入れ替える事ができることを示している.
+
+\subsection{同値性の定義}\label{subsec_equiv}
+
+同値は, 種, 型, 項のすべてに対して自然数インデックスにより定義を拡張され, インデックスを含む記号 $\myequiv{m}$ で表す.
+このインデックスにより, 適用される同値規則を制限する.
+
+\subsubsection{項に関する同値性}
+
+% 添字はどのような目的で導入されたか
+\Cref{fig_q} は, 項に関する同値規則を表している.
+この体系では, 多段階計算によって表現できるプログラムコードについても
+同値性を定義しなければならない. そのため, 通常の項については, 
+通常の同値規則を許す一方, プログラムコードを表す値に対しては, 
+内部の項が全く同じ, すなわち抽象構文木が等しい場合のみ,
+同値と評価したい.
+
+例として, 以下の同値を考える. 
+このとき, \Cref{ex_00} は明らかに成り立つようにしたい.
+また, \Cref{ex_01} も, 中の項の構文木が等しいので, 成立するような定義をしたい.
+しかしながら, \Cref{ex_02} は, 中の項の構文木が異なるため, 
+同値と定義したくない. 
+
+\begin{align}
+  3 &\equiv 3 \label{ex_00} \\
+  \mynext{3} &\equiv \mynext{3} \label{ex_01}\\ 
+  \mynext{3} &\equiv \mynext{\mylam{x}{\INT}{x} \mysp 3} \label{ex_02} 
+\end{align}
+
+しかしながら, このような例に加えて, プログラムコードの内部に埋め込みが存在する場合について考える必要がある.
+\Cref{ex_03} の場合,  左辺のプログラムコードの内部に \mynext{3} というコードの埋め込みが存在し,
+これを簡約すると, 右辺の形となる. よって, この同値は成立するように定義したい.
+
+ただし, \Cref{ex_04} のように, もう1重 \tnext がついたような式では, 
+左辺は, "埋め込みが存在するプログラムコードのプログラムコード" となり, 
+コード内部の埋め込みは簡約されない. よって, 簡約に対応するこの同値は成立するべきではない.
+
+\begin{align}
+  \mynext{\mylam{x}{\INT}{x} \mysp \myprev{\mynext{3}}} &\equiv \mynext{\mylam{x}{\INT}{x} \mysp 3} \label{ex_03}\\
+  \mynext{\mynext{\mylam{x}{\INT}{x} \mysp \myprev{\mynext{3}}}} &\equiv \mynext{\mynext{\mylam{x}{\INT}{x} \mysp 3}} \label{ex_04}
+\end{align}
+
+このようなことを可能にするため, 本研究では, 
+同値に整数インデックスを付加することにより, \tnext と \tprev の入り組み具合,
+即ち項が存在するステージを捉え, 適用できる同値規則を制限した.
+この整数インデックスは, あくまで同値の評価過程の内部実装としてであり,
+この言語を使う場合は 0-index の同値しか使用を想定していない.
+
+% 同値規則の index がどのように変化していくか
+まず項の同値の評価規則のうち, インデックスの値を変化させる規則は, 
+\fauxsc{Q-NextIntro} と \fauxsc{Q-PrevIntro} であり, この規則は, 
+\tnext の内部の項は インデックスをインクリメントした同値で比較して, 
+\tprev の内部は, インデックスをデクリメントした同値で比較することを示している.
+
+% 同値規則が許される条件
+また, \fauxsc{Q-Beta} の適用条件は, インデックス$m$ が, $m = 0$ を満たしている場合のみ, 
+すなわち, \mbeta-同値な項が, プログラムコードでない場合に限り, この規則が使用できる.
+
+ステージに関する簡約に対応する同値については, 
+まず プログラムコードの内部における埋め込みを表す \fauxsc{E-StageBeta} に対応する
+同値規則の\fauxsc{Q-CircBeta} が存在する. この規則では, 同値のインデックスを 1以下とすることにより, 
+1重のプログラムコード内については, このような規則が成立しながらも, \Cref{ex_04} の例のように, 
+埋め込みの存在するコードのコードに対しては, 簡約も許されていないため, 同値と判断しないようになっている.
+\Cref{ex_04} が成立しないことの例は, \Cref{fig_ex04_proof} に示されている.
+
+\begin{fig}{\Cref{ex_04}が成立しないことのイメージ}
+  \begin{prooftree}
+    \AxiomC{$\cdots$}
+    \AxiomC{$2 \nleq 1$}
+    \myplabel{Q-StageBeta}
+    \BinaryInfC{$\bullet \myvdash{2} \myprev{\mynext{3}} \not\equiv_2 3$}
+    \AxiomC{$\cdots$}
+    \myplabel{Q-App}
+    \BinaryInfC{$\bullet \myvdash{2} (\mylam{x}{\Int}{x}) \mysp \myprev{\mynext{3}} \not\equiv_2 (\mylam{x}{\Int}{x}) \mysp 3$}
+    \myplabel{Q-NextIntro}
+    \UnaryInfC{$\bullet \myvdash{1} \mynext{(\mylam{x}{\Int}{x}) \mysp \myprev{\mynext{3}}} \not\equiv_1 \mynext{(\mylam{x}{\Int}{x}) \mysp 3}$}
+    \myplabel{Q-NextIntro}
+    \UnaryInfC{$\bullet \myvdash{0} \mynext{\mynext{(\mylam{x}{\Int}{x}) \mysp \myprev{\mynext{3}}}} \not\equiv_0 \mynext{\mynext{(\mylam{x}{\Int}{x}) \mysp 3}}$}
+  \end{prooftree}
+  \label{fig_ex04_proof}
+\end{fig}
+
+\begin{fig}{項に関する同値規則}
+  \centering
+  \footnotesize
+  \QAbs \bcpnl
+  \QApp \bcpnl
+  \QBeta \bcpnl
+  \QRefl \quad
+  \QSym \bcpnl
+  \QTrans \bcpnl
+  \QNextIntro \quad
+  \QPrevIntro \bcpnl
+  \QCircBeta \quad
+  \QCircEta
+  \label{fig_q}
+\end{fig}
+
+% 構文木の同値はアルファ同値か?
+% Q-refl に t1 == t2, Gamma |- t_1 : T の規則に変える
+% ここで, \fauxsc{Q-Refl} の規則では, アルファ同値であるような規則に変化させる.
+
+\FB
+
+\subsubsection{型, カインドに関する同値}
+
+型とカインドに関する同値は, \Cref{fig_tq,fig_kq} に示される.
+この体系は依存型を含み, 型やカインドの内部にも項が含まれうるため,
+型とカインドに関する同値にも, 項に関する同値と同じように, 整数インデックスに関して拡張する必要がある.
+
+たとえば, 内部に項をもつ依存型同士の同値規則である \fauxsc{QT-App} では,
+依存型同士の同値のためには, 内部にある項は, 現在のインデックスのもとで同値である必要がある.
+
+\begin{fig}{カインドに関する同値規則}
+  \centering
+  \footnotesize
+  \QKPi \bcpnl
+  \QKRefl \quad
+  \QKSym \bcpnl
+  \QKTrans 
+  \label{fig_kq}
+\end{fig}
+
+\begin{fig}{型に関する同値規則}
+  \centering
+  \footnotesize
+  \QTPi \bcpnl
+  \QTApp \bcpnl
+  \QTRefl \quad
+  \QTSym \bcpnl
+  \QTTrans \bcpnl
+  \QTCircIntro
+  \label{fig_tq}
+\end{fig}
+
+
+\subsection{同値型の追加}\label{subsec_equalitytype}
+
+ここでは, 同値型の体系への追加について述べる. 
+同値型は一般的な形をしており, Martin-Löf によって提案された形をほとんどそのまま使用している.
+
+% 同値型の規則に関する説明
+同値型に関する規則は, 導入規則 \fauxsc{Eq-Intro} と 除去規則 \fauxsc{Eq-Elim} からなる.
+\fauxsc{T-EqIntro}は, 任意の項について, 反射律が成立していることを示しており, 同値型を生成する規則は, この規則のみである.
+\fauxsc{T-EqElim}は, 除去規則であり, 2つの同じ型$T$をもつ項$a, b$ と, その2つの項に関する同値型を持つ項あった場合, 
+型$T$を持つ変数$x$が存在する環境において, 型$C(x, x, id(x))$ を持つ項$t$が存在するなら, 
+型$C(a, b, \myid{a, b})$ を持つ項を導くことができることを示している.
+
+% 同値型の推移律の証明
+この2つの規則のみで. 同値型は反射, 対称, 推移律を満たしていることが確認できる. ここでは, 反射, 対称律は容易に確認できるため,
+推移律についてのみ示す.
+
+\Cref{fig_proof_equality_transitive} において, $z_1\COL \myeq{T}{a}{b}$ と $z_2\COL \myeq{T}{b}{c}$ があったとき,\\
+${\Gamma \myvdash{n} (\myidpeel{z_1}{x}{\mylam{m}{\myeq{T}{x}{c}}{m}}) z_2 \COL \myeq{T}{a}{c}}$ が導出できることを示している.
+
+\begin{fig}{同値型における推移律の証明}
+  \begin{scprooftree}{0.9}
+      \AxiomC{$\Gamma \myvdash{n} a\COL T$}
+      \AxiomC{$\Gamma \myvdash{n} b\COL T$}
+      \AxiomC{$\Gamma \myvdash{n} z_1\COL \myeq{T}{a}{b}$}
+      \noLine
+      \TrinaryInfC{$\Gamma, x\mysncln{n}T, y\mysncln{n}T, p\mysncln{n}\myeq{T}{x}{y} \myvdash{n} \myeq{T}{y}{u} \rightarrow \myeq{T}{x}{u} \DCOL *$}
+      \noLine
+      \UnaryInfC{$\Gamma, x\COL T \myvdash{n} \mylam{m}{\myeq{T}{x}{c}}{m}\COL \myeq{T}{x}{c} \rightarrow \myeq{T}{x}{c}$}
+      \singleLine
+      \myplabel{Eq-Elim}
+      \UnaryInfC{$\myidpeel{z_1}{x}{\mylam{m}{\myeq{T}{x}{c}}{m}}\COL \myeq{T}{b}{c} \rightarrow \myeq{T}{a}{c}$}
+      \AxiomC{$\Gamma \myvdash{n} z_2\COL \myeq{T}{b}{c}$}
+      \myplabel{T-App}
+      \BinaryInfC{$\Gamma \myvdash{n} (\myidpeel{z_1}{x}{\mylam{m}{\myeq{T}{x}{c}}{m}}) z_2 \COL \myeq{T}{a}{c}$}
+  \end{scprooftree}
+  \label{fig_proof_equality_transitive}
+\end{fig}
+
+% 同値から同値型の証明
+
+また, 同値型は体系の同値性から導き出すことができる.
+\Cref{fig_equality_equiv} は, ともに型$T$を持つ項 $t_1$ と$t_2$ と, ${\Gamma \myvdash{n} t_1 \myequiv{m} t_2}$
+から, 型 $\myeq{T}{t_1}{t_2}$ となる項を導く例を示している.
+
+\begin{figure}[htbp]
+  \begin{scprooftree}{0.8}
+    \AxiomC{$\Gamma \vdash t_1 \COL T$}
+    \myplabel{Eq-Intro}
+    \UnaryInfC{$\Gamma \vdash id(t_1) \COL \myeq{T}{t_1}{t_2}(t_1, t_1)$}
+    \AxiomC{$\Gamma \vdash Eq_T t_1 \DCOL \Pi y\COL T. *$}
+    \myplabel{QT-Refl}
+    \UnaryInfC{$\Gamma \vdash Eq_T t_1 \equiv Eq_T t_1 \DCOL \Pi y\COL T. *$}
+    \AxiomC{$\Gamma \vdash t_1 \equiv t_2$}
+    \myplabel{QT-App}
+    \BinaryInfC{$\Gamma \vdash Eq_T(t_1, t_1) \equiv \myeq{T}{t_1}{t_2}$}
+    \myplabel{T-Conv}
+    \BinaryInfC{$\Gamma \vdash id(t_1) \COL \myeq{T}{t_1}{t_2}$}
+  \end{scprooftree}
+  \caption{同値性から対応する同値型の導出}
+  \label{fig_equality_equiv}
+\end{figure}
+
+\subsection{項の簡約}
+
+項の簡約規則については, \Cref{fig_reduction} に示されるとおりである.
+簡約関係は, Yuse ら\cite{Yuse}を参考に, 整数インデックスに関して拡張されている.
+簡約は4種類あり, \mbeta-簡約と, ステージに関する2種類の簡約, 同値型に関する簡約からなる.
+
+ステージに関する簡約は, \fauxsc{E-StageBeta} 及び, \fauxsc{E-StageEta} からなり, 
+\fauxsc{E-StageBeta} は, \tnext でステージが一つ上がった項に対して, \tprev を適用することにより, 
+再びもとのステージに戻ることに対応する. 
+\fauxsc{E-StageEta} は, \tprev で1つ前のステージに引き戻されたプログラムコードが, 
+\tnext によって, もとのステージに戻ることを表現している. 
+
+% このことは, \tnext をラムダ抽象. \tprev をラムダ適用とみなと, 
+% \fauxsc{T-StageBeta} は, \mbeta-簡約, \fauxsc{T-StageEta} は, \meta-簡約とみなせることが, 
+% ネーミングの理由となっている.
+
+\begin{fig}{簡約規則}
+  \centering
+  \footnotesize
+  \EAppAbs \quad
+  \EAbs \bcpnl
+  \EAppOne \quad
+  \EAppTwo \bcpnl
+  \EStageBeta \bcpnl
+  \EStageEta \bcpnl
+  \ENext \quad
+  \EPrev \bcpnl
+  \EId \bcpnl
+  \EEq
+  \label{fig_reduction}
+\end{fig}
+
+% next section: ./property.tex

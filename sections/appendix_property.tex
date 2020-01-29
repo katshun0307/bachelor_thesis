@@ -1,0 +1,68 @@
+
+\vspace{10pt}
+
+\begin{jlemma}[弱化]\label{Weakening}
+    任意の $n, m\in \mathbb{N}$に対して, $\Gamma \myvdash{n} t \COL T$ ならば, $\Gamma, x \mysncln{m} T' \myvdash{n} t \COL T$ である.
+    \begin{proof}
+        \textbf{$\Gamma \myvdash{n} t \COL T$の導出に関する構造帰納法による.}
+    \end{proof}
+\end{jlemma}
+
+% lemmas for string normalization
+\begin{jlemma}[変換を通じたベータ簡約の保存]\label{BetaTransPreserve}
+    \lamlfcirc において, $t \barrow t'$ であるなら, 
+    $\strans{t} \xrightarrow{+}^{\textrm{LF}} \strans{t'}$ が成立する.
+    \begin{proof}
+        \mbeta-基に関する項は, 恒等変換であるので, 自明である.
+    \end{proof}
+\end{jlemma}
+
+\begin{jlemma}[変換を通じた同値型の項に関する簡約の保存]\label{EqualityTransPreserve}
+    \lamlfcirc において, $t \eqarrow t'$ ならば,
+    $\strans{t} \xrightarrow{+}^{\textrm{LF}} \strans{t'}$ が成立する.
+    \begin{proof}
+        \textbf{$t \eqarrow t'$ の導出に関する構造帰納法.}
+        ${\ftrans{\Gamma} \vdash \strans{\myidpeel{t_{eq}}{x}{t}} \COL \ftrans{C(x, y, z)}}$ を示したい.
+        変換の定義及び, \lamlf における \mbeta-簡約 より,
+        $$(\mylam{a}{\ftrans{t}}{[x \mapsto a] \strans{t}}) (\strans{t_{eq}} \mysp \unit) \COL \ftrans{C(x, y, z)} 
+        \barrow_{\textrm{LF}} (\mylam{a}{\ftrans{t}}{[x \mapsto \strans{t_{eq}} \mysp \unit] \strans{t}})$$ となり, 
+        示された.
+    \end{proof}
+\end{jlemma}
+
+\begin{jlemma}[ステージに関する簡約の有限性]\label{FiniteStageReduction}
+    $\Gamma \myvdash{n} t \COL T$ であるなら, 無限個のステージに関する簡約を含む無限長の簡約列は存在しない.
+    \begin{proof}
+        有限長の項には, 有限個の \textbf{next} と \textbf{prev} しか存在しない. 
+        ステージに関する簡約 \starrow は, 常に \textbf{next} と \textbf{prev} の個数を減らす.
+        よって, 示される.
+    \end{proof}
+\end{jlemma}
+
+% lemmas for Church-Rosser
+\begin{jlemma}[並行簡約の推移閉包性]\label{ParallelReductionTransClosure}
+    $s \parrow{i} t$ であるなら, $s \iarrow{i}^{*} t$ である. ただし, 並行簡約は\Cref{FigParallelReduction}に定義される.
+    \begin{proof}
+        \textbf{$s \parrow{i} t$ の導出に関する構造帰納法による.}
+        \begin{itemize}
+            \item{\fauxsc{EP-Var}}\\
+            直ちに求まる.
+            \item{\fauxsc{EP-Beta}} ($s = \mylam{x}{S}{t_1} \mysp t_2, \quad t = [x \mapsto t_2'] t_1'$)\\
+            \fauxsc{E-App2} を複数回用いることで, $(\mylam{x}{S}{t_1}) \mysp t_2'$ を得る.
+            その後, \fauxsc{E-Beta} と帰納法の仮定を複数回用いることで, 求めたい結論を得る.
+            \item{\fauxsc{EP-App}} ($s = t_1 \mysp t_2, \quad t = t_1' \mysp t_2'$)\\
+            \fauxsc{EP-App1} と \fauxsc{EP-App2} を複数回用いて, $t_1 t_2 \rarrow^{*} t_1' t_2'$ を得る.
+            \item{\fauxsc{EP-Abs}}\\
+            Straightforward induction.
+            \item{\fauxsc{EP-Next}}\\
+            Straightforward induction.
+            \item{\fauxsc{EP-Prev}}\\
+            Straightforward induction.
+            \item{\fauxsc{EP-StagedBeta}} ($s = \myprev{\mynext{t_1}}, \quad t = t_1'$)\\
+            $t_1 = t_1'$ であるなら, \fauxsc{E-StagedBeta} より明らか. そうでないなら, 帰納法の仮定より, $\myprev{\mynext{t_1}} \rarrow t_1$ by \fauxsc{E-StagedBeta}
+            と $t_1 \rarrow^* t_1'$ を得る. よって, $\myprev{\mynext{t_1}} \rarrow^* t_1'$.
+            \item{\fauxsc{EP-StagedEta}}\\
+            上の場合と同様.
+        \end{itemize}
+    \end{proof}
+\end{jlemma}

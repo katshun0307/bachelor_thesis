@@ -1,0 +1,112 @@
+
+\vspace{10pt}
+
+\begin{definition}[Levels of Terms]\label{DefLevelTerms}
+    We define levels of terms in the following way.
+    \begin{itemize}
+        \item A level 0 term is a term which is not inside any types.
+        \item Terms inside types inside terms of level $n$ are level $n + 1$.
+    \end{itemize}
+\end{definition}
+
+\begin{definition}[Algorithmic Reduction]\label{DefAlgorithmicReduction}
+    We define algorithmic reduction with index $m \in \mathbb{N}$ denoted $\alarrow{m}$ 
+    as the reduction with index $m$ for any level of terms.
+\end{definition}
+
+\begin{definition}[Algorithmic Normal Form]\label{DefANF}
+    We define the \emph{algorithmic normal form} of $t$ as the normal form by algorithmic reduction 
+    at all levels of terms (as defined in \Cref{DefLevelTerms}) with index $m$ {(\alarrow{m})},
+    denoted by \anf{m}{t}.
+\end{definition}
+
+\begin{lemma}[Strong Normalization of Algorithmic Reduction at Level 0]\label{AlgorithmicSN0}
+    For any $m$, the algorithmic reduction with index $m$ at level 0 is strongly normalizing.
+    \begin{proof}
+        Immediate from \Cref{SN}
+    \end{proof}
+\end{lemma}
+
+\begin{theorem}[Strong Normalization of Alogrithmic Reduction]\label{AlgorithmicSN}
+    For any $m$, the algorithmic reduction with index m is strongly normalizing.
+    \begin{proof}
+        \textbf{By induction on level n.}
+        We have strong normalization for level 0 terms by \Cref{AlgorithmicSN0}. We can prove
+        level $i+1$ subterm is strongly normalizing if we can prove for level $i$.
+    \end{proof}
+\end{theorem}
+
+\begin{theorem}[Church-Rosser Property of Algorithmic Reduction]\label{AlgorithmicConfluence}
+    The algorithmic reduction with index 0 is confluent for reduction on all levels.
+    If $q \iarrow{0} r$ at level $i$ reduction and $q \iarrow{0} s$ at level $j$ reduction,
+    then there exists $t$ s.t. $r \iarrow{0} t$ and $s \iarrow{0} t$.
+    \begin{proof}
+        \begin{itemize}
+            \item{$i = j$}\\
+            By \Cref{ChurchRosser}, there exists such $t$.
+            \item{$i \neq j$}\\
+            The reduction at a given level does not interfere with other terms; it does not create an another redex at a different level.
+            Thus, changing the order of the 2 reductions will yield the same result.
+        \end{itemize}
+    \end{proof}
+\end{theorem}
+
+\begin{theorem}[Type Preservation of Alogrithmic Reduction]\label{AlgorithmicTypePreservation}
+    If $\Gamma \myvdash{n} t \COL T$ and $t \alarrow{m} t'$ then $\Gamma \myvdash{n} t' \COL T$.
+    \begin{proof}
+        \textbf{By induction on level n}.
+        By using \fauxsc{QT-App} and \fauxsc{T-Conv}, we can prove type preservation
+        on the reduction of terms up to level $n$ from that of up to level $n-1$.  
+        % \textbf{By induction on the derivation of }$t \alarrow{m} t'$.
+    \end{proof}
+\end{theorem}
+
+\begin{lemma}[Alogrithmic Reduction and Term Equivalence]\label{AlgorithmicTermEquivalence}
+    If $\Gamma \myvdash{n} M \COL T$ and $M \alarrow{m} M'$ then $\Gamma \myvdash{n} M \myequiv{m} M'$
+    \begin{proof}
+        Proven from induction on $M \alarrow{m}  M'$
+    \end{proof}
+\end{lemma}
+
+\begin{theorem}[Term Equivalence of Algorithmic Normal Form]\label{AlgorithmicANFEquivalence}
+    If $\Gamma \myvdash{n} t \COL T$ then $\Gamma \myvdash{n} t \myequiv{m} \anf{m}{t}$.
+    \begin{proof}
+        From \Cref{AlgorithmicTermEquivalence} and \Cref{AlgorithmicTypePreservation}.
+    \end{proof}
+\end{theorem}
+
+\begin{lemma}[Reflexivity in Alogrithmic Equivalence]\label{AlRefl}
+    For all $n \in \mathbb{Z}, m \in \mathbb{N}$,
+    \begin{itemize}
+        \item $\Gamma \myalvdash{n} K \myequiv{m} K$.
+        \item $\Gamma \myalvdash{n} T \myequiv{m} T$.
+        \item $\Gamma \myalvdash{n} t \myequiv{m} t$.
+    \end{itemize}
+    \begin{proof}
+        \textbf{By straightforward induction on the derivation rules.}
+    \end{proof}
+\end{lemma}
+
+\begin{lemma}[Symmetry in Alogrithmic Equivalence]\label{AlSym}
+    For all $n \in \mathbb{Z}, m \in \mathbb{N}$,
+    \begin{itemize}
+        \item If $\Gamma \myalvdash{n} K_1 \myequiv{m} K_2$ then $\Gamma \myalvdash{n} K_2 \myequiv{m} K_1$.
+        \item If $\Gamma \myalvdash{n} T_1 \myequiv{m} T_2$ then $\Gamma \myalvdash{n} T_2 \myequiv{m} T_1$.
+        \item If $\Gamma \myalvdash{n} t_1 \myequiv{m} t_2$ then $\Gamma \myalvdash{n} t_2 \myequiv{m} t_1$.
+    \end{itemize}
+    \begin{proof}
+        \textbf{By straightforward induction on the derivation rules.}
+    \end{proof}
+\end{lemma}
+
+\begin{lemma}[Transitivity of Algorithmic Equivalence]\label{AlTrans}
+    For all $n \in \mathbb{Z}, m \in \mathbb{N}$,
+    \begin{itemize}
+        \item If $\Gamma \myalvdash{n} K_1 \myequiv{m} K_2$ and $\Gamma \myalvdash{n} K_2 \myequiv{m} K_3$ then $\Gamma \myalvdash{n} K_1 \myequiv{m} K_3$.
+        \item If $\Gamma \myalvdash{n} T_1 \myequiv{m} T_2$ and $\Gamma \myalvdash{n} T_2 \myequiv{m} T_3$ then $\Gamma \myalvdash{n} T_1 \myequiv{m} T_3$.
+        \item If $\Gamma \myalvdash{n} t_1 \myequiv{m} t_2$ and $\Gamma \myalvdash{n} t_2 \myequiv{m} t_3$ then $\Gamma \myalvdash{n} t_1 \myequiv{m} t_3$.
+    \end{itemize}
+    \begin{proof}
+        \textbf{By straightforward induction on the derivation rules.}
+    \end{proof}
+\end{lemma}
