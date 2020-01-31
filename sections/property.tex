@@ -15,13 +15,13 @@
             \item{\fauxsc{T-Var}}(t = y)
             \begin{enumerate}
                 \item{y = x}\\
-                $\Gamma, x \mysncln{n_1} \myvdash{n_2} x \COL T$ and $\Gamma \myvdash{n_1} s \COL S$ とする.
-                環境内に同じバインドを持つ変数は存在し得ないことから, 
+                $\Gamma, x \mysncln{n_1} \myvdash{n_2} x \COL T$ かつ $\Gamma \myvdash{n_1} s \COL S$ とする.
+                環境内に同じ束縛を持つ変数は存在し得ないことから, 
                 $\Gamma$ は, $x$ への束縛を有せず, $n_1 = n_2$ とわかる.
                 また, $S$ は自由変数 $x$ を含まないため, $[x \mapsto s] S = S$ である.
                 よって, $\Gamma \myvdash{n_1} s \COL S$ を示せば十分であり, 示された.
                 \item{$y \neq x$}\\
-                $\Gamma, x \mysncln{n_1} S \myvdash{n_2} y \COL T$ and $\Gamma \myvdash{n_1} s \COL S$ とする.
+                $\Gamma, x \mysncln{n_1} S \myvdash{n_2} y \COL T$ かつ $\Gamma \myvdash{n_1} s \COL S$ とする.
                 \fauxsc{T-Var} より, $(y \mysncln{n_2} T) \in \Gamma$ である. 
                 よって, $\Gamma \myvdash{n_2} y \COL T$. $T$ は自由変数 $x$ を含まないため, $[x \mapsto s] T = T$ である.
                 よって, 示された.
@@ -34,12 +34,13 @@
             \end{prooftree}
             帰納法の仮定より,
             $\Gamma, y \mysncln{n_2} S' \myvdash{n_1} s \COL S$ ならば, $\Gamma, y \mysncln{n_2} S' \myvdash{n_2} [x \mapsto s] t' \COL T'$ である.
-            \\示したい命題は, 
+            \\
             $\Gamma, x \mysncln{n_1} S \myvdash{n_2} \mylam{y}{S'}{t'} \COL \Pi y \COL S'. T'$ 
-            かつ $\Gamma \myvdash{n_1} s \COL S$, であるなら, $\Gamma \myvdash{n_2} \mylam{y}{S'}{[x \mapsto s] t'} \COL \Pi y \COL S'. [x \mapsto s] T'$.
-            \\$\Gamma \myvdash{n_2} s \COL S$, のとき, weakening より, $\Gamma, y \mysncln{n_2} S' \myvdash{n_1} s \COL S$.
+            かつ $\Gamma \myvdash{n_1} s \COL S$, ならば,
+            $\Gamma \myvdash{n_2} \mylam{y}{S'}{[x \mapsto s] t'} \COL \Pi y \COL S'. [x \mapsto s] T'$ を示したい.
+            \\$\Gamma \myvdash{n_2} s \COL S$, のとき, \Cref{Weakening} より, $\Gamma, y \mysncln{n_2} S' \myvdash{n_1} s \COL S$.
             よって, 帰納法の仮定より, \(\Gamma, y \mysncln{n_2} S' \myvdash{n_2} [x \mapsto s] t' \COL [x \mapsto s] T'\).
-            \\\fauxsc{T-Abs} によって, 示したい命題が得られる.
+            \\\fauxsc{T-Abs} によって, 目的の命題が得られる.
             \begin{prooftree}
                 \AxiomC{$\Gamma \myvdash{n_2} S' \DCOL *$}
                 \AxiomC{$\Gamma, y \mysncln{n_2} S' \myvdash{n_2} [x \mapsto s] t' \COL [x \mapsto s] T'$}
@@ -77,16 +78,16 @@
 
 \begin{jtheorem}[保存]\label{Preservation}
     任意の $i  \in \mathbb{N}, n \in \mathbb{Z}$ に対して,
-    $\Gamma \myvdash{n} t \COL T$ and $\myval{t}{d} \iarrow{i} \myval{t'}{d}$ であるならば, 
+    $\Gamma \myvdash{n} t \COL T$ かつ $\myval{t}{d} \iarrow{i} \myval{t'}{d}$ ならば, 
     $\Gamma \myvdash{n} t'\COL T$ が成立する.
 \begin{proof}
     \textbf{$\Gamma \myvdash{n} t\COL T$ の導出に関する構造帰納法による.}
     \begin{itemize}
-        \item{\fauxsc{T-Var}} (t = x)\\
+        \item{\fauxsc{T-Var}} ($t = x$)\\
         $\myval{x}{d} \iarrow{i} \myval{t'}{d}$ であるような $t'$ は存在しない.
-        \item{\fauxsc{T-Abs}} (t = $\mylam{x}{S}{t}$)\\
+        \item{\fauxsc{T-Abs}} ($t = \mylam{x}{S}{t}$)\\
         $\myval{\mylam{x}{S}{t}}{d} \iarrow{i} t'$ であるような $t'$ は存在しない. 
-        \item{\fauxsc{T-App}} (t = $t_1 \mysp t_2$)\\
+        \item{\fauxsc{T-App}} ($t = t_1 \mysp t_2$)\\
         帰納法の仮定より, 以下の命題が与えられる. 
         \begin{equation*}\tag{IH1}
             (\Gamma \myvdash{n} t_1\COL \Pi x\COL S.T \land \myval{t_1}{d} \iarrow{i} \myval{t_1'}{d}) \Rightarrow \Gamma \myvdash{n} t_1'\COL \Pi x\COL S.T
@@ -125,9 +126,9 @@
         \end{enumerate}
         \item{\fauxsc{T-Conv}}\\
         Immediate. 
-        \item{\fauxsc{T-PrevIntro}} (t =$\myprev{s}$) \\
+        \item{\fauxsc{T-PrevIntro}} ($t = \myprev{s}$) \\
         帰納法の仮定より,  
-            $\Gamma \myvdash{n-1} s \COL \bigcirc T$ かつ $\myval{t}{d} \iarrow{i} \myval{t'}{d}$ であるならば, $\Gamma \myvdash{n-1} s'\COL T$.
+            $\Gamma \myvdash{n-1} s \COL \bigcirc T$ かつ $\myval{t}{d} \iarrow{i} \myval{t'}{d}$ ならば, $\Gamma \myvdash{n-1} s'\COL T$.
         \begin{enumerate}
             \item {$\myprev{s} \iarrow{i} \myprev{s'}$}\\
             以下の導出により示される.
@@ -143,7 +144,7 @@
         \begin{enumerate}
             \item{$\mynext{s} \iarrow{i} \mynext{s'}$}\\
             上の場合と同様.
-            \item{$s = \myprev{u}, \mynext{\myprev{u}} \iarrow{i} u, T = \bigcirc T'$}\\
+            \item{$s = \myprev{u}, \mynext{\myprev{u}} \iarrow{i} u, \quad T = \bigcirc T'$}\\
             $\Gamma \myvdash{n} t \COL T$ が以下のように導出できる.
             \begin{prooftree}
                 \AxiomC{$\Gamma \myvdash{n} u \COL \bigcirc T'$}
@@ -227,7 +228,7 @@
                 \item{$t_1 \iarrow{i+1} t_1'$ である場合}\\
                 \fauxsc{E-Next} より, $\mynext{t_1} \iarrow{i} t_1'$ である.
                 \item{$t_1 \in v^{i+1}$ である場合}\\
-                値の定義より, $t_1 \in v_{i+1}$ であるなら,  $\mynext{t_i} \in v_{i}$.
+                値の定義より, $t_1 \in v_{i+1}$ ならば, $\mynext{t_i} \in v_{i}$.
             \end{itemize}
         \end{itemize}
     \end{proof}
@@ -236,11 +237,11 @@
 
 また, 項の正規形は一意に定まることを示すため, 強正規化性と合流性を示す.
 
-まず, 強正規化性を示すために, \lamlf の強正規化性を仮定し, \lamlfcirc から \lamlf 
+まず, 強正規化性を示すために, \lamlf(Edinburgh logical framework) の強正規化性を仮定し, \lamlfcirc から \lamlf 
 へ, 簡約と型付けを保存するような変換を\Cref{DefLamLFTransSN}に示す. そして背理法によって, \lamlfcirc が
 強正規化性を持たないなら, \lamlf が強正規化性を持たないことを\Cref{SN}で示す.
 
-\begin{jdefinition}[Edinburgh Logical Framework への変換]\label{DefLamLFTransSN}
+\begin{jdefinition}[Edinburgh logical framework への変換]\label{DefLamLFTransSN}
     以下に\lamlfcirc の環境, カインド, 型, 項 を \lamlf のそれに対応させるような変換 $\sharp$ 及び, $\flat$ を定義する.
     定義されていない変換は恒等変換である. また, 型 \Unit \mysp は, 項 \unit \mysp からなるシングルトン型である. 
     \begin{itemize}
@@ -260,13 +261,13 @@
 \begin{jtheorem}[強正規化性]\label{SN}
     $t$ が型付けされた項ならば, 無限の簡約列は存在しない.
     \begin{proof}
-        \textbf{背理法による.}
+        \textbf{背理法.}
         \lamlfcirc が強正規化性を持たないと仮定する. 
         このとき, \lamlfcirc で型付けされた項$t$が存在し, $t \rightarrow t_1 \rightarrow t_2 \rightarrow \cdots $
         のような無限長の簡約列が存在する. 
         \Cref{FiniteStageReduction}より, この簡約列には無限個の \mbeta-簡約 あるいは 同値型に関する簡約ステップが存在から,
         よって, \Cref{BetaTransPreserve} と \Cref{EqualityTransPreserve} より, \lamlf でも $\strans{t}$ の無限長の簡約列が存在する.
-        これは, \lamlf が強正規化性を持つことに矛盾している.
+        これは, \lamlf が強正規化性を持つことに矛盾する.
     \end{proof}
 \end{jtheorem}
 \vspace{10pt}
@@ -287,7 +288,7 @@
     \infrule[EP-Beta]{
         s \parrow{i} s'
         \andalso t \parrow{i} t'
-        \andalso i \le 0
+        \andalso i = 0
     }{
         (\mylam{x}{T}{t})\mysp s \parrow{i} [x \mapsto s'] t'
     } \bcpnl
@@ -311,7 +312,7 @@
         t \parrow{i-1} t'
     }{
         \myprev{t} \parrow{i} \myprev{t'}
-    } \quad
+    } \bcpnl
     \infrule[EP-StagedBeta]{
         t \parrow{i} t'
         \andalso i \le 1
@@ -336,23 +337,23 @@
 \FB
 
 \begin{jlemma}[並行簡約のダイヤモンド性]\label{DiamondParallel}
-    任意の自然数 $i$ と任意の項 $s$ について, $s \parrow{i} t_1$ かつ $s \parrow{i} t_2$ であるなら, 
-    $t_1 \parrow{i} t$ and $t_2 \parrow{i} t$ が成立する.
+    任意の自然数 $i$ と任意の項 $s$ について, $s \parrow{i} t_1$ かつ $s \parrow{i} t_2$ ならば, 
+    $t_1 \parrow{i} t$ かつ $t_2 \parrow{i} t$ が成立する.
     \begin{proof}
         はじめに, 項 $M$ に対して, 項 $\tilde{M}$ を定義する.
         \begin{itemize}
-            \item $M \equiv x$ であるなら, $\tilde{M} \equiv x$
-            \item $M = \mylam{x}{T}{M_1}$ であるなら $\tilde{M} = \mylam{x}{T}{\tilde{M_1}}$
+            \item $M \equiv x$ ならば $\tilde{M} \equiv x$
+            \item $M = \mylam{x}{T}{M_1}$ ならば $\tilde{M} = \mylam{x}{T}{\tilde{M_1}}$
             \item $M = M_1 M_2$ かつ $M$ \mbeta-基でないなら, $\tilde{M} = \tilde{M_1} \tilde{M_2}$
-            \item $M = (\mylam{x}{T}{M_1}) M_2$ であるなら, $\tilde{M} = [x \mapsto \tilde{M_2}] \tilde{M_1}$
+            \item $M = (\mylam{x}{T}{M_1}) M_2$ ならば $\tilde{M} = [x \mapsto \tilde{M_2}] \tilde{M_1}$
             \item $M = \mynext{M_1}$ かつ $M$ がステージ簡約基でないなら, $\tilde{M} = \mynext{\tilde{M_1}}$ 
-            \item $M = \mynext{\myprev{M_1}}$ であるなら, $\tilde{M} = \tilde{M_1}$ 
+            \item $M = \mynext{\myprev{M_1}}$ ならば $\tilde{M} = \tilde{M_1}$ 
             \item $M = \myprev{M_1}$ かつ $M$ がステージ簡約基でないなら $\tilde{M} = \myprev{\tilde{M_1}}$ 
-            \item $M = \myprev{\mynext{M_1}}$ であるなら, $\tilde{M} = \tilde{M_1}$
+            \item $M = \myprev{\mynext{M_1}}$ ならば $\tilde{M} = \tilde{M_1}$
             % \item If $M = \myidpeel{M_1}{x}{M_2}$ and $M$ is not a stage redex, $\tilde{M} = M$
-            \item $M = \myidpeel{\myid{M_1}}{x}{M_2}$ であるなら, $\tilde{M} = [x \mapsto M_1] \tilde{M_2}$
+            \item $M = \myidpeel{\myid{M_1}}{x}{M_2}$ ならば, $\tilde{M} = [x \mapsto M_1] \tilde{M_2}$
         \end{itemize}
-        $M \parrow{i} N$ であるなら, $N \parrow{i} \tilde{M}$ であることを示す. これは, 並行簡約のダイヤモンド性を示している.\\
+        $M \parrow{i} N$ ならば, $N \parrow{i} \tilde{M}$ であることを示す. これは, 並行簡約のダイヤモンド性を示している.\\
         \textbf{$M$ の構造に関する帰納法.}
         \begin{itemize}
             \item{$M = x$}\\
@@ -363,12 +364,12 @@
             \item{$M = M_1 M_2, \quad M_1 M_2 \parrow{i} N_1 N_2$ かつ $M$ が \mbeta-基出ない場合}\\
             帰納法の仮定より, $N_k \parrow{i} \tilde{M_k} (k = 1, 2)$ である. 
            これより, $N_1 N_2 \parrow{i} \tilde{M_1} \tilde{M_2}$ が示される.
-            \item{$M = (\mylam{x}{T}{M_1}) M_2, \quad (\mylam{x}{T}{M_1}) M_2 \parrow{i} N$}\\
+            \item{$M = (\mylam{x}{T}{M_1}) M_2, \quad (\mylam{x}{T}{M_1}) M_2 \parrow{i} N$}
             \begin{itemize}
                 \item{$N = [x \mapsto N_2] N_1$ である場合}\\
                 帰納法の仮定より, $N_k \parrow{i} \tilde{M_k} (k = 1, 2)$ であり, よって ${N \parrow{i} [x \mapsto \tilde{M_2}] \tilde{M_1}}$ が成立する.
                 \item{$N = N_0 N_2$}\\
-                帰納法の仮定より, ${N_0 \parrow{i} \mylam{x}{T}{\tilde{M_1}}}$ and ${N_2 \parrow{i} \tilde{M_2}}$ が成り立つ.
+                帰納法の仮定より, ${N_0 \parrow{i} \mylam{x}{T}{\tilde{M_1}}}$ かつ ${N_2 \parrow{i} \tilde{M_2}}$ が成り立つ.
                 よって, $N_0 N_2 \parrow{i} [x \mapsto \tilde{M_2}] \tilde{M_1}$ が成立する.
             \end{itemize}
         \end{itemize}
@@ -380,10 +381,11 @@
 
 \begin{jtheorem}[合流性]\label{ChurchRosser}
     $q \rightarrow^* r$ かつ $q \rightarrow^* s$ ならば, 
-    $r \rightarrow^* t$ and $s \rightarrow^* t$ であるような項 $t$ が存在する.
+    $r \rightarrow^* t$ かつ $s \rightarrow^* t$ であるような項 $t$ が存在する.
     \begin{proof}
         \Cref{DiamondParallel} と \Cref{ParallelReductionTransClosure} より従う.
     \end{proof}
 \end{jtheorem}
 \vspace{10pt}
+
 % next section: ./algorithmic.tex

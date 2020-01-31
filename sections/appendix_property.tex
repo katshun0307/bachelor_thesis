@@ -52,12 +52,12 @@
             その後, \fauxsc{E-Beta} と帰納法の仮定を複数回用いることで, 求めたい結論を得る.
             \item{\fauxsc{EP-App}} ($s = t_1 \mysp t_2, \quad t = t_1' \mysp t_2'$)\\
             \fauxsc{EP-App1} と \fauxsc{EP-App2} を複数回用いて, $t_1 t_2 \rarrow^{*} t_1' t_2'$ を得る.
-            \item{\fauxsc{EP-Abs}}\\
-            Straightforward induction.
-            \item{\fauxsc{EP-Next}}\\
-            Straightforward induction.
-            \item{\fauxsc{EP-Prev}}\\
-            Straightforward induction.
+            % \item{\fauxsc{EP-Abs}}\\
+            % Straightforward induction.
+            % \item{\fauxsc{EP-Next}}\\
+            % Straightforward induction.
+            % \item{\fauxsc{EP-Prev}}\\
+            % Straightforward induction.
             \item{\fauxsc{EP-StagedBeta}} ($s = \myprev{\mynext{t_1}}, \quad t = t_1'$)\\
             $t_1 = t_1'$ であるなら, \fauxsc{E-StagedBeta} より明らか. そうでないなら, 帰納法の仮定より, $\myprev{\mynext{t_1}} \rarrow t_1$ by \fauxsc{E-StagedBeta}
             と $t_1 \rarrow^* t_1'$ を得る. よって, $\myprev{\mynext{t_1}} \rarrow^* t_1'$.

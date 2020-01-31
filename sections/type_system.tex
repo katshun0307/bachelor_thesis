@@ -2,12 +2,11 @@
 % previous section: ./introduction.tex
 
 % 章の構成
-この章では, 依存型を備えた体系 \lamlf について,
-多段階計算の体系である \lamcirc を拡張し, さらに同値型に関する規則を追加する.
-また, 体系の同値性を,コード間の同値に注意しながら定義する. 
-はじめに \Cref{subsec_syntax} で, 言語の文法と可能な判断を示し, 
-型システムを説明する. さらに項の簡約規則を導入し, 
-同値性の評価規則を追加する.
+この章では, 提案言語である \lamlfcirc について説明する.
+はじめに, 言語の文法と型システムを導入し,
+簡約に関係について説明する.
+次に, 同値性の定義を, 簡約関係を踏まえながら紹介する.
+最後に, 同値型に関する規則について, 例を交えながら解説する.
 
 \subsection{\lamlfcirc の文法}\label{subsec_syntax}
 
@@ -58,7 +57,7 @@
 及び 同値型に関する \myid{t} と \myidpeel{t}{x}{t} がある.
 
 型には, 依存型における型族$X$と, 同値型$\textrm{Eq}_{T}$,
-型抽象$\Pi x \COL T. T$, 内部に項を持つ依存型 $T t$,
+型抽象$\Pi x \COL T. T$, 内部に項を持つ依存型 $T \mysp t$,
 及び, 多段階計算のプログラムコードを表す$\bigcirc T$がある.
 また, 型抽象$\Pi x \COL T_1. T_2$ の $T_2$ の内部に $x$ が束縛変数として出現しない場合は, 
 単純型付きラムダ計算における関数型と同じように, 束縛変数の $x$ を省いて $T_1 \rarrow T_2$ と表記することがある.
@@ -77,18 +76,6 @@
   % \WFTy
 \end{fig}
 
-\begin{fig}{カインド付け規則}
-  \centering
-  \footnotesize
-  \KVar \quad
-  \KPi \bcpnl
-  \KApp \quad
-  \KConv \bcpnl
-  \KEquiv \quad
-  \KCirc
-  \label{fig_kinding}
-\end{fig}
-
 \begin{fig}{型付け規則}
   \centering
   \footnotesize
@@ -103,12 +90,24 @@
   \label{fig_typing}
 \end{fig}
 
+\begin{fig}{カインド付け規則}
+  \centering
+  \footnotesize
+  \KVar \quad
+  \KPi \bcpnl
+  \KApp \quad
+  \KConv \bcpnl
+  \KEquiv \quad
+  \KCirc
+  \label{fig_kinding}
+\end{fig}
+
 % == 型付け規則について ==
 \Cref{fig_typing}は, 型付け規則を示しており, 
-多段階計算に関する規則である\fauxsc{T-PrevIntro} と, \fauxsc{T-NextIntro}を備えている.
+多段階計算に関する規則である\fauxsc{T-PrevIntro}, \fauxsc{T-NextIntro}
+及び同値型に関する規則\fauxsc{T-EqIntro} と \fauxsc{T-EqEllim} を備えている.
 また, \fauxsc{T-Conv} は, 依存型を含む体系に特徴的な規則であり,
 内部に同値な項を持つ依存型同士であれば, 型を付け替えても良いことを示している.
-
 % == カインド化規則について ==
 \Cref{fig_kinding}は, 型に対するカインド付け規則 を示している. 
 \fauxsc{K-Conv}もまた, 依存型に特徴的な規則であり, 
@@ -116,68 +115,84 @@
 これは, 間接的に, \fauxsc{T-Conv} と合わせて, カインド内部の型内部の項を,
 等しい別の項と入れ替える事ができることを示している.
 
-\subsection{同値性の定義}\label{subsec_equiv}
 
-同値は, 種, 型, 項のすべてに対して自然数インデックスにより定義を拡張され, インデックスを含む記号 $\myequiv{m}$ で表す.
-このインデックスにより, 適用される同値規則を制限する.
+\subsection{項の簡約}
+項の簡約規則については, \Cref{fig_reduction} に示されるとおりである.
+簡約関係は, Yuse ら\cite{Yuse}を参考に, 整数インデックスに関して拡張されている.
+簡約は4種類あり, \mbeta-簡約, ステージに関する2種類の簡約, 及び同値型に関する簡約からなる.
+% ベータ簡約
+ベータ簡約と同値型に関する簡約は, プログラムコードの内部の項に対しては, 適用したくない.
+このような定義を可能にするため, ステージ0の項, 即ちプログラムコードでない通常の項に対してのみ,
+簡約が行えるように, 規則にはインデックスの制限がついている.
+% ステージに関する簡約について
+ステージに関する簡約は, \fauxsc{E-StageBeta}と\fauxsc{E-StageEta} からなり, 
+\fauxsc{E-StageBeta} は, \tnext でステージが一つ上がった項に対して, \tprev を適用することにより, 
+再びもとのステージに戻ることに対応する. 
+\fauxsc{E-StageEta} は, \tprev で1つ前のステージに引き戻されたプログラムコードが, 
+\tnext によって, もとのステージに戻ることを表現している.
+% ステージに関する簡約の制限
+このうち, \fauxsc{E-StageBeta} は, コード内部への他のコードの埋め込みに用いられる.
+よって, 一重のプログラムコード内では, \fauxsc{E-StageBeta} の簡約を許すため,
+ステージが1までの項において, この簡約は許されている.
+% 項の簡約と値
+このように, 項の簡約は, インデックスによって適用可能な規則が変わるので,
+値の定義も, 簡約のインデックスによって, 変化する.
+このため, \Cref{fig_syntax} において, 値もインデックスによって拡張されて定義されており,
+$v^{i}$ は, $i$-インデックスの簡約がこれ以上存在しない項を表している.
+
+\begin{fig}{簡約規則}
+  \centering
+  \footnotesize
+  \EAppAbs \quad
+  \EAbs \bcpnl
+  \EAppOne \quad
+  \EAppTwo \bcpnl
+  \EStageBeta \bcpnl
+  \EStageEta \bcpnl
+  \ENext \quad
+  \EPrev \bcpnl
+  \EId \bcpnl
+  \EEq
+  \label{fig_reduction}
+\end{fig}
+
+
+\subsection{同値性の定義}\label{subsec_equiv}
+同値は, 種, 型, 項のすべてに対して整数インデックスにより定義を拡張され, インデックスを含む記号 $\myequiv{m}$ で表される.
+インデックスによって, 簡約規則を制限することで, 簡約関係に対応するような同値性の定義を可能にしており,
+インデックスは, 簡約における場合と同様, 対象の項のステージを表している.
 
 \subsubsection{項に関する同値性}
-
-% 添字はどのような目的で導入されたか
 \Cref{fig_q} は, 項に関する同値規則を表している.
-この体系では, 多段階計算によって表現できるプログラムコードについても
-同値性を定義しなければならない. そのため, 通常の項については, 
-通常の同値規則を許す一方, プログラムコードを表す値に対しては, 
-内部の項が全く同じ, すなわち抽象構文木が等しい場合のみ,
-同値と評価したい.
 
-例として, 以下の同値を考える. 
-このとき, \Cref{ex_00} は明らかに成り立つようにしたい.
-また, \Cref{ex_01} も, 中の項の構文木が等しいので, 成立するような定義をしたい.
-しかしながら, \Cref{ex_02} は, 中の項の構文木が異なるため, 
-同値と定義したくない. 
+% 同値規則の index がどのように変化していくか
+はじめに, 項の同値の評価規則のうち, インデックスの値を変化させる規則は, 
+\fauxsc{Q-NextIntro} と \fauxsc{Q-PrevIntro} である. この規則では, 
+\tnext の内部の項は インデックスをインクリメントした同値で比較し, 
+\tprev の内部は, インデックスをデクリメントした同値で比較することで, 
+インデックスをステージに対応させていることがわかる.
 
-\begin{align}
-  3 &\equiv 3 \label{ex_00} \\
-  \mynext{3} &\equiv \mynext{3} \label{ex_01}\\ 
-  \mynext{3} &\equiv \mynext{\mylam{x}{\INT}{x} \mysp 3} \label{ex_02} 
-\end{align}
-
-しかしながら, このような例に加えて, プログラムコードの内部に埋め込みが存在する場合について考える必要がある.
-\Cref{ex_03} の場合,  左辺のプログラムコードの内部に \mynext{3} というコードの埋め込みが存在し,
-これを簡約すると, 右辺の形となる. よって, この同値は成立するように定義したい.
-
-ただし, \Cref{ex_04} のように, もう1重 \tnext がついたような式では, 
-左辺は, "埋め込みが存在するプログラムコードのプログラムコード" となり, 
-コード内部の埋め込みは簡約されない. よって, 簡約に対応するこの同値は成立するべきではない.
+次に注目するべきは, コード間の同値である.
+% StageBeta
+例えば, プログラムコードの内部では, コードの埋め込みに対応する
+\fauxsc{E-StageBeta} の簡約しか許されていないことに注意すると,
+このような同値を判断する際には, コードの埋め込みを通じて
+等しくなるような項同士のみを同値と定義したい.
+実際, \fauxsc{Q-StageBeta} では, \Cref{ex_03} のように, インデックスが1以下,
+即ち高々一重のコード内部のみ, この規則の適用が許されている事がわかる.
+% 続き... (成立しない場合)
+対して, \Cref{ex_04} のように, 2重の \tnext 内部に \fauxsc{E-StageBeta}基が出現する場合を考える.
+このとき, \Cref{fig_ex04_proof} のような導出木によって,
+同値を言えないことがわかる.
 
 \begin{align}
   \mynext{\mylam{x}{\INT}{x} \mysp \myprev{\mynext{3}}} &\equiv \mynext{\mylam{x}{\INT}{x} \mysp 3} \label{ex_03}\\
-  \mynext{\mynext{\mylam{x}{\INT}{x} \mysp \myprev{\mynext{3}}}} &\equiv \mynext{\mynext{\mylam{x}{\INT}{x} \mysp 3}} \label{ex_04}
+  \mynext{\mynext{\mylam{x}{\INT}{x} \mysp \myprev{\mynext{3}}}} &\not\equiv \mynext{\mynext{\mylam{x}{\INT}{x} \mysp 3}} \label{ex_04}
 \end{align}
-
-このようなことを可能にするため, 本研究では, 
-同値に整数インデックスを付加することにより, \tnext と \tprev の入り組み具合,
-即ち項が存在するステージを捉え, 適用できる同値規則を制限した.
-この整数インデックスは, あくまで同値の評価過程の内部実装としてであり,
-この言語を使う場合は 0-index の同値しか使用を想定していない.
-
-% 同値規則の index がどのように変化していくか
-まず項の同値の評価規則のうち, インデックスの値を変化させる規則は, 
-\fauxsc{Q-NextIntro} と \fauxsc{Q-PrevIntro} であり, この規則は, 
-\tnext の内部の項は インデックスをインクリメントした同値で比較して, 
-\tprev の内部は, インデックスをデクリメントした同値で比較することを示している.
 
 % 同値規則が許される条件
 また, \fauxsc{Q-Beta} の適用条件は, インデックス$m$ が, $m = 0$ を満たしている場合のみ, 
-すなわち, \mbeta-同値な項が, プログラムコードでない場合に限り, この規則が使用できる.
-
-ステージに関する簡約に対応する同値については, 
-まず プログラムコードの内部における埋め込みを表す \fauxsc{E-StageBeta} に対応する
-同値規則の\fauxsc{Q-CircBeta} が存在する. この規則では, 同値のインデックスを 1以下とすることにより, 
-1重のプログラムコード内については, このような規則が成立しながらも, \Cref{ex_04} の例のように, 
-埋め込みの存在するコードのコードに対しては, 簡約も許されていないため, 同値と判断しないようになっている.
-\Cref{ex_04} が成立しないことの例は, \Cref{fig_ex04_proof} に示されている.
+すなわち, \mbeta-同値な項が, プログラムコードでない場合に限り, この規則が使用できることがわかる.
 
 \begin{fig}{\Cref{ex_04}が成立しないことのイメージ}
   \begin{prooftree}
@@ -205,21 +220,20 @@
   \QRefl \quad
   \QSym \bcpnl
   \QTrans \bcpnl
-  \QNextIntro \quad
+  \QNextIntro \bcpnl
   \QPrevIntro \bcpnl
-  \QCircBeta \quad
+  \QCircBeta \bcpnl
   \QCircEta
   \label{fig_q}
 \end{fig}
+\FB
 
 % 構文木の同値はアルファ同値か?
 % Q-refl に t1 == t2, Gamma |- t_1 : T の規則に変える
 % ここで, \fauxsc{Q-Refl} の規則では, アルファ同値であるような規則に変化させる.
 
-\FB
 
 \subsubsection{型, カインドに関する同値}
-
 型とカインドに関する同値は, \Cref{fig_tq,fig_kq} に示される.
 この体系は依存型を含み, 型やカインドの内部にも項が含まれうるため,
 型とカインドに関する同値にも, 項に関する同値と同じように, 整数インデックスに関して拡張する必要がある.
@@ -249,19 +263,15 @@
   \label{fig_tq}
 \end{fig}
 
-
 \subsection{同値型の追加}\label{subsec_equalitytype}
-
 ここでは, 同値型の体系への追加について述べる. 
 同値型は一般的な形をしており, Martin-Löf によって提案された形をほとんどそのまま使用している.
-
 % 同値型の規則に関する説明
 同値型に関する規則は, 導入規則 \fauxsc{Eq-Intro} と 除去規則 \fauxsc{Eq-Elim} からなる.
 \fauxsc{T-EqIntro}は, 任意の項について, 反射律が成立していることを示しており, 同値型を生成する規則は, この規則のみである.
 \fauxsc{T-EqElim}は, 除去規則であり, 2つの同じ型$T$をもつ項$a, b$ と, その2つの項に関する同値型を持つ項あった場合, 
 型$T$を持つ変数$x$が存在する環境において, 型$C(x, x, id(x))$ を持つ項$t$が存在するなら, 
 型$C(a, b, \myid{a, b})$ を持つ項を導くことができることを示している.
-
 % 同値型の推移律の証明
 この2つの規則のみで. 同値型は反射, 対称, 推移律を満たしていることが確認できる. ここでは, 反射, 対称律は容易に確認できるため,
 推移律についてのみ示す.
@@ -289,7 +299,6 @@ ${\Gamma \myvdash{n} (\myidpeel{z_1}{x}{\mylam{m}{\myeq{T}{x}{c}}{m}}) z_2 \COL 
 \end{fig}
 
 % 同値から同値型の証明
-
 また, 同値型は体系の同値性から導き出すことができる.
 \Cref{fig_equality_equiv} は, ともに型$T$を持つ項 $t_1$ と$t_2$ と, ${\Gamma \myvdash{n} t_1 \myequiv{m} t_2}$
 から, 型 $\myeq{T}{t_1}{t_2}$ となる項を導く例を示している.
@@ -311,37 +320,5 @@ ${\Gamma \myvdash{n} (\myidpeel{z_1}{x}{\mylam{m}{\myeq{T}{x}{c}}{m}}) z_2 \COL 
   \caption{同値性から対応する同値型の導出}
   \label{fig_equality_equiv}
 \end{figure}
-
-\subsection{項の簡約}
-
-項の簡約規則については, \Cref{fig_reduction} に示されるとおりである.
-簡約関係は, Yuse ら\cite{Yuse}を参考に, 整数インデックスに関して拡張されている.
-簡約は4種類あり, \mbeta-簡約と, ステージに関する2種類の簡約, 同値型に関する簡約からなる.
-
-ステージに関する簡約は, \fauxsc{E-StageBeta} 及び, \fauxsc{E-StageEta} からなり, 
-\fauxsc{E-StageBeta} は, \tnext でステージが一つ上がった項に対して, \tprev を適用することにより, 
-再びもとのステージに戻ることに対応する. 
-\fauxsc{E-StageEta} は, \tprev で1つ前のステージに引き戻されたプログラムコードが, 
-\tnext によって, もとのステージに戻ることを表現している. 
-
-% このことは, \tnext をラムダ抽象. \tprev をラムダ適用とみなと, 
-% \fauxsc{T-StageBeta} は, \mbeta-簡約, \fauxsc{T-StageEta} は, \meta-簡約とみなせることが, 
-% ネーミングの理由となっている.
-
-\begin{fig}{簡約規則}
-  \centering
-  \footnotesize
-  \EAppAbs \quad
-  \EAbs \bcpnl
-  \EAppOne \quad
-  \EAppTwo \bcpnl
-  \EStageBeta \bcpnl
-  \EStageEta \bcpnl
-  \ENext \quad
-  \EPrev \bcpnl
-  \EId \bcpnl
-  \EEq
-  \label{fig_reduction}
-\end{fig}
 
 % next section: ./property.tex

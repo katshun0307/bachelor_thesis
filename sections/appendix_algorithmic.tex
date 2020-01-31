@@ -1,112 +1,116 @@
 
 \vspace{10pt}
 
-\begin{definition}[Levels of Terms]\label{DefLevelTerms}
-    We define levels of terms in the following way.
+\begin{jdefinition}[項のレヴェル]\label{DefLevelTerms}
+    自然数$n$に対して, 項のレヴェルを以下のように定める.
     \begin{itemize}
-        \item A level 0 term is a term which is not inside any types.
-        \item Terms inside types inside terms of level $n$ are level $n + 1$.
+        \item レヴェル$0$の項は, 型の内部に存在しない項である.
+        \item レヴェル$n$の項の中の型の中に含まれる項は, レヴェル$n + 1$ の項である.
     \end{itemize}
-\end{definition}
+\end{jdefinition}
 
-\begin{definition}[Algorithmic Reduction]\label{DefAlgorithmicReduction}
-    We define algorithmic reduction with index $m \in \mathbb{N}$ denoted $\alarrow{m}$ 
-    as the reduction with index $m$ for any level of terms.
-\end{definition}
+\begin{jdefinition}[アルゴリズム簡約]\label{DefAlgorithmicReduction}
+    インデックス $m \in mathbb{N}$ を持つアルゴリズム簡約 $\alarrow{m}$ を,
+    $m$ インデックスを持つアルゴリズム簡約規則の, 任意のレヴェルの項への適用とする.  
+\end{jdefinition}
 
-\begin{definition}[Algorithmic Normal Form]\label{DefANF}
-    We define the \emph{algorithmic normal form} of $t$ as the normal form by algorithmic reduction 
-    at all levels of terms (as defined in \Cref{DefLevelTerms}) with index $m$ {(\alarrow{m})},
-    denoted by \anf{m}{t}.
-\end{definition}
+\begin{jdefinition}[アルゴリズム正規形]\label{DefANF}
+    項 $t$ の インデックス$m$を持つ \emph{アルゴリズム的正規形} を,
+    インデックス$m$ のアルゴリズム簡約による正規形とし, \anf{m}{t} と表記する.
+\end{jdefinition}
 
-\begin{lemma}[Strong Normalization of Algorithmic Reduction at Level 0]\label{AlgorithmicSN0}
-    For any $m$, the algorithmic reduction with index $m$ at level 0 is strongly normalizing.
+\begin{jlemma}[レヴェル0のアルゴリズム簡約の強正規化性]\label{AlgorithmicSN0}
+    任意の $m$に対して, インデックス $m$ のレヴェル$0$ の項の簡約は, 強正規化性を持つ.
     \begin{proof}
-        Immediate from \Cref{SN}
+        \Cref{SN} より明らか.
     \end{proof}
-\end{lemma}
+\end{jlemma}
 
-\begin{theorem}[Strong Normalization of Alogrithmic Reduction]\label{AlgorithmicSN}
-    For any $m$, the algorithmic reduction with index m is strongly normalizing.
+\begin{jtheorem}[アルゴリズム簡約の強正規化性]\label{AlgorithmicSN}
+    任意の $m$に対して, インデックス$m$ でのアルゴリズム簡約は, 強正規化性を持つ.
     \begin{proof}
-        \textbf{By induction on level n.}
-        We have strong normalization for level 0 terms by \Cref{AlgorithmicSN0}. We can prove
-        level $i+1$ subterm is strongly normalizing if we can prove for level $i$.
+        \textbf{レヴェル$n$に関する帰納法による.}
+        レヴェル $0$ の項に対しては, \Cref{AlgorithmicSN0} より成立. 
+        レヴェル $i$ について示されれば, レヴェル$i+1$ についても示される.
+        % We can prove
+        % level $i+1$ subterm is strongly normalizing if we can prove for level $i$.
     \end{proof}
-\end{theorem}
+\end{jtheorem}
 
-\begin{theorem}[Church-Rosser Property of Algorithmic Reduction]\label{AlgorithmicConfluence}
-    The algorithmic reduction with index 0 is confluent for reduction on all levels.
-    If $q \iarrow{0} r$ at level $i$ reduction and $q \iarrow{0} s$ at level $j$ reduction,
-    then there exists $t$ s.t. $r \iarrow{0} t$ and $s \iarrow{0} t$.
+\begin{jtheorem}[アルゴリズム簡約の合流性]\label{AlgorithmicConfluence}
+    $0$-インデックスのアルゴリズム簡約は, 全てのレヴェルの項について合流性を持つ.
+    % The algorithmic reduction with index 0 is confluent for reduction on all levels.
+    レヴェル $i$ に関する項の簡約で, $q \iarrow{0} r$ かつ, レヴェル$j$に関する項の簡約で $q \iarrow{0} s$ ならば,
+    $r \iarrow{0} t$ and $s \iarrow{0} t$ であるような項 $t$ が存在する.
     \begin{proof}
         \begin{itemize}
             \item{$i = j$}\\
-            By \Cref{ChurchRosser}, there exists such $t$.
+            \Cref{ChurchRosser} より, $t$ は存在する.
             \item{$i \neq j$}\\
-            The reduction at a given level does not interfere with other terms; it does not create an another redex at a different level.
-            Thus, changing the order of the 2 reductions will yield the same result.
+            あるレヴェルの項での簡約は, 他のレヴェルの項について簡約基を生成しない.
+            よって, 2つの簡約の順番の入れ替えによっても, 簡約結果は同じになる.
+            % The reduction at a given level does not interfere with other terms of other levels; it does not create an another redex at a different level.
+            % Thus, changing the order of the 2 reductions will yield the same result.
         \end{itemize}
     \end{proof}
-\end{theorem}
+\end{jtheorem}
 
-\begin{theorem}[Type Preservation of Alogrithmic Reduction]\label{AlgorithmicTypePreservation}
-    If $\Gamma \myvdash{n} t \COL T$ and $t \alarrow{m} t'$ then $\Gamma \myvdash{n} t' \COL T$.
+\begin{jtheorem}[アルゴリズム簡約の型保存]\label{AlgorithmicTypePreservation}
+    $\Gamma \myvdash{n} t \COL T$ かつ $t \alarrow{m} t'$ であるなら, $\Gamma \myvdash{n} t' \COL T$.
     \begin{proof}
-        \textbf{By induction on level n}.
-        By using \fauxsc{QT-App} and \fauxsc{T-Conv}, we can prove type preservation
-        on the reduction of terms up to level $n$ from that of up to level $n-1$.  
-        % \textbf{By induction on the derivation of }$t \alarrow{m} t'$.
+        \textbf{レヴェル$n$に関する完全帰納法による.}.
+        レヴェル$n-1$ までの項について示されているなら,
+        \fauxsc{QT-App} と \fauxsc{T-Conv} を用いて,
+        レヴェル$n$ の項についても示すことができる
     \end{proof}
-\end{theorem}
+\end{jtheorem}
 
-\begin{lemma}[Alogrithmic Reduction and Term Equivalence]\label{AlgorithmicTermEquivalence}
-    If $\Gamma \myvdash{n} M \COL T$ and $M \alarrow{m} M'$ then $\Gamma \myvdash{n} M \myequiv{m} M'$
+\begin{jlemma}[アルゴリズム簡約と項の同値]\label{AlgorithmicTermEquivalence}
+    $\Gamma \myvdash{n} M \COL T$ かつ $M \alarrow{m} M'$ であるなら, $\Gamma \myvdash{n} M \myequiv{m} M'$である.
     \begin{proof}
-        Proven from induction on $M \alarrow{m}  M'$
+        \textbf{$M \alarrow{m}  M'$ の導出の関する帰納法による.}
     \end{proof}
-\end{lemma}
+\end{jlemma}
 
-\begin{theorem}[Term Equivalence of Algorithmic Normal Form]\label{AlgorithmicANFEquivalence}
-    If $\Gamma \myvdash{n} t \COL T$ then $\Gamma \myvdash{n} t \myequiv{m} \anf{m}{t}$.
+\begin{jtheorem}[アルゴリズム正規形と項の同値]\label{AlgorithmicANFEquivalence}
+    $\Gamma \myvdash{n} t \COL T$ ならば, $\Gamma \myvdash{n} t \myequiv{m} \anf{m}{t}$ である.
     \begin{proof}
-        From \Cref{AlgorithmicTermEquivalence} and \Cref{AlgorithmicTypePreservation}.
+        \Cref{AlgorithmicTermEquivalence} と \Cref{AlgorithmicTypePreservation} から示される.
     \end{proof}
-\end{theorem}
+\end{jtheorem}
 
-\begin{lemma}[Reflexivity in Alogrithmic Equivalence]\label{AlRefl}
-    For all $n \in \mathbb{Z}, m \in \mathbb{N}$,
+\begin{jlemma}[アルゴリズム同値の反射律]\label{AlRefl}
+    任意の $n \in \mathbb{Z}, m \in \mathbb{N}$, に対して,
     \begin{itemize}
         \item $\Gamma \myalvdash{n} K \myequiv{m} K$.
         \item $\Gamma \myalvdash{n} T \myequiv{m} T$.
         \item $\Gamma \myalvdash{n} t \myequiv{m} t$.
     \end{itemize}
     \begin{proof}
-        \textbf{By straightforward induction on the derivation rules.}
+        \textbf{導出に関する構造帰納法による.}
     \end{proof}
-\end{lemma}
+\end{jlemma}
 
-\begin{lemma}[Symmetry in Alogrithmic Equivalence]\label{AlSym}
-    For all $n \in \mathbb{Z}, m \in \mathbb{N}$,
+\begin{jlemma}[アルゴリズム同値の対称律]\label{AlSym}
+    任意の $n \in \mathbb{Z}, m \in \mathbb{N}$ に対して,
     \begin{itemize}
-        \item If $\Gamma \myalvdash{n} K_1 \myequiv{m} K_2$ then $\Gamma \myalvdash{n} K_2 \myequiv{m} K_1$.
-        \item If $\Gamma \myalvdash{n} T_1 \myequiv{m} T_2$ then $\Gamma \myalvdash{n} T_2 \myequiv{m} T_1$.
-        \item If $\Gamma \myalvdash{n} t_1 \myequiv{m} t_2$ then $\Gamma \myalvdash{n} t_2 \myequiv{m} t_1$.
+        \item $\Gamma \myalvdash{n} K_1 \myequiv{m} K_2$ であるなら, $\Gamma \myalvdash{n} K_2 \myequiv{m} K_1$.
+        \item $\Gamma \myalvdash{n} T_1 \myequiv{m} T_2$ であるなら, $\Gamma \myalvdash{n} T_2 \myequiv{m} T_1$.
+        \item $\Gamma \myalvdash{n} t_1 \myequiv{m} t_2$ であるなら, $\Gamma \myalvdash{n} t_2 \myequiv{m} t_1$.
     \end{itemize}
     \begin{proof}
-        \textbf{By straightforward induction on the derivation rules.}
+        \textbf{導出に関する構造帰納法による.}
     \end{proof}
-\end{lemma}
+\end{jlemma}
 
-\begin{lemma}[Transitivity of Algorithmic Equivalence]\label{AlTrans}
-    For all $n \in \mathbb{Z}, m \in \mathbb{N}$,
+\begin{jlemma}[アルゴリズム同値の推移律]\label{AlTrans}
+    任意の $n \in \mathbb{Z}, m \in \mathbb{N}$ に対して,
     \begin{itemize}
-        \item If $\Gamma \myalvdash{n} K_1 \myequiv{m} K_2$ and $\Gamma \myalvdash{n} K_2 \myequiv{m} K_3$ then $\Gamma \myalvdash{n} K_1 \myequiv{m} K_3$.
-        \item If $\Gamma \myalvdash{n} T_1 \myequiv{m} T_2$ and $\Gamma \myalvdash{n} T_2 \myequiv{m} T_3$ then $\Gamma \myalvdash{n} T_1 \myequiv{m} T_3$.
-        \item If $\Gamma \myalvdash{n} t_1 \myequiv{m} t_2$ and $\Gamma \myalvdash{n} t_2 \myequiv{m} t_3$ then $\Gamma \myalvdash{n} t_1 \myequiv{m} t_3$.
+        \item $\Gamma \myalvdash{n} K_1 \myequiv{m} K_2$ かつ $\Gamma \myalvdash{n} K_2 \myequiv{m} K_3$ であるなら, $\Gamma \myalvdash{n} K_1 \myequiv{m} K_3$.
+        \item $\Gamma \myalvdash{n} T_1 \myequiv{m} T_2$ かつ $\Gamma \myalvdash{n} T_2 \myequiv{m} T_3$ であるなら, $\Gamma \myalvdash{n} T_1 \myequiv{m} T_3$.
+        \item $\Gamma \myalvdash{n} t_1 \myequiv{m} t_2$ かつ $\Gamma \myalvdash{n} t_2 \myequiv{m} t_3$ であるなら, $\Gamma \myalvdash{n} t_1 \myequiv{m} t_3$.
     \end{itemize}
     \begin{proof}
-        \textbf{By straightforward induction on the derivation rules.}
+        \textbf{導出に関する構造帰納法による.}
     \end{proof}
-\end{lemma}
+\end{jlemma}
