@@ -109,7 +109,7 @@
 
 \newcommand{\TAPrevIntro}{
     \infrule[TA-PrevIntro]{
-        \Gamma \myalvdash{n-1} t\COL \bigcirc T
+        \Gamma \myalvdash{n-1} t\COL {\bigcirc}T
     }{
         \Gamma \myalvdash{n} \myprev{t} \COL T
     }
@@ -119,7 +119,7 @@
     \infrule[TA-NextIntro]{
         \Gamma \myalvdash{n+1} t \COL T
     }{
-        \Gamma \myalvdash{n} \mynext{t} \COL \bigcirc T
+        \Gamma \myalvdash{n} \mynext{t} \COL {\bigcirc}T
     }
 }
 

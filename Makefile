@@ -11,6 +11,9 @@ handout: FORCE
 cover: FORCE
 	(cd cover; make)
 
+slide: FORCE
+	(cd slides; make)
+
 clean:
 	$(RM) *.aux *.log *.dvi *.bcf *.fls *.snm *.bbl *.blg *.out *.nav *.xml *.vrb *.toc
 

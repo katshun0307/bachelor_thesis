@@ -12,6 +12,7 @@
 アルゴリズム的型付け規則とは, 環境と項/型が与えられたときに,
 適用できる型付け/カインド付け規則が一意, あるいは有限個に定まり,
 有限時間で, ふさわしい型/カインド(のうち一つ) を導出できるような体系のことを言う.
+\Cref{fig_al_q} の \anf{m}{t} は, 後に説明される. また, $\equiv_{\alpha}$ は, \malpha -同値を示す.
 
 \Cref{fig_al_f,fig_al_k,fig_al_t,fig_al_qk,fig_al_qt,fig_al_q} は, 提案するアルゴリズム的型付け規則である.
 % \Cref{fig_al_q} における \textrm{ANF} は, \Cref{subsection_al_proof_before} で定義する.
@@ -91,19 +92,19 @@ take the congruence on terms (訳???)したものである.
 \begin{fig}{アルゴリズム的簡約規則}
     \centering
     \infax[\fauxsc{EA-Beta}]{
-        (\mylam{x}{T}{s})t \barrow_{m} [x \mapsto t]s 
+        (\mylam{x}{T}{s})t \iarrow{m} [x \mapsto t]s 
         \andalso m \le 0
     } \bcpnl
     \infax[\fauxsc{EA-StagedBeta}]{
-        \myprev{\mynext{t}} \stbarrow_{m} t
+        \myprev{\mynext{t}} \iarrow{m} t
         \andalso m \le 0
     } \bcpnl
     \infax[\fauxsc{EA-StagedEta}]{
-        \mynext{\myprev{t}} \stearrow_{m} t
+        \mynext{\myprev{t}} \iarrow{m} t
         \andalso m \le 1
     } \bcpnl
     \infax[\fauxsc{EA-Equal}]{
-        \myidpeel{\myid{a}}{x}{t} \eqarrow_{m} [x \mapsto a] t
+        \myidpeel{\myid{a}}{x}{t} \iarrow{m} [x \mapsto a] t
         \andalso m = 0
     }
     \label{FigAlgorithmicReduction}
@@ -135,7 +136,7 @@ take the congruence on terms (訳???)したものである.
 % 健全性
 はじめに, アルゴリズム的型付け規則の健全性を示していく.
 
-\begin{jtheorem}[アルゴリズム的同値の宣言的同値に関する健全性]\label{SoundAQ}
+\begin{jtheorem}[アルゴリズム的同値の宣言的同値に対する健全性]\label{SoundAQ}
     任意の $n \in \mathbb{N}, m \in \mathbb{Z}$ に対して,
     \begin{itemize}
         \item   ${\Gamma \myalvdash{n} T_1 \myequiv{m} T_2}$, 
@@ -158,7 +159,7 @@ take the congruence on terms (訳???)したものである.
     \end{proof}
 \end{jtheorem}
 
-\begin{theorem}[アルゴリズム的型付け及びカインド付けの健全性]\label{SoundAKT}
+\begin{jtheorem}[アルゴリズム的型付け及びカインド付けの健全性]\label{SoundAKT}
     任意の ${n \in \mathbb{N}}$,
     \begin{itemize}
         \item ${\Gamma \myalvdash{n} K}$, ならば, ${\Gamma \myvdash{n} K}$. 
@@ -193,7 +194,7 @@ take the congruence on terms (訳???)したものである.
         \end{itemize}
         % KA-Pi, KA-Var, KA-Equiv
     \end{proof}
-\end{theorem}
+\end{jtheorem}
 
 \begin{jcorollary}[アルゴリズム的型付けの健全性]
     アルゴリズム的型付けは, 宣言的な型付け規則に対して, 健全である.
@@ -212,28 +213,30 @@ take the congruence on terms (訳???)したものである.
     \begin{itemize}
         \item $\Gamma \myvdash{n} K$ であるなら, $\Gamma \myalvdash{n} K$.
         \item $\Gamma \myvdash{n} T \DCOL K$ であるなら,
-        $\Gamma \myalvdash{n} K$, $\Gamma \myvdash{n} K \myequiv{m} K'$ and $\Gamma \myalvdash{n} T \DCOL K$
+        $\Gamma \myalvdash{n} K$, $\Gamma \myalvdash{n} K \myequiv{0} K'$ かつ $\Gamma \myalvdash{n} T \DCOL K$
         が成立するような $K'$ が存在する.
         \item $\Gamma \myvdash{n} t \COL T$ であるなら,
-        $\Gamma \myalvdash{n} T'$, $\Gamma \myalvdash{n} T \myequiv{m} T'$ and $\Gamma \myalvdash{n} t \COL T'$
+        $\Gamma \myalvdash{n} T'$, $\Gamma \myalvdash{n} T \myequiv{0} T'$ かつ $\Gamma \myalvdash{n} t \COL T'$
         が成立するような $T'$ が存在する.
         \item $\Gamma \myvdash{n} K \myequiv{m} K'$ であるなら, $\Gamma \myalvdash{n} K \myequiv{m} K'$.
         \item $\Gamma \myvdash{n} S \myequiv{m} T$ であるなら, $\Gamma \myalvdash{n} S \myequiv{m} T$.
         \item $\Gamma \myvdash{n} s \myequiv{m} t$ であるなら, $\Gamma \myalvdash{n} s \myequiv{m} t$.
     \end{itemize}
     \begin{proof}
+        \textbf{導出に関する構造帰納法による.}
         \begin{itemize}
             % kinding
-            \item{\fauxsc{K-App}} ($\Gamma \myvdash{n} S t \DCOL [x \mapsto t] K$)\\
-            ${\Gamma \myvdash{n} S \DCOL \Pi x \COL T_1. K}$ に帰納法の仮定を適用することにより,
+            \item{\fauxsc{K-App}} ($\Gamma \myvdash{n} S t \DCOL [x \mapsto t] K_1$)\\
+            ${\Gamma \myvdash{n} S \DCOL \Pi x \COL T_1. K_1}$ に帰納法の仮定を適用することにより,
             ${\Gamma \myalvdash{n} J \myequiv{m} \Pi x \COL T_1 . K} \cdots (1)$ かつ
             ${\Gamma \myalvdash{n} S \DCOL J \cdots (2)}$ であるような $J$ が存在することがわかる.
-            (1) の導出は \fauxsc{QKA-Pi} によるので, $J \equiv \Pi x \COL T_1. K'$,
-            ${\Gamma \myalvdash{n} T_1 \myequiv{m} T_2 \cdots (3)}$ かつ ${\Gamma x \mysncln{n} T_1 \myalvdash{n} K_1 \myequiv{m} K_2 \cdots (4)}$ であるとわかる.
-            また, ${\Gamma \myvdash{n} T_1 \DCOL K_1}$ に帰納法の仮定を適用することにより,
-            ${\Gamma \myalvdash{n} T_1 \DCOL K_1} \cdots (5)$ を得る.
-            最後に, \fauxsc{QK-App} と (3), (4), (5) を用いることで,
-            ${\Gamma \myalvdash{n} S t \DCOL [x \mapsto t] K_1}$ を得る.
+            $J$ を, $\Pi x \COL T_2. K_2$ とすると,
+            (1) の導出は \fauxsc{QKA-Pi} によるので, $\Pi x \COL T_2. K_2 \equiv_{0} \Pi x \COL T_1. K'$,
+            ${\Gamma \myalvdash{n} T_1 \myequiv{m} T_2 \cdots (3)}$ かつ ${\Gamma x \mysncln{n} T_1 \myalvdash{n} K_1 \myequiv{0} K_2 \cdots (4)}$ であるとわかる.
+            また, ${\Gamma \myvdash{n} t_1 \DCOL T_1}$ に帰納法の仮定を適用することにより,
+            $\Gamma \myvdash{n} T' \myequiv{0} T_1$ であるような ${\Gamma \myalvdash{n} t_1 \DCOL T'} \cdots (5)$ を得る.
+            最後に, \fauxsc{K-App} と (3), (4), (5) を用いることで,
+            ${\Gamma \myalvdash{n} S t \DCOL [x \mapsto t] K_2}$ を得る.
             \item{\fauxsc{K-Conv}}($\Gamma \myvdash{n} T \DCOL K$ から $\Gamma \myvdash{n} T \DCOL K'$,
             $\Gamma \myvdash{n} K \myequiv{0} K'$)\\
             帰納法の仮定より,
@@ -254,8 +257,8 @@ take the congruence on terms (訳???)したものである.
             また, $\Gamma \myalvdash{n} T \myequiv{m} T'$ も成立する.
             \Cref{AlTrans} より, $\Gamma \myalvdash{n} U \myequiv{m} T'$ を得る.
             % kind equivalence
-            \item{\fauxsc{QK-Pi}}\\
-            By straightforward induction.
+            % \item{\fauxsc{QK-Pi}}\\
+            % By straightforward induction.
             \item{\fauxsc{QK-Refl}}\\
             \Cref{AlRefl} に従う.
             \item{\fauxsc{QK-Sym}}\\

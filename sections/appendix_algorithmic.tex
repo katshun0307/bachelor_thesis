@@ -10,7 +10,7 @@
 \end{jdefinition}
 
 \begin{jdefinition}[アルゴリズム簡約]\label{DefAlgorithmicReduction}
-    インデックス $m \in mathbb{N}$ を持つアルゴリズム簡約 $\alarrow{m}$ を,
+    インデックス $m \in \mathbb{N}$ を持つアルゴリズム簡約 $\alarrow{m}$ を,
     $m$ インデックスを持つアルゴリズム簡約規則の, 任意のレヴェルの項への適用とする.  
 \end{jdefinition}
 
@@ -27,13 +27,16 @@
 \end{jlemma}
 
 \begin{jtheorem}[アルゴリズム簡約の強正規化性]\label{AlgorithmicSN}
-    任意の $m$に対して, インデックス$m$ でのアルゴリズム簡約は, 強正規化性を持つ.
+    任意の $m$に対して, レヴェル$n$ まで持つ項のインデックス$m$ でのアルゴリズム簡約は, 強正規化性を持つ.
     \begin{proof}
-        \textbf{レヴェル$n$に関する帰納法による.}
-        レヴェル $0$ の項に対しては, \Cref{AlgorithmicSN0} より成立. 
-        レヴェル $i$ について示されれば, レヴェル$i+1$ についても示される.
-        % We can prove
-        % level $i+1$ subterm is strongly normalizing if we can prove for level $i$.
+        \textbf{レヴェル$n$ に関する帰納法による}
+        \begin{itemize}
+            \item{基底段階}\\
+            \Cref{AlgorithmicSN0} に従う.
+            \item{帰納段階}\\
+            レヴェル$n-1$を持つ項まで示されていれば, あるレヴェルでの簡約は他のレヴェルの簡約基を作らないので,
+            レヴェル$n$ についても示される.
+        \end{itemize}
     \end{proof}
 \end{jtheorem}
 
@@ -41,7 +44,7 @@
     $0$-インデックスのアルゴリズム簡約は, 全てのレヴェルの項について合流性を持つ.
     % The algorithmic reduction with index 0 is confluent for reduction on all levels.
     レヴェル $i$ に関する項の簡約で, $q \iarrow{0} r$ かつ, レヴェル$j$に関する項の簡約で $q \iarrow{0} s$ ならば,
-    $r \iarrow{0} t$ and $s \iarrow{0} t$ であるような項 $t$ が存在する.
+    $r \iarrow{0} t$ かつ $s \iarrow{0} t$ であるような項 $t$ が存在する.
     \begin{proof}
         \begin{itemize}
             \item{$i = j$}\\
@@ -59,9 +62,10 @@
     $\Gamma \myvdash{n} t \COL T$ かつ $t \alarrow{m} t'$ であるなら, $\Gamma \myvdash{n} t' \COL T$.
     \begin{proof}
         \textbf{レヴェル$n$に関する完全帰納法による.}.
-        レヴェル$n-1$ までの項について示されているなら,
+        レヴェル0については, \Cref{Preservation} で示されている.
+        レヴェル$n$ までの項について示されているなら,
         \fauxsc{QT-App} と \fauxsc{T-Conv} を用いて,
-        レヴェル$n$ の項についても示すことができる
+        レヴェル$n+1$ の項についても示すことができる
     \end{proof}
 \end{jtheorem}
 
@@ -73,7 +77,7 @@
 \end{jlemma}
 
 \begin{jtheorem}[アルゴリズム正規形と項の同値]\label{AlgorithmicANFEquivalence}
-    $\Gamma \myvdash{n} t \COL T$ ならば, $\Gamma \myvdash{n} t \myequiv{m} \anf{m}{t}$ である.
+    $\Gamma \myvdash{n} t \COL T$ ならば, $\Gamma \myvdash{n} t \myequiv{m} \anf{m}{t} \COL T$ である.
     \begin{proof}
         \Cref{AlgorithmicTermEquivalence} と \Cref{AlgorithmicTypePreservation} から示される.
     \end{proof}
@@ -112,5 +116,17 @@
     \end{itemize}
     \begin{proof}
         \textbf{導出に関する構造帰納法による.}
+    \end{proof}
+\end{jlemma}
+
+\begin{jlemma}[項の代入とアルゴリズム同値]\label{AlEqTermSubstitution}
+    任意の $n \in \mathbb{N}$ に対して, 
+    \begin{itemize}
+        \item $\Gamma \myvdash{n} K_1 \myequiv{0} K_2$ であるなら, $\Gamma \myvdash{n} [x \mapsto t] K_1 \myequiv{0} [x \mapsto t]K_2$.
+        \item $\Gamma \myvdash{n} T_1 \myequiv{0} T_2$ であるなら, $\Gamma \myvdash{n} [x \mapsto t] T_1 \myequiv{0} [x \mapsto t]T_2$.
+        \item $\Gamma \myvdash{n} t_1 \myequiv{0} t_2$ であるなら, $\Gamma \myvdash{n} [x \mapsto t] t_1 \myequiv{0} [x \mapsto t]t_2$.
+    \end{itemize}
+    \begin{proof}
+        \textbf{同値判断の導出に関する構造機能法による.}
     \end{proof}
 \end{jlemma}

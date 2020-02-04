@@ -195,7 +195,7 @@ $v^{i}$ は, $i$-インデックスの簡約がこれ以上存在しない項を
 すなわち, \mbeta-同値な項が, プログラムコードでない場合に限り, この規則が使用できることがわかる.
 
 \begin{fig}{\Cref{ex_04}が成立しないことのイメージ}
-  \begin{prooftree}
+  \begin{scprooftree}{0.7}
     \AxiomC{$\cdots$}
     \AxiomC{$2 \nleq 1$}
     \myplabel{Q-StageBeta}
@@ -207,7 +207,7 @@ $v^{i}$ は, $i$-インデックスの簡約がこれ以上存在しない項を
     \UnaryInfC{$\bullet \myvdash{1} \mynext{(\mylam{x}{\Int}{x}) \mysp \myprev{\mynext{3}}} \not\equiv_1 \mynext{(\mylam{x}{\Int}{x}) \mysp 3}$}
     \myplabel{Q-NextIntro}
     \UnaryInfC{$\bullet \myvdash{0} \mynext{\mynext{(\mylam{x}{\Int}{x}) \mysp \myprev{\mynext{3}}}} \not\equiv_0 \mynext{\mynext{(\mylam{x}{\Int}{x}) \mysp 3}}$}
-  \end{prooftree}
+  \end{scprooftree}
   \label{fig_ex04_proof}
 \end{fig}
 
@@ -234,7 +234,7 @@ $v^{i}$ は, $i$-インデックスの簡約がこれ以上存在しない項を
 
 
 \subsubsection{型, カインドに関する同値}
-型とカインドに関する同値は, \Cref{fig_tq,fig_kq} に示される.
+型とカインドに関する同値規則は, \Cref{fig_tq,fig_kq} に示される.
 この体系は依存型を含み, 型やカインドの内部にも項が含まれうるため,
 型とカインドに関する同値にも, 項に関する同値と同じように, 整数インデックスに関して拡張する必要がある.
 
@@ -268,7 +268,7 @@ $v^{i}$ は, $i$-インデックスの簡約がこれ以上存在しない項を
 同値型は一般的な形をしており, Martin-Löf によって提案された形をほとんどそのまま使用している.
 % 同値型の規則に関する説明
 同値型に関する規則は, 導入規則 \fauxsc{Eq-Intro} と 除去規則 \fauxsc{Eq-Elim} からなる.
-\fauxsc{T-EqIntro}は, 任意の項について, 反射律が成立していることを示しており, 同値型を生成する規則は, この規則のみである.
+\fauxsc{T-EqIntro}は, 任意の項について, 反射律が成立していることを示している.
 \fauxsc{T-EqElim}は, 除去規則であり, 2つの同じ型$T$をもつ項$a, b$ と, その2つの項に関する同値型を持つ項あった場合, 
 型$T$を持つ変数$x$が存在する環境において, 型$C(x, x, id(x))$ を持つ項$t$が存在するなら, 
 型$C(a, b, \myid{a, b})$ を持つ項を導くことができることを示している.
@@ -280,7 +280,7 @@ $v^{i}$ は, $i$-インデックスの簡約がこれ以上存在しない項を
 ${\Gamma \myvdash{n} (\myidpeel{z_1}{x}{\mylam{m}{\myeq{T}{x}{c}}{m}}) z_2 \COL \myeq{T}{a}{c}}$ が導出できることを示している.
 
 \begin{fig}{同値型における推移律の証明}
-  \begin{scprooftree}{0.9}
+  \begin{scprooftree}{0.8}
       \AxiomC{$\Gamma \myvdash{n} a\COL T$}
       \AxiomC{$\Gamma \myvdash{n} b\COL T$}
       \AxiomC{$\Gamma \myvdash{n} z_1\COL \myeq{T}{a}{b}$}
@@ -304,7 +304,7 @@ ${\Gamma \myvdash{n} (\myidpeel{z_1}{x}{\mylam{m}{\myeq{T}{x}{c}}{m}}) z_2 \COL 
 から, 型 $\myeq{T}{t_1}{t_2}$ となる項を導く例を示している.
 
 \begin{figure}[htbp]
-  \begin{scprooftree}{0.8}
+  \begin{scprooftree}{0.7}
     \AxiomC{$\Gamma \vdash t_1 \COL T$}
     \myplabel{Eq-Intro}
     \UnaryInfC{$\Gamma \vdash id(t_1) \COL \myeq{T}{t_1}{t_2}(t_1, t_1)$}

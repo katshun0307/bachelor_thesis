@@ -92,7 +92,7 @@
     \infrule[K-Circ]{
         \Gamma \myvdash{n} T \DCOL *
     }{
-        \Gamma \myvdash{n} \bigcirc T \DCOL *
+        \Gamma \myvdash{n} {\bigcirc} T \DCOL *
     }
 }
 
@@ -321,7 +321,7 @@
 
 \newcommand{\QNextIntro}{
     \infrule[Q-NextIntro]{
-        \Gamma \myvdash{n+1} t_1 \myequiv{m+1} t_2
+        \Gamma \myvdash{n+1} t_1 \myequiv{m+1} t_2 \COL T
     }{
         \Gamma \myvdash{n} \mynext{t_1} \myequiv{m} \mynext{t_2} \COL \bigcirc T
     }
@@ -329,9 +329,9 @@
 
 \newcommand{\QPrevIntro}{
     \infrule[Q-PrevIntro]{
-        \Gamma \myvdash{n-1} t_1 \myequiv{m-1} t_2
+        \Gamma \myvdash{n-1} t_1 \myequiv{m-1} t_2 \COL \bigcirc T
     }{
-        \Gamma \myvdash{n} \myprev{t_1} \myequiv{m} \myprev{t_2}
+        \Gamma \myvdash{n} \myprev{t_1} \myequiv{m} \myprev{t_2} \COL T
     }
 }
 

@@ -2,7 +2,7 @@
 この章では, 提案した体系の安全性を示すため,  はじめに代入補題を示したあと, 
 それを用いて保存と進行を示す. その後, 簡約規則の強正規化性と合流性を示す.
 
-\subsubsection{体系の安全性}
+\subsection{体系の安全性}
 
 はじめに, \Cref{Substitution} で, 代入補題を示す.
 
@@ -125,7 +125,7 @@
             が求まり, 示された.
         \end{enumerate}
         \item{\fauxsc{T-Conv}}\\
-        Immediate. 
+        容易に示される. 
         \item{\fauxsc{T-PrevIntro}} ($t = \myprev{s}$) \\
         帰納法の仮定より,  
             $\Gamma \myvdash{n-1} s \COL \bigcirc T$ かつ $\myval{t}{d} \iarrow{i} \myval{t'}{d}$ ならば, $\Gamma \myvdash{n-1} s'\COL T$.
@@ -253,6 +253,7 @@
     \begin{itemize}
         \item $\ftrans{\bigcirc T} = \Pi x \COL \Unit. \ftrans{T}$
         \item ${\ftrans{\myeq{T}{a}{b}} = \Pi x \COL \Unit. \ftrans{T}}$
+        \item $\ftrans{\Pi x \COL T . K} = \Pi x \COL \ftrans{T}. \ftrans{K}$
         \item ${\flat(\Gamma) = \{x \COL \flat(T) | (x \COL T) \in \Gamma\} \cup \{X \COL K | (X \COL K) \in \Gamma\}}$
     \end{itemize}
 \end{jdefinition}
@@ -357,7 +358,7 @@
         \textbf{$M$ の構造に関する帰納法.}
         \begin{itemize}
             \item{$M = x$}\\
-            Immediate.
+            容易に示される.
             \item{$M = \mylam{x}{T}{M_1}, \quad \mylam{x}{T}{M_1} \parrow{i} \mylam{x}{T}{N}$}\\
             帰納法の仮定より, $N \parrow{i} \tilde{M_1}$ である.
             よって, $\mylam{x}{T}{N} \parrow{i} \mylam{x}{T}{\tilde{M_1}}$.

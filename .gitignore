@@ -5,6 +5,9 @@
 # ignore handout
 handout/
 
+# igonre slides
+slides/
+
 # ignore seminar slides
 seminar_*/
 
