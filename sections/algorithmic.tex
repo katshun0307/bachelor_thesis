@@ -21,9 +21,6 @@
 \begin{fig}{アルゴリズム的適格性規則}
     \centering
     \footnotesize
-    % \WFAEmpty \bcpnl
-    % \WFATm \quad
-    % \WFATy \bcpnl
     \WFAStar \quad
     \WFAPi
     \label{fig_al_f}
@@ -85,27 +82,28 @@
 アルゴリズム的型付けの正しさを示すために, 
 上で定義したアルゴリズム的型付けが, 通常の型付け規則に関して健全かつ完全であることを証明する.
 
+% TODO: より自然に
 はじめに, アルゴリズム的簡約を定義する. アルゴリズム的簡約とは,
-\Cref{FigAlgorithmicReduction} で示される簡約を, 全てのレヴェルの項(\Cref{DefLevelTerms}参照)に対して行い, 
-take the congruence on terms (訳???)したものである.
+任意のレヴェルの項(\Cref{DefLevelTerms}参照) の任意の部分項に対して,
+\Cref{FigAlgorithmicReduction} で示される簡約を行うものである. 
 
 \begin{fig}{アルゴリズム的簡約規則}
     \centering
     \infax[\fauxsc{EA-Beta}]{
         (\mylam{x}{T}{s})t \iarrow{m} [x \mapsto t]s 
-        \andalso m \le 0
+        \andalso (m \le 0)
     } \bcpnl
     \infax[\fauxsc{EA-StagedBeta}]{
         \myprev{\mynext{t}} \iarrow{m} t
-        \andalso m \le 0
+        \andalso (m \le 0)
     } \bcpnl
     \infax[\fauxsc{EA-StagedEta}]{
         \mynext{\myprev{t}} \iarrow{m} t
-        \andalso m \le 1
+        \andalso (m \le 1)
     } \bcpnl
     \infax[\fauxsc{EA-Equal}]{
         \myidpeel{\myid{a}}{x}{t} \iarrow{m} [x \mapsto a] t
-        \andalso m = 0
+        \andalso (m \le 0)
     }
     \label{FigAlgorithmicReduction}
 \end{fig}
@@ -163,7 +161,7 @@ take the congruence on terms (訳???)したものである.
     任意の ${n \in \mathbb{N}}$,
     \begin{itemize}
         \item ${\Gamma \myalvdash{n} K}$, ならば, ${\Gamma \myvdash{n} K}$. 
-        \item ${\Gamma \myalvdash{n} T \DCOL K}$, ならば, ${\Gamma \myvdash{n} T \COL K}$. 
+        \item ${\Gamma \myalvdash{n} T \DCOL K}$, ならば, ${\Gamma \myvdash{n} T \DCOL K}$. 
         \item ${\Gamma \myalvdash{n} t \COL T}$ ならば, ${\Gamma \myvdash{n} t : T}$.
     \end{itemize}
     \begin{proof}
@@ -181,7 +179,7 @@ take the congruence on terms (訳???)したものである.
                 \BinaryInfC{$\Gamma \myvdash{n} S \mysp t \DCOL [x \mapsto t] K$}
             \end{prooftree}
             \item{\fauxsc{TA-App}}\\
-            以下の導出のより示される.
+            以下の導出より示される.
             \begin{prooftree}
                 \AxiomC{$\Gamma \myvdash{n} S_1 \myequiv{n} S_2$}
                 \AxiomC{$\Gamma \myvdash{n} t_2 \COL S_2$}

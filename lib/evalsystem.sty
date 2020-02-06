@@ -20,8 +20,8 @@
 
 \newcommand{\EAppAbs}{
     \infax[\fauxsc{E-Beta}]{
-        \myval{(\mylam{x}{T}{s})\mysp t}{d} \barrow_{i} \myval{[x \mapsto t] s}
-        \quad (i = 0)
+        \myval{(\mylam{x}{T}{s})\mysp t}{d} \barrow_{i} \myval{[x \mapsto t] s}{d}
+        \andalso (i \le 0)
     }
 }
 
@@ -97,7 +97,7 @@
 \newcommand{\EEq}{
     \infax[\fauxsc{E-Equal}]{
         \myval{\myidpeel{\myid{a}}{x}{t}}{d} \eqarrow_{i} \myval{[x \mapsto a] t}{d}
-        \andalso (i = 0)
+        \andalso (i \le 0)
     }
 }
 
@@ -106,5 +106,14 @@
         t \iarrow{i} t'
     }{
         \myid{t} \iarrow{i} \myid{t'}
+    }
+}
+
+\newcommand{\EIdpeel}{
+    \infrule[E-Idpeel]{
+        t \iarrow{i} t'
+        \andalso (i \le 1)
+    }{
+        \myidpeel{t_{eq}}{x}{t} \iarrow{i} \myidpeel{t_{eq}}{x}{t'}
     }
 }

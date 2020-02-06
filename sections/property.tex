@@ -74,7 +74,7 @@
 \vspace{10pt}
 
 代入補題を用いて, 体系の型付けされた項は, 1ステップの評価によって
-型が変わることがない保存を \Cref{Preservation} に示す.
+型が変わることがない保存と呼ばれる性質を \Cref{Preservation} に示す.
 
 \begin{jtheorem}[保存]\label{Preservation}
     任意の $i  \in \mathbb{N}, n \in \mathbb{Z}$ に対して,
@@ -262,11 +262,11 @@
 \begin{jtheorem}[強正規化性]\label{SN}
     $t$ が型付けされた項ならば, 無限の簡約列は存在しない.
     \begin{proof}
-        \textbf{背理法.}
+        \textbf{背理法による.}
         \lamlfcirc が強正規化性を持たないと仮定する. 
         このとき, \lamlfcirc で型付けされた項$t$が存在し, $t \rightarrow t_1 \rightarrow t_2 \rightarrow \cdots $
         のような無限長の簡約列が存在する. 
-        \Cref{FiniteStageReduction}より, この簡約列には無限個の \mbeta-簡約 あるいは 同値型に関する簡約ステップが存在から,
+        \Cref{FiniteStageReduction}より, この簡約列には無限個の \mbeta-簡約 あるいは 同値型に関する簡約ステップが存在するから,
         よって, \Cref{BetaTransPreserve} と \Cref{EqualityTransPreserve} より, \lamlf でも $\strans{t}$ の無限長の簡約列が存在する.
         これは, \lamlf が強正規化性を持つことに矛盾する.
     \end{proof}

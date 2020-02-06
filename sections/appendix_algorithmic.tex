@@ -26,17 +26,84 @@
     \end{proof}
 \end{jlemma}
 
+\begin{jdefinition}[\lamlfcirc から \stlc への変換]\label{def_translation_sn}
+    \lamlfcirc のカインドと型から単純型付きラムダ計算\stlc の型への変換 \mdflat と, \lamlfcirc の型と項から, \stlc の項への変換 \mdsharp を, 以下のように定義する. 
+    ただし, 型$\omega$ は, 項$\rho$, 型 \Unit は 項 \unit を持つシングルトン型である.
+    また, \stlc の 任意の型$\sigma$ に対して, 型$\omega \rarrow (\sigma \rarrow \omega) \rarrow \omega$ を持つ項 $\pi_{\btrans{\sigma}}$ を考える.
+    \begin{align*}
+        &\btrans{\Pi x \COL T. K} &&= \btrans{T} \rarrow \btrans{K}\\
+        &\btrans{*} &&= \omega\\
+        &\btrans{X} &&= \tilde{X'}\\
+        &\btrans{\Pi x \COL T_1. T_2} &&= \btrans{T_1} \rarrow \btrans{T_2}\\
+        &\btrans{T \mysp t} &&= \btrans{T}\\
+        &\btrans{\textbf{Eq}_{T}} &&= \Unit \rarrow \btrans{T}\\
+        &\btrans{\bigcirc T} &&= \Unit \rarrow \btrans{T}\\
+        % =============
+        &\atrans{X} &&= \tilde{X}\\
+        &\atrans{\Pi x \COL T_1 .T_2} &&= \pi_{\btrans{T_1}} \mysp \atrans{T_1} \mysp (\mylam{x}{\btrans{T_1}}{\atrans{T_2}})\\
+        &\atrans{T \mysp t} &&= \atrans{T} \atrans{t}\\
+        &\atrans{\textrm{Eq}_{T}} &&= \mylam{x}{\btrans{T}}{\mylam{y}{\btrans{T}}{\rho}}\\
+        % &\atrans{\bigcirc T} &&= (\mylam{x}{\Unit}{\atrans{T}}) \mysp \unit\\
+        &\atrans{\bigcirc T} &&= (\mylam{x}{\btrans{T}}{\rho}) \mysp \atrans{T}\\
+        &\atrans{x} &&= \tilde{x}\\
+        &\atrans{\mylam{x}{T}{t}} &&= (\lambda y \COL \btrans{T}. \lambda x \COL \omega. \atrans{t}) \atrans{T}\\
+        &\atrans{t_1 \mysp t_2} &&= \atrans{t_1} \atrans{t_2}\\
+        &\atrans{\myprev{t}} &&= \atrans{t} \mysp \unit\\
+        &\atrans{\mynext{t}} &&= \lambda x \COL \Unit. \atrans{t}\\
+        &\atrans{\myid{t}} &&= \mylam{x}{\Unit}{\atrans{t}}\\
+        &\atrans{\myidpeel{t_{eq}}{x}{t}} &&= (\mylam{a}{\btrans{T}}{[x \mapsto a] \atrans{t}}) \mysp (\atrans{t_{eq}} \mysp \unit) \quad ( t_{eq} \COL \myeq{T}{a}{b} \text{とする})\\
+        &\natural(\Gamma ) &&= \{\atrans{x} \COL \btrans{T} \pipe (x \COL T) \in \Gamma \} \cup \{\atrans{X} \COL \btrans{K} \pipe (X \COL K) \in \Gamma\}
+    \end{align*}
+\end{jdefinition}
+
+\begin{jlemma}[変換と代入]\label{al_trans_and_substitution}
+    任意の $x$ と $t$ について, 
+    $\btrans{T} = \btrans{[x \mapsto t]T}$ かつ, $\btrans{K} = \btrans{[x \mapsto t] T}$ である.
+    \begin{proof}
+        \mdflat 変換は, 型に含まれる項を消去していることから, 明らか.
+    \end{proof}
+\end{jlemma}
+
+\begin{jlemma}[\mdflat 変換と型の同値]\label{al_trans_and_equivalence}
+    \mysp
+    \begin{itemize}
+        \item $\Gamma \myvdash{n} T_1 \myequiv{0} T_2$ であるなら, $\btrans{T_1} = \btrans{T_2}$.
+        \item $\Gamma \myvdash{n} K_1 \myequiv{0} K_2$ であるなら, $\btrans{K_1} = \btrans{K_2}$.
+    \end{itemize}
+    \begin{proof}
+        \textbf{導出に関する構造帰納法によって容易に示される.}
+    \end{proof}
+\end{jlemma}
+
+\begin{jlemma}[変換の型付け関係の保存]\label{algorithmic_trans_type_preserve}
+    \mysp
+    \begin{itemize}
+        \item \lamlfcirc で, $\Gamma \myvdash{n} t \COL T$ ならば, \stlc で, $\natural(\Gamma) \vdash \atrans{t} \COL \btrans{T}$ である.
+        \item \lamlfcirc で, $\Gamma \myvdash{n} T \COL K$ ならば, \stlc で, $\natural(\Gamma) \vdash \atrans{T} \COL \btrans{K}$ である.
+    \end{itemize}
+    \begin{proof}
+        \textbf{導出規則に関する帰納法による.}
+        \Cref{al_trans_and_substitution,al_trans_and_equivalence} を用いる.
+    \end{proof}
+\end{jlemma}
+
+\begin{jlemma}[変換による\mbeta 簡約と同値型の項に関する簡約ステップの保存]\label{algorithm_trans_reduction_step}\label{al_beta_eq_trans_reduction_preserve}
+    \lamlfcirc で, \mbeta 簡約あるいは, 同値型の項に関する簡約によって, $t_1 \rarrow t_2$ ならば, \stlc で, $\atrans{t_1} \xrightarrow{+} \atrans{t_2}$ が成立する.
+    \begin{proof}
+        変換の定義より, 示される.
+    \end{proof}
+\end{jlemma}
+
 \begin{jtheorem}[アルゴリズム簡約の強正規化性]\label{AlgorithmicSN}
     任意の $m$に対して, レヴェル$n$ まで持つ項のインデックス$m$ でのアルゴリズム簡約は, 強正規化性を持つ.
     \begin{proof}
-        \textbf{レヴェル$n$ に関する帰納法による}
-        \begin{itemize}
-            \item{基底段階}\\
-            \Cref{AlgorithmicSN0} に従う.
-            \item{帰納段階}\\
-            レヴェル$n-1$を持つ項まで示されていれば, あるレヴェルでの簡約は他のレヴェルの簡約基を作らないので,
-            レヴェル$n$ についても示される.
-        \end{itemize}
+        \textbf{背理法による.}
+        \lamlfcirc が強正規化性を持たないと仮定する.
+        このとき, \lamlfcirc で型付けされた項$t$が存在し, $t \rightarrow t_1 \rightarrow t_2 \rightarrow \cdots $
+        のような無限長の簡約列が存在する. 
+        \Cref{FiniteStageReduction}より, この簡約列には無限個の \mbeta-簡約 あるいは 同値型に関する簡約ステップが存在するから,
+        \Cref{al_beta_eq_trans_reduction_preserve} より, \stlc{} でも $\strans{t}$ の無限長の簡約列が存在する.
+        これは, \stlc が強正規化性を持つことに矛盾する.
     \end{proof}
 \end{jtheorem}
 
@@ -52,8 +119,6 @@
             \item{$i \neq j$}\\
             あるレヴェルの項での簡約は, 他のレヴェルの項について簡約基を生成しない.
             よって, 2つの簡約の順番の入れ替えによっても, 簡約結果は同じになる.
-            % The reduction at a given level does not interfere with other terms of other levels; it does not create an another redex at a different level.
-            % Thus, changing the order of the 2 reductions will yield the same result.
         \end{itemize}
     \end{proof}
 \end{jtheorem}

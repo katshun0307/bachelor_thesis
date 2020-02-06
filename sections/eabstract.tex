@@ -11,12 +11,12 @@ applying \tprev{} to the code values we want to embed.
 By using these features, \lamcirc{} can model computation that performs run-time code generation and evaluation.
 
 % what the type system guarantees
-\lamcirc designates a type $\bigcirc T$ for a type $T$.
+\lamcirc{} designates a type $\bigcirc T$ for a type $T$.
 A term has type $\bigcirc T$ if it is code that produces a value of type $T$ when it is given to \tprev. 
 This type system guarantees that no error occurs during generation and evaluation of code at run-time.
 
 % == target == %
-We aim to extend \lamcirc so that it can verify more properties.
+We aim to extend \lamcirc{} so that it can verify more properties.
 To this end, we introduce dependent types and equality types to \lamcirc.
 
 % dependent types
@@ -34,9 +34,9 @@ with dependent types via a single introduction rule and single elimination rule.
 
 % research method
 In this thesis, we extend \lamcirc{} with dependent types à la \lamlf{} by Harper \etal and equality types.
-Kawata \etal has already proposed \lammd{} which extends \lamcirc{} with CSP and \lamlf;
-our type system can be understood as the extension of \lamcirc{} without CSP
-and with equality types.
+Kawata \etal have already proposed \lammd{} which extends \lamcirc{} with cross-stage persistence (CSP) and \lamlf;
+our type system can be understood as an extension of \lamcirc{} without CSP
+with equality types.
 
 % reduction rules and stages
 The reductions in our system include \mbeta-reduction, reduction on stage operators, and reduction on equality-typed values.

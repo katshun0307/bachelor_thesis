@@ -13,6 +13,8 @@
 \usepackage{cleveref}
 \crefname{figure}{図}{図}
 \crefname{equation}{式}{式}
+\crefname{jtheorem}{定理}{定理}
+\crefname{jlemma}{補題}{補題}
 \newcommand{\crefpairconjunction}{と}
 \newcommand{\crefpairgroupconjunction}{及び}
 \crefformat{section}{#1章}
@@ -80,12 +82,19 @@
 \newmdtheoremenv[style=rightlineproof]{theorem}{Theorem}
 \newmdtheoremenv[style=rightlineproof]{lemma}{Lemma}
 \newmdtheoremenv[style=rightlineproof]{corollary}{Corollary}
+
+\theoremstyle{break}
 \newmdtheoremenv[style=rightlineproof]{jdefinition}{定義}
 \newmdtheoremenv[style=rightlineproof]{jlemma}{補題}
 \newmdtheoremenv[style=rightlineproof]{jcorollary}{系}
 \newmdtheoremenv[style=rightlineproof]{jtheorem}{定理}
 
-\renewcommand\qedsymbol{$\blacksquare$}
+% \newtheorem{jdefinition}{定義}
+% \newtheorem{jlemma}{補題}
+% \newtheorem{jcorollary}{系}
+% \newtheorem{jtheorem}{定理}
+
+% \renewcommand\qedsymbol{$\blacksquare$}
 % \renewenvironment{proof}{{\bfseries Proof:}}{}
 % \renewenvironment{proof}{{\textbf{\textit{\\Proof:}}}}{}
 \renewenvironment{proof}{{\textbf{\\証明:}}}{}
@@ -95,12 +104,6 @@
 
 % symbols for theoretical computer science
 \usepackage{stmaryrd}
-
-% \newcommand{\tfor}{\textrm{for }}
-% \newcommand{\tall}{\textrm{all }}
-% \newcommand{\tif}{\textrm{if }}
-% \newcommand{\tthen}{\textrm{then }}
-% \newcommand{\tand}{\textrm{and }}
 
 % define induction cases env 
 \usepackage{enumitem}
